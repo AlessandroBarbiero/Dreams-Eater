@@ -147,6 +147,6 @@ std::shared_ptr<GameObject> RoomComponent::spawnWall(sre::Sprite spriteWall, glm
 	auto phys = wall->addComponent<PhysicsComponent>();
 
 	phys->initBox(b2_staticBody, s / game->physicsScale, { wall->getPosition().x / game->physicsScale, wall->getPosition().y / game->physicsScale }, 1);
-
+	
 	return wall;
 }

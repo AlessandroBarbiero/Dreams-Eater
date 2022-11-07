@@ -43,6 +43,7 @@ private:
 
     std::shared_ptr<SideScrollingCamera> camera;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas_inside;
+    std::shared_ptr<sre::SpriteAtlas> spriteAtlas_baseWraith;
 
     std::vector<std::shared_ptr<GameObject>> sceneObjects;
 
@@ -52,6 +53,8 @@ private:
     void registerPhysicsComponent(PhysicsComponent* r);
     void deregisterPhysicsComponent(PhysicsComponent* r);
     std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
+
     friend class PhysicsComponent;
     friend class RoomComponent;
+    friend class PlayerController;
 };

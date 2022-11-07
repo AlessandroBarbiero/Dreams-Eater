@@ -7,6 +7,7 @@
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "PhysicsComponent.hpp"
 #include "RoomComponent.hpp"
+#include "PlayerController.hpp"
 
 using namespace std;
 using namespace sre;
@@ -49,15 +50,28 @@ void DreamGame::init() {
     physicsComponentLookup.clear();
     initPhysics();
 
-    //spriteAtlas = SpriteAtlas::create("dreamsEater.json", "dreamsEater.png");
     spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");
-
+    spriteAtlas_baseWraith = SpriteAtlas::create("Sprites/Wraith/Wraith_base_atlas.json", "Sprites/Wraith/Wraith_base_atlas.png");
+    
+    
     auto camObj = createGameObject();
     camObj->name = "Camera";
     camera = camObj->addComponent<SideScrollingCamera>();
     camObj->setPosition(windowSize * 0.5f);
 
     // Initialize
+
+    //player
+    auto player = createGameObject();
+    player->setPosition(glm::vec2{ 3,3 });
+    player->name = "player";
+    auto playerController = player->addComponent<PlayerController>();
+
+    auto spriteWraithComp = player->addComponent<SpriteComponent>();
+    auto sprite = spriteAtlas_baseWraith->get("Idle/Wraith_01_Idle_000.png");
+    
+    spriteWraithComp->setSprite(sprite);
+    
 
     // Test room
     auto testRoom = createGameObject();
