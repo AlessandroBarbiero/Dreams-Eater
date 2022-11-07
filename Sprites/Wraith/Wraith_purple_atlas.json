@@ -1,0 +1,620 @@
+{"frames": [
+
+{
+	"filename": "Attacking/Wraith_03_Attack_000.png",
+	"frame": {"x":887,"y":827,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":139,"y":29,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Attacking/Wraith_03_Attack_001.png",
+	"frame": {"x":886,"y":226,"w":218,"h":297},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":134,"y":26,"w":218,"h":297},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Attacking/Wraith_03_Attack_002.png",
+	"frame": {"x":883,"y":1737,"w":217,"h":294},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":130,"y":24,"w":217,"h":294},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Attacking/Wraith_03_Attack_003.png",
+	"frame": {"x":1102,"y":1421,"w":217,"h":292},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":125,"y":22,"w":217,"h":292},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Attacking/Wraith_03_Attack_004.png",
+	"frame": {"x":1102,"y":1715,"w":216,"h":292},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":124,"y":22,"w":216,"h":292},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Attacking/Wraith_03_Attack_005.png",
+	"frame": {"x":1319,"y":1127,"w":215,"h":292},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":123,"y":22,"w":215,"h":292},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Attacking/Wraith_03_Attack_006.png",
+	"frame": {"x":1321,"y":1421,"w":215,"h":291},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":121,"y":23,"w":215,"h":291},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Attacking/Wraith_03_Attack_007.png",
+	"frame": {"x":1106,"y":226,"w":217,"h":297},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":130,"y":24,"w":217,"h":297},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Attacking/Wraith_03_Attack_008.png",
+	"frame": {"x":1828,"y":1,"w":219,"h":306},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":140,"y":26,"w":219,"h":306},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Attacking/Wraith_03_Attack_009.png",
+	"frame": {"x":1,"y":954,"w":220,"h":311},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":151,"y":25,"w":220,"h":311},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Attacking/Wraith_03_Attack_010.png",
+	"frame": {"x":443,"y":223,"w":220,"h":309},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":148,"y":25,"w":220,"h":309},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Attacking/Wraith_03_Attack_011.png",
+	"frame": {"x":221,"y":319,"w":220,"h":304},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":143,"y":27,"w":220,"h":304},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_000.png",
+	"frame": {"x":1107,"y":827,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":139,"y":29,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_001.png",
+	"frame": {"x":223,"y":625,"w":220,"h":306},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":136,"y":25,"w":220,"h":306},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_002.png",
+	"frame": {"x":1,"y":640,"w":220,"h":312},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":134,"y":21,"w":220,"h":312},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_003.png",
+	"frame": {"x":221,"y":1,"w":220,"h":316},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":132,"y":18,"w":220,"h":316},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_004.png",
+	"frame": {"x":1,"y":1,"w":218,"h":319},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":127,"y":26,"w":218,"h":319},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_005.png",
+	"frame": {"x":1,"y":322,"w":217,"h":316},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":122,"y":35,"w":217,"h":316},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_006.png",
+	"frame": {"x":223,"y":933,"w":215,"h":307},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":119,"y":45,"w":215,"h":307},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_007.png",
+	"frame": {"x":1597,"y":1,"w":229,"h":283},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":114,"y":69,"w":229,"h":283},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_008.png",
+	"frame": {"x":1348,"y":1,"w":247,"h":248},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":101,"y":96,"w":247,"h":248},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_009.png",
+	"frame": {"x":1068,"y":1,"w":278,"h":223},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":85,"y":116,"w":278,"h":223},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_010.png",
+	"frame": {"x":758,"y":1,"w":308,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":56,"y":139,"w":308,"h":216},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_011.png",
+	"frame": {"x":443,"y":1,"w":313,"h":220},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":51,"y":157,"w":313,"h":220},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_012.png",
+	"frame": {"x":443,"y":1,"w":313,"h":220},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":51,"y":157,"w":313,"h":220},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_013.png",
+	"frame": {"x":443,"y":1,"w":313,"h":220},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":51,"y":157,"w":313,"h":220},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Dying/Wraith_03_Dying_014.png",
+	"frame": {"x":443,"y":1,"w":313,"h":220},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":51,"y":157,"w":313,"h":220},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_000.png",
+	"frame": {"x":1107,"y":827,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":139,"y":29,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_001.png",
+	"frame": {"x":1,"y":1267,"w":220,"h":310},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":142,"y":27,"w":220,"h":310},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_002.png",
+	"frame": {"x":1,"y":1579,"w":220,"h":310},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":137,"y":28,"w":220,"h":310},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_003.png",
+	"frame": {"x":223,"y":1242,"w":217,"h":303},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":125,"y":30,"w":217,"h":303},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_004.png",
+	"frame": {"x":882,"y":1128,"w":214,"h":293},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":114,"y":34,"w":214,"h":293},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_005.png",
+	"frame": {"x":1757,"y":1475,"w":211,"h":282},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":106,"y":39,"w":211,"h":282},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_006.png",
+	"frame": {"x":1541,"y":1746,"w":211,"h":282},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":105,"y":39,"w":211,"h":282},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_007.png",
+	"frame": {"x":1754,"y":1759,"w":211,"h":285},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":107,"y":36,"w":211,"h":285},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_008.png",
+	"frame": {"x":1327,"y":837,"w":212,"h":287},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":110,"y":34,"w":212,"h":287},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_009.png",
+	"frame": {"x":1541,"y":1454,"w":214,"h":290},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":116,"y":31,"w":214,"h":290},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_010.png",
+	"frame": {"x":884,"y":1423,"w":216,"h":293},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":122,"y":30,"w":216,"h":293},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Hurt/Wraith_03_Hurt_011.png",
+	"frame": {"x":664,"y":1737,"w":217,"h":296},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":130,"y":29,"w":217,"h":296},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_000.png",
+	"frame": {"x":887,"y":827,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":139,"y":29,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_001.png",
+	"frame": {"x":223,"y":1547,"w":219,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":140,"y":28,"w":219,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_002.png",
+	"frame": {"x":445,"y":534,"w":219,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":140,"y":27,"w":219,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_003.png",
+	"frame": {"x":665,"y":223,"w":219,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":139,"y":26,"w":219,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_004.png",
+	"frame": {"x":666,"y":525,"w":219,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":138,"y":25,"w":219,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_005.png",
+	"frame": {"x":887,"y":525,"w":218,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":137,"y":24,"w":218,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_006.png",
+	"frame": {"x":1107,"y":525,"w":218,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":136,"y":23,"w":218,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_007.png",
+	"frame": {"x":442,"y":1137,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":135,"y":24,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_008.png",
+	"frame": {"x":444,"y":1437,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":135,"y":25,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_009.png",
+	"frame": {"x":444,"y":1737,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":136,"y":26,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_010.png",
+	"frame": {"x":662,"y":1137,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":137,"y":27,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle Blink/Wraith_03_Idle Blinking_011.png",
+	"frame": {"x":445,"y":836,"w":219,"h":299},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":137,"y":27,"w":219,"h":299},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_000.png",
+	"frame": {"x":887,"y":827,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":139,"y":29,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_001.png",
+	"frame": {"x":223,"y":1547,"w":219,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":140,"y":28,"w":219,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_002.png",
+	"frame": {"x":445,"y":534,"w":219,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":140,"y":27,"w":219,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_003.png",
+	"frame": {"x":665,"y":223,"w":219,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":139,"y":26,"w":219,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_004.png",
+	"frame": {"x":666,"y":525,"w":219,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":138,"y":25,"w":219,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_005.png",
+	"frame": {"x":887,"y":525,"w":218,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":137,"y":24,"w":218,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_006.png",
+	"frame": {"x":1107,"y":525,"w":218,"h":300},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":136,"y":23,"w":218,"h":300},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_007.png",
+	"frame": {"x":442,"y":1137,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":135,"y":24,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_008.png",
+	"frame": {"x":444,"y":1437,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":135,"y":25,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_009.png",
+	"frame": {"x":444,"y":1737,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":136,"y":26,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_010.png",
+	"frame": {"x":664,"y":1437,"w":218,"h":298},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":137,"y":27,"w":218,"h":298},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Idle/Wraith_03_Idle_011.png",
+	"frame": {"x":666,"y":827,"w":219,"h":299},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":137,"y":27,"w":219,"h":299},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Spells-Effect.png",
+	"frame": {"x":1,"y":1891,"w":62,"h":62},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":1,"y":1,"w":62,"h":62},
+	"sourceSize": {"w":64,"h":64}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_000.png",
+	"frame": {"x":1320,"y":1715,"w":219,"h":291},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":142,"y":30,"w":219,"h":291},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_001.png",
+	"frame": {"x":1327,"y":251,"w":219,"h":291},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":143,"y":29,"w":219,"h":291},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_002.png",
+	"frame": {"x":1098,"y":1127,"w":219,"h":292},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":143,"y":28,"w":219,"h":292},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_003.png",
+	"frame": {"x":1327,"y":544,"w":219,"h":291},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":142,"y":28,"w":219,"h":291},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_004.png",
+	"frame": {"x":1548,"y":286,"w":219,"h":291},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":141,"y":28,"w":219,"h":291},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_005.png",
+	"frame": {"x":1769,"y":309,"w":218,"h":290},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":140,"y":28,"w":218,"h":290},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_006.png",
+	"frame": {"x":1769,"y":601,"w":218,"h":290},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":139,"y":28,"w":218,"h":290},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_007.png",
+	"frame": {"x":1762,"y":893,"w":218,"h":289},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":138,"y":29,"w":218,"h":289},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_008.png",
+	"frame": {"x":1538,"y":1163,"w":218,"h":289},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":138,"y":30,"w":218,"h":289},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_009.png",
+	"frame": {"x":1758,"y":1184,"w":218,"h":289},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":139,"y":30,"w":218,"h":289},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_010.png",
+	"frame": {"x":1548,"y":579,"w":219,"h":290},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":140,"y":30,"w":219,"h":290},
+	"sourceSize": {"w":520,"h":420}
+},
+{
+	"filename": "Walking/Wraith_03_Moving Forward_011.png",
+	"frame": {"x":1541,"y":871,"w":219,"h":290},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":141,"y":30,"w":219,"h":290},
+	"sourceSize": {"w":520,"h":420}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Wraith_purple_atlas.png",
+	"format": "RGBA8888",
+	"size": {"w":2048,"h":2048},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:a3957d0c5bd742c286bcc2256d47e625:3f8eb309f904b6202ce93cc106644ba2:9ee74b3d01c8331427216f7f0eb1311d$"
+}
+}
