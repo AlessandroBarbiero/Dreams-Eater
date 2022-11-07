@@ -45,7 +45,7 @@ private:
     float rotation;
     bool destroyed = false;
 
-    friend class BirdGame;
+    friend class DreamGame;
 };
 
 // definition of the template member function addComponent
