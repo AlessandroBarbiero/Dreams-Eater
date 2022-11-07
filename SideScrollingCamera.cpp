@@ -10,6 +10,7 @@ using namespace glm;
 SideScrollingCamera::SideScrollingCamera(GameObject *gameObject)
         : Component(gameObject)
 {
+    camera.setOrthographicProjection(DreamGame::windowSize.y / 2, -1, 1);
 }
 
 sre::Camera &SideScrollingCamera::getCamera() {
@@ -21,7 +22,7 @@ void SideScrollingCamera::update(float deltaTime) {
         auto position = followObject->getPosition();
 
         position.x += offset.x;
-        position.y = offset.y;
+        position.y += offset.y;
         gameObject->setPosition(position);
         vec3 eye (position, 0);
         vec3 at (position, -1);

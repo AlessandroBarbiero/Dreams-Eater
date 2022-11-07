@@ -6,11 +6,12 @@
 #include "SpriteComponent.hpp"
 #include "Box2D/Dynamics/Contacts/b2Contact.h"
 #include "PhysicsComponent.hpp"
+#include "RoomComponent.hpp"
 
 using namespace std;
 using namespace sre;
 
-const glm::vec2 DreamGame::windowSize(400, 600);
+const glm::vec2 DreamGame::windowSize(600, 600);
 
 DreamGame* DreamGame::instance = nullptr;
 
@@ -48,6 +49,8 @@ void DreamGame::init() {
     physicsComponentLookup.clear();
     initPhysics();
 
+    //spriteAtlas = SpriteAtlas::create("dreamsEater.json", "dreamsEater.png");
+    spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");
 
     auto camObj = createGameObject();
     camObj->name = "Camera";
@@ -55,6 +58,16 @@ void DreamGame::init() {
     camObj->setPosition(windowSize * 0.5f);
 
     // Initialize
+
+    // Test room
+    auto testRoom = createGameObject();
+    testRoom->name = "testRoom";
+    auto room = testRoom->addComponent<RoomComponent>();
+    room->setRoomSize(glm::vec2(5, 5));
+    room->buildFloor();
+    room->buildWalls();
+    camera->setFollowObject(testRoom, glm::vec2(0, 0));
+    
 }
 
 void DreamGame::update(float time) {
@@ -99,6 +112,15 @@ void DreamGame::onKey(SDL_Event& event) {
         case SDLK_r:
             init();
             break;
+        case SDLK_d:
+            for each (std::shared_ptr<GameObject> obj in sceneObjects)
+            {
+                if (obj->name == "testRoom") {
+                    std::cout << "Marking testRoom" << std::endl;
+                    obj->destroy();
+                    camera->setFollowObject(nullptr, glm::vec2(0,0));
+                }
+            }
         }
     }
 }

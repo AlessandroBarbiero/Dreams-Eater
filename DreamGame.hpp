@@ -42,7 +42,7 @@ private:
     void handleContact(b2Contact* contact, bool begin);
 
     std::shared_ptr<SideScrollingCamera> camera;
-    std::shared_ptr<sre::SpriteAtlas> spriteAtlas;
+    std::shared_ptr<sre::SpriteAtlas> spriteAtlas_inside;
 
     std::vector<std::shared_ptr<GameObject>> sceneObjects;
 
@@ -53,4 +53,5 @@ private:
     void deregisterPhysicsComponent(PhysicsComponent* r);
     std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
     friend class PhysicsComponent;
+    friend class RoomComponent;
 };

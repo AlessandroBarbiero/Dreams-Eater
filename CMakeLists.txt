@@ -21,9 +21,9 @@ add_executable(DreamsEaterProject ${DreamsEater})
 target_link_libraries(DreamsEaterProject ${all_libs})
 
 # copy files to dest
-# file(COPY dreamsEater.json dreamsEater.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
-# file(COPY dreamsEater.json dreamsEater.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
-# file(COPY dreamsEater.json dreamsEater.png DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+file(COPY Sprites DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Debug)
+file(COPY Sprites DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Release)
+file(COPY Sprites DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 IF (WIN32)
     # Copy dll files to ${CMAKE_CURRENT_BINARY_DIR}/Debug
