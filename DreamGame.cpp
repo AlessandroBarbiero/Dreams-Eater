@@ -127,7 +127,7 @@ void DreamGame::updatePhysics() {
 }
 
 void DreamGame::initPhysics() {
-    float gravity = -9.8f; // 9.8 m/s2
+    float gravity = 0; // Top-down
     delete world;
     world = new b2World(b2Vec2(0, gravity));
     world->SetContactListener(this);
