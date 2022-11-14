@@ -8,6 +8,9 @@ GameObject::~GameObject(){
     for (auto& c : components){
         c->gameObject = nullptr;
     }
+    for (auto& c : children) {
+        c->parent = nullptr;
+    }
 }
 
 bool GameObject::removeComponent(std::shared_ptr<Component> component) {
@@ -52,4 +55,7 @@ const std::vector<std::shared_ptr<Component>> &GameObject::getComponents() {
 
 void GameObject::destroy() {
     destroyed = true;
+    for (auto& c : children) {
+        c->destroy();
+    }
 }

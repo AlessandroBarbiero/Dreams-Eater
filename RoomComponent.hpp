@@ -9,6 +9,7 @@ public:
 
     void setRoomSize(glm::vec2);
     glm::vec2 getRoomSize();
+    glm::vec2 getRoomSizeInPixels();
 
     void buildWalls();
     void buildFloor();

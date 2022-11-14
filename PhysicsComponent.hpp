@@ -15,6 +15,8 @@ public:
 
     void initBox(b2BodyType type, glm::vec2 size,glm::vec2 center,float density);
 
+    void initChain(b2BodyType type, b2Vec2* points, int32 count, glm::vec2 center, float density);
+
     void addForce(glm::vec2 force);     // Force gradually affects the velocity over time
 
     void addImpulse(glm::vec2 force);   // Instantly affects velocity

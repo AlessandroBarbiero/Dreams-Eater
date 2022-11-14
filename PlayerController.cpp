@@ -5,35 +5,24 @@
 #include <SDL_events.h>
 #include <iostream>
 #include "GameObject.hpp"
-#include "SpriteComponent.hpp"
 #include "PhysicsComponent.hpp"
 #include "PlayerController.hpp"
-#include "SpriteComponent.hpp"
 #include "DreamGame.hpp"
 
 PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) {
     
-    auto physicsScale = DreamGame::instance->physicsScale;
-
-    playerPhysics = gameObject->addComponent<PhysicsComponent>();
-    playerSprite = gameObject->getComponent<SpriteComponent>();
-
-    playerPhysics->initCircle(b2_dynamicBody, 10/physicsScale, gameObject->getPosition(), 1);
-    playerPhysics->fixRotation();
 }
 
-/*void PlayerController::update(float deltaTime) {
-       
-
-
+void PlayerController::update(float deltaTime) {
+      
     glm::vec2 movement{ 0,0 };
 
 
 
-    if (fwd) {
+    if (up) {
         movement.y++;
     }
-    if (bwd) {
+    if (down) {
         movement.y--;
     }
     if (left) {
@@ -42,12 +31,12 @@ PlayerController::PlayerController(GameObject* gameObject) : Component(gameObjec
     if (right) {
         movement.x++;
     }
-        
-    float accelerationSpeed = 0.010f;
-    playerPhysics->addImpulse(movement * accelerationSpeed);
+
+    //float accelerationSpeed = 0.010f;
+    //playerPhysics->addImpulse(movement * accelerationSpeed);
 
     auto linearVelocity = playerPhysics->getLinearVelocity();
-    
+    /*
     if (linearVelocity.x > maximumVelocity) {
         linearVelocity.x = glm::sign(linearVelocity.x) * maximumVelocity;
     }
@@ -55,65 +44,69 @@ PlayerController::PlayerController(GameObject* gameObject) : Component(gameObjec
     if (linearVelocity.y > maximumVelocity) {
         linearVelocity.y = glm::sign(linearVelocity.y) * maximumVelocity;
     }
+    */
 
     
-    playerPhysics -> setLinearVelocity(linearVelocity);
-    
-}*/
+    //playerPhysics -> setLinearVelocity(linearVelocity);
+
+    // TODO: Conditional on knockback/stun/other
+    if (movement != glm::vec2(0)) {
+        movement = glm::normalize(movement) * speed;
+        playerPhysics->setLinearVelocity(movement);
+    }
+}
 
 
 bool PlayerController::onKey(SDL_Event& event) {
-    switch (event.key.keysym.sym) {
-        case SDLK_UP:{
-            if (event.type == SDL_KEYDOWN) {
-                auto currentVelocity = playerPhysics->getLinearVelocity();
-                playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, speed });
-            }
-            else {
-                auto currentVelocity = playerPhysics->getLinearVelocity();
-                playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, 0 });
-            }
-            
+    auto sym = event.key.keysym.sym;
+    if (sym == keyUp) {
+        if (event.type == SDL_KEYDOWN) {
+            up = true;
+            auto currentVelocity = playerPhysics->getLinearVelocity();
+            playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, speed });
         }
-        break;
-        
-        case SDLK_DOWN:{
-            if (event.type == SDL_KEYDOWN) {
-                auto currentVelocity = playerPhysics->getLinearVelocity();
-                playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, -speed });
-            }
-            else {
-                auto currentVelocity = playerPhysics->getLinearVelocity();
-                playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, 0 });
-            }
+        else {
+            up = false;
+            auto currentVelocity = playerPhysics->getLinearVelocity();
+            playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, 0 });
         }
-        break;
-    
-    
-        case SDLK_LEFT:{
-            if (event.type == SDL_KEYDOWN) {
-                auto currentVelocity = playerPhysics->getLinearVelocity();
-                playerPhysics->setLinearVelocity(glm::vec2{-speed, currentVelocity.y });
-            }
-            else {
-                auto currentVelocity = playerPhysics->getLinearVelocity();
-                playerPhysics->setLinearVelocity(glm::vec2{ 0, currentVelocity.y });
-            }
+    }
+    if (sym == keyDown) {
+        if (event.type == SDL_KEYDOWN) {
+            down = true;
+            auto currentVelocity = playerPhysics->getLinearVelocity();
+            playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, -speed });
         }
-        break;
-
-        case SDLK_RIGHT:{
-            if (event.type == SDL_KEYDOWN) {
-                auto currentVelocity = playerPhysics->getLinearVelocity();
-                playerPhysics->setLinearVelocity(glm::vec2{ speed, currentVelocity.y });
-            }
-            else {
-                auto currentVelocity = playerPhysics->getLinearVelocity();
-                playerPhysics->setLinearVelocity(glm::vec2{ 0, currentVelocity.y });
-            }
+        else {
+            down = false;
+            auto currentVelocity = playerPhysics->getLinearVelocity();
+            playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, 0 });
         }
-        break;
+    }
+    if (sym == keyLeft) {
+        if (event.type == SDL_KEYDOWN) {
+            left = true;
+            auto currentVelocity = playerPhysics->getLinearVelocity();
+            playerPhysics->setLinearVelocity(glm::vec2{ -speed, currentVelocity.y });
         }
+        else {
+            left = false;
+            auto currentVelocity = playerPhysics->getLinearVelocity();
+            playerPhysics->setLinearVelocity(glm::vec2{ 0, currentVelocity.y });
+        }
+    }
+    if (sym == keyRight) {
+        if (event.type == SDL_KEYDOWN) {
+            right = true;
+            auto currentVelocity = playerPhysics->getLinearVelocity();
+            playerPhysics->setLinearVelocity(glm::vec2{ speed, currentVelocity.y });
+        }
+        else {
+            right = false;
+            auto currentVelocity = playerPhysics->getLinearVelocity();
+            playerPhysics->setLinearVelocity(glm::vec2{ 0, currentVelocity.y });
+        }
+    }
 
     return false;
 

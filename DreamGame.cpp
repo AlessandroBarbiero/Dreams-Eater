@@ -8,6 +8,7 @@
 #include "PhysicsComponent.hpp"
 #include "RoomComponent.hpp"
 #include "PlayerController.hpp"
+#include "CharacterBuilder.hpp"
 
 using namespace std;
 using namespace sre;
@@ -17,6 +18,7 @@ const glm::vec2 DreamGame::windowSize(600, 600);
 DreamGame* DreamGame::instance = nullptr;
 
 DreamGame::DreamGame()
+    :debugDraw(physicsScale)
 {
     instance = this;
     r.setWindowSize(windowSize);
@@ -51,7 +53,7 @@ void DreamGame::init() {
     initPhysics();
 
     spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");
-    spriteAtlas_baseWraith = SpriteAtlas::create("Sprites/Wraith/Wraith_base_atlas.json", "Sprites/Wraith/Wraith_base_atlas.png");
+    //spriteAtlas_baseWraith = SpriteAtlas::create("Sprites/Wraith/Wraith_base_atlas.json", "Sprites/Wraith/Wraith_base_atlas.png");
     
     
     auto camObj = createGameObject();
@@ -62,22 +64,21 @@ void DreamGame::init() {
     // Initialize
 
     //player
-    auto player = createGameObject();
-    player->setPosition(glm::vec2{ 3,3 });
-    player->name = "player";
-    auto playerController = player->addComponent<PlayerController>();
-
-    auto spriteWraithComp = player->addComponent<SpriteComponent>();
-    auto sprite = spriteAtlas_baseWraith->get("Idle/Wraith_01_Idle_000.png");
-    
-    spriteWraithComp->setSprite(sprite);
-    
+    //CharacterBuilder::init();
+    PlayerSettings settings;
+    settings.position = glm::vec2(3, 3);
+    settings.speed = 5.0f;
+    auto player = CharacterBuilder::createPlayer(settings);
+    settings.position = glm::vec2(10,10);
+    settings.keybinds = { SDLK_w, SDLK_s, SDLK_a, SDLK_d };
+    auto player2 = CharacterBuilder::createPlayer(settings);
 
     // Test room
     auto testRoom = createGameObject();
     testRoom->name = "testRoom";
+    auto roomPhys = testRoom->addComponent<PhysicsComponent>();
     auto room = testRoom->addComponent<RoomComponent>();
-    room->setRoomSize(glm::vec2(5, 5));
+    room->setRoomSize(glm::vec2(3, 3));
     room->buildFloor();
     room->buildWalls();
     camera->setFollowObject(testRoom, glm::vec2(0, 0));
@@ -109,6 +110,12 @@ void DreamGame::render() {
 
     auto sb = spriteBatchBuilder.build();
     rp.draw(sb);
+
+    if (doDebugDraw) {
+        world->DrawDebugData();
+        rp.drawLines(debugDraw.getLines());
+        debugDraw.clear();
+    }
 }
 
 void DreamGame::onKey(SDL_Event& event) {
@@ -126,7 +133,7 @@ void DreamGame::onKey(SDL_Event& event) {
         case SDLK_r:
             init();
             break;
-        case SDLK_d:
+        case SDLK_t:
             for each (std::shared_ptr<GameObject> obj in sceneObjects)
             {
                 if (obj->name == "testRoom") {
@@ -135,7 +142,19 @@ void DreamGame::onKey(SDL_Event& event) {
                     camera->setFollowObject(nullptr, glm::vec2(0,0));
                 }
             }
+            break;
+        case SDLK_y:
+            // press 'd' for physics debug
+            doDebugDraw = !doDebugDraw;
+            if (doDebugDraw) {
+                world->SetDebugDraw(&debugDraw);
+            }
+            else {
+                world->SetDebugDraw(nullptr);
+            }
+            break;
         }
+
     }
 }
 

@@ -13,16 +13,23 @@ RoomComponent::RoomComponent(GameObject *gameObject) : Component(gameObject) {}
 
 RoomComponent::~RoomComponent() {
 	std::cout << "Room Destroyed" << std::endl;
-
+	/*
 	for each (std::shared_ptr<GameObject> obj in roomObjects)
 	{
 		obj->destroy();
 	}
 	roomObjects.clear();
+	*/
 }
 
 glm::vec2 RoomComponent::getRoomSize() {
 	return roomSize;
+}
+
+glm::vec2 RoomComponent::getRoomSizeInPixels() {
+	auto spriteWallHorizontalBottom = DreamGame::instance->spriteAtlas_inside->get("Walls/walls_0005_Layer-6.png");
+	float length = spriteWallHorizontalBottom.getSpriteSize().x;
+	return roomSize * length;
 }
 
 // RoomSize is number of segments excluding corners
@@ -31,6 +38,7 @@ void RoomComponent::setRoomSize(glm::vec2 newSize) {
 }
 
 void RoomComponent::buildWalls() {
+	auto go = getGameObject();
 	auto game = DreamGame::instance;
 	auto spriteWallHorizontalBottom = game->spriteAtlas_inside->get("Walls/walls_0005_Layer-6.png");
 	auto spriteWallHorizontalTop = game->spriteAtlas_inside->get("Walls/walls_0006_Layer-7.png");
@@ -51,31 +59,31 @@ void RoomComponent::buildWalls() {
 
 	// Bottom Left corner
 	auto position = glm::vec2(0, 0);
-	roomObjects.push_back(spawnWall(spriteWallBottomLeft, glm::vec2(0,0)));
+	go->children.push_back(spawnWall(spriteWallBottomLeft, glm::vec2(0,0)));
 
 	// Bottom Right corner
 	position = glm::vec2((roomSize.x - 1) * spriteWallHorizontalBottom.getSpriteSize().x, 0);
-	roomObjects.push_back(spawnWall(spriteWallBottomRight, position));
+	go->children.push_back(spawnWall(spriteWallBottomRight, position));
 
 	// Top Left corner
 	position = glm::vec2(0, (roomSize.y - 1) * spriteWallVerticalLeft.getSpriteSize().y);
-	roomObjects.push_back(spawnWall(spriteWallTopLeft, position));
+	go->children.push_back(spawnWall(spriteWallTopLeft, position));
 
 	// Top Right corner
 	position = glm::vec2((roomSize.x - 1) * spriteWallHorizontalBottom.getSpriteSize().x, (roomSize.y - 1) * spriteWallVerticalLeft.getSpriteSize().y);
-	roomObjects.push_back(spawnWall(spriteWallTopRight, position));
+	go->children.push_back(spawnWall(spriteWallTopRight, position));
 
 	// Horizontal walls
 	for (int x = 1; x < roomSize.x-1; x++)
 	{
 		// Bottom Wall
 		auto position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x, -offset);
-		roomObjects.push_back(spawnWall(spriteWallHorizontalBottom, position));
+		go->children.push_back(spawnWall(spriteWallHorizontalBottom, position));
 
 		// Top Wall
 		int y = roomSize.y - 1;
 		position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x, y * spriteWallVerticalLeft.getSpriteSize().y + offset);
-		roomObjects.push_back(spawnWall(spriteWallHorizontalTop, position));
+		go->children.push_back(spawnWall(spriteWallHorizontalTop, position));
 	}
 	
 	// Vertical walls. Starts at 1 and ends at max-1 because they already exist from the previous loop
@@ -83,19 +91,36 @@ void RoomComponent::buildWalls() {
 	{
 		// Left Wall
 		auto position = glm::vec2(-offset, y * spriteWallVerticalLeft.getSpriteSize().y);
-		roomObjects.push_back(spawnWall(spriteWallVerticalLeft, position));
+		go->children.push_back(spawnWall(spriteWallVerticalLeft, position));
 
 		// Right Wall
 		int x = roomSize.x - 1;
 		position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x + offset, y * spriteWallVerticalLeft.getSpriteSize().y);
-		roomObjects.push_back(spawnWall(spriteWallVerticalRight, position));
+		go->children.push_back(spawnWall(spriteWallVerticalRight, position));
 	}
 
 	getGameObject()->setPosition(glm::vec2( (roomSize.x-1)* spriteWallHorizontalBottom.getSpriteSize().x / 2, (roomSize.y-1)* spriteWallVerticalLeft.getSpriteSize().y / 2));
+	// Collision
+	auto size = glm::vec2(getRoomSizeInPixels().x - 198, getRoomSizeInPixels().y - 198) / game->physicsScale;
+	auto center = getGameObject()->getPosition() / game->physicsScale;
+	b2Vec2 points[4];
+	glm::vec2 bottomLeft =	glm::vec2(center.x - (size.x/2), center.y - (size.y/2));
+	glm::vec2 bottomRight = glm::vec2(center.x + (size.x/2), center.y - (size.y/2));
+	glm::vec2 topRight =	glm::vec2(center.x + (size.x/2), center.y + (size.y/2));
+	glm::vec2 topLeft =		glm::vec2(center.x - (size.x/2), center.y + (size.y/2));
+
+	points[0].Set(bottomLeft.x, bottomLeft.y); // bottom left
+	points[1].Set(bottomRight.x, bottomRight.y); // bottom right
+	points[2].Set(topRight.x, topRight.y); // top right
+	points[3].Set(topLeft.x, topLeft.y); // top left
+
+	getGameObject()->getComponent<PhysicsComponent>()->initChain(b2_staticBody, points, 4, center / game->physicsScale, 1);
+
 	game->camera->getCamera().setOrthographicProjection((roomSize.x) * spriteWallHorizontalBottom.getSpriteSize().x/2, -1, 1); // Fit room width to window
 }
 
 void RoomComponent::buildFloor() {
+	auto go = getGameObject();
 	auto game = DreamGame::instance;
 	auto spriteFloor = game->spriteAtlas_inside->get("Floor/Floor1.png"); // Change to right sprite later
 	
@@ -109,7 +134,7 @@ void RoomComponent::buildFloor() {
 	for (int x = 0; x < floorSize.x; x++) {
 		for (int y = 0; y < floorSize.y; y++) {
 			auto position = glm::vec2(x * spriteFloor.getSpriteSize().x - 170.5f, y * spriteFloor.getSpriteSize().y - 170.5f);
-			roomObjects.push_back(spawnFloor(spriteFloor, position));
+			go->children.push_back(spawnFloor(spriteFloor, position));
 		}
 	}
 }
@@ -124,7 +149,6 @@ std::shared_ptr<GameObject> RoomComponent::spawnFloor(sre::Sprite spriteFloor, g
 
 	floor->setPosition(pos);
 	sprite->setSprite(spriteFloor);
-	
 
 	glm::vec2 s{ spriteFloor.getSpriteSize().x * spriteFloor.getScale().x / 2, spriteFloor.getSpriteSize().y * spriteFloor.getScale().y / 2 };
 
@@ -142,11 +166,11 @@ std::shared_ptr<GameObject> RoomComponent::spawnWall(sre::Sprite spriteWall, glm
 	wall->setPosition(pos);
 	sprite->setSprite(spriteWall);
 
-	glm::vec2 s{ spriteWall.getSpriteSize().x * spriteWall.getScale().x / 2, spriteWall.getSpriteSize().y * spriteWall.getScale().y / 2 };
+	//glm::vec2 s{ spriteWall.getSpriteSize().x * spriteWall.getScale().x / 2, spriteWall.getSpriteSize().y * spriteWall.getScale().y / 2 };
 
-	auto phys = wall->addComponent<PhysicsComponent>();
+	//auto phys = wall->addComponent<PhysicsComponent>();
 
-	phys->initBox(b2_staticBody, s / game->physicsScale, { wall->getPosition().x / game->physicsScale, wall->getPosition().y / game->physicsScale }, 1);
+	//phys->initBox(b2_staticBody, s / game->physicsScale, { wall->getPosition().x / game->physicsScale, wall->getPosition().y / game->physicsScale }, 1);
 	
 	return wall;
 }

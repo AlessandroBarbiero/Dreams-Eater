@@ -96,6 +96,29 @@ void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center
     DreamGame::instance->registerPhysicsComponent(this);
 }
 
+void PhysicsComponent::initChain(b2BodyType type, b2Vec2* points, int32 count, glm::vec2 center, float density) {
+    assert(body == nullptr);
+    autoUpdate = type != b2_staticBody;
+    // do init
+    shapeType = b2Shape::Type::e_chain;
+    b2BodyDef bd;
+    bd.type = type;
+    rbType = type;
+    bd.position = b2Vec2(center.x, center.y);
+    body = world->CreateBody(&bd);
+    
+    b2ChainShape* chain = new b2ChainShape();
+    chain->CreateLoop(points, count);
+    
+    b2FixtureDef fxD;
+    fxD.userData = (void*)"Chain";
+    fxD.shape = chain;
+    fxD.density = density;
+    fixture = body->CreateFixture(&fxD);
+
+    DreamGame::instance->registerPhysicsComponent(this);
+}
+
 bool PhysicsComponent::isSensor() {
     return fixture->IsSensor();
 }

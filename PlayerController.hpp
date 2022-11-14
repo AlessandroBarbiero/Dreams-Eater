@@ -12,21 +12,26 @@ public:
 
     void onCollisionEnd(PhysicsComponent* comp) override;
                                                          
-
+    void update(float deltaTime) override;
 
 private:
 
     std::shared_ptr<PhysicsComponent> playerPhysics;
-    std::shared_ptr<SpriteComponent> playerSprite;
 
     float speed = 5.0;
     float radius = 10.0;
 
-    bool fwd = false;
-    bool bwd = false;
+    bool up = false;
+    bool down = false;
     bool left = false;
     bool right = false;
 
     float maximumVelocity = 2;
 
+    SDL_Keycode keyUp = SDLK_UP;
+    SDL_Keycode keyDown;
+    SDL_Keycode keyLeft;
+    SDL_Keycode keyRight;
+
+    friend class CharacterBuilder;
 };

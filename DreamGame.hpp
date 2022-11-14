@@ -1,9 +1,12 @@
+#pragma once
+
 #include "sre/SDLRenderer.hpp"
 #include "sre/SpriteAtlas.hpp"
 #include <vector>
 #include "Box2D/Dynamics/b2World.h"
 #include "GameObject.hpp"
 #include "SideScrollingCamera.hpp"
+#include "Box2DDebugDraw.hpp"
 
 class PhysicsComponent;
 
@@ -54,7 +57,11 @@ private:
     void deregisterPhysicsComponent(PhysicsComponent* r);
     std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
 
+    Box2DDebugDraw debugDraw;
+    bool doDebugDraw = false;
+
     friend class PhysicsComponent;
     friend class RoomComponent;
     friend class PlayerController;
+    friend class CharacterBuilder;
 };
