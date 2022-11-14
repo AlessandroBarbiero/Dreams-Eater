@@ -62,49 +62,33 @@ bool PlayerController::onKey(SDL_Event& event) {
     if (sym == keyUp) {
         if (event.type == SDL_KEYDOWN) {
             up = true;
-            auto currentVelocity = playerPhysics->getLinearVelocity();
-            playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, speed });
         }
         else {
             up = false;
-            auto currentVelocity = playerPhysics->getLinearVelocity();
-            playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, 0 });
         }
     }
     if (sym == keyDown) {
         if (event.type == SDL_KEYDOWN) {
             down = true;
-            auto currentVelocity = playerPhysics->getLinearVelocity();
-            playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, -speed });
         }
         else {
             down = false;
-            auto currentVelocity = playerPhysics->getLinearVelocity();
-            playerPhysics->setLinearVelocity(glm::vec2{ currentVelocity.x, 0 });
         }
     }
     if (sym == keyLeft) {
         if (event.type == SDL_KEYDOWN) {
             left = true;
-            auto currentVelocity = playerPhysics->getLinearVelocity();
-            playerPhysics->setLinearVelocity(glm::vec2{ -speed, currentVelocity.y });
         }
         else {
             left = false;
-            auto currentVelocity = playerPhysics->getLinearVelocity();
-            playerPhysics->setLinearVelocity(glm::vec2{ 0, currentVelocity.y });
         }
     }
     if (sym == keyRight) {
         if (event.type == SDL_KEYDOWN) {
             right = true;
-            auto currentVelocity = playerPhysics->getLinearVelocity();
-            playerPhysics->setLinearVelocity(glm::vec2{ speed, currentVelocity.y });
         }
         else {
             right = false;
-            auto currentVelocity = playerPhysics->getLinearVelocity();
-            playerPhysics->setLinearVelocity(glm::vec2{ 0, currentVelocity.y });
         }
     }
 
