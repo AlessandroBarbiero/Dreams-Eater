@@ -26,9 +26,7 @@ private:
     bool left = false;
     bool right = false;
 
-    float maximumVelocity = 2;
-
-    SDL_Keycode keyUp = SDLK_UP;
+    SDL_Keycode keyUp;
     SDL_Keycode keyDown;
     SDL_Keycode keyLeft;
     SDL_Keycode keyRight;

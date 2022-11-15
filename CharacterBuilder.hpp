@@ -13,18 +13,33 @@ struct Controls {
 };
 
 struct PlayerSettings{
+	std::string name = "player";
 	glm::vec2 position;
 	float speed = 5.0f;
 	Controls keybinds;
 };
 
+struct EnemySettings {
+	std::string name = "enemy";
+	glm::vec2 position;
+	float speed = 5.0f;
+	float idealDistance = 600.0f;
+	float range = 5.0f;
+	std::shared_ptr<GameObject> player;
+};
+
 class CharacterBuilder {
 public:
 	static std::shared_ptr<GameObject> createPlayer(PlayerSettings settings);
+	static std::shared_ptr<GameObject> createEnemy(EnemySettings settings);
 
 private:
 	static std::shared_ptr<sre::SpriteAtlas> spriteAtlas_baseWraith() {
 		static std::shared_ptr<sre::SpriteAtlas> WraithAtlas = sre::SpriteAtlas::create("Sprites/Wraith/Wraith_base_atlas.json", "Sprites/Wraith/Wraith_base_atlas.png");
 		return WraithAtlas;
+	};
+	static std::shared_ptr<sre::SpriteAtlas> spriteAtlas_baseWizard() {
+		static std::shared_ptr<sre::SpriteAtlas> WizardAtlas = sre::SpriteAtlas::create("Sprites/Wizard/Wizard_base_atlas.json", "Sprites/Wizard/Wizard_base_atlas.png");
+		return WizardAtlas;
 	};
 };

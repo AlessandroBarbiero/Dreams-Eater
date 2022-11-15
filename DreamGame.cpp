@@ -52,9 +52,7 @@ void DreamGame::init() {
     physicsComponentLookup.clear();
     initPhysics();
 
-    spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");
-    //spriteAtlas_baseWraith = SpriteAtlas::create("Sprites/Wraith/Wraith_base_atlas.json", "Sprites/Wraith/Wraith_base_atlas.png");
-    
+    spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");    
     
     auto camObj = createGameObject();
     camObj->name = "Camera";
@@ -64,21 +62,28 @@ void DreamGame::init() {
     // Initialize
 
     //player
-    //CharacterBuilder::init();
-    PlayerSettings settings;
-    settings.position = glm::vec2(3, 3);
-    settings.speed = 5.0f;
-    auto player = CharacterBuilder::createPlayer(settings);
-    settings.position = glm::vec2(10,10);
-    settings.keybinds = { SDLK_w, SDLK_s, SDLK_a, SDLK_d };
-    auto player2 = CharacterBuilder::createPlayer(settings);
+    PlayerSettings pSettings;
+    pSettings.position = glm::vec2(3, 3);
+    pSettings.speed = 5.0f;
+    auto player = CharacterBuilder::createPlayer(pSettings);
+    // Second player creation with different keybind
+    //pSettings.name = "player2";
+    //pSettings.position = glm::vec2(10,10);
+    //pSettings.keybinds = { SDLK_w, SDLK_s, SDLK_a, SDLK_d };
+    //auto player2 = CharacterBuilder::createPlayer(pSettings);
+
+    EnemySettings eSettings;
+    eSettings.position = glm::vec2(5, 5);
+    eSettings.player = player;
+    eSettings.speed = 2.0f;
+    CharacterBuilder::createEnemy(eSettings);
 
     // Test room
     auto testRoom = createGameObject();
     testRoom->name = "testRoom";
     auto roomPhys = testRoom->addComponent<PhysicsComponent>();
     auto room = testRoom->addComponent<RoomComponent>();
-    room->setRoomSize(glm::vec2(3, 3));
+    room->setRoomSize(glm::vec2(5, 5));
     room->buildFloor();
     room->buildWalls();
     camera->setFollowObject(testRoom, glm::vec2(0, 0));
