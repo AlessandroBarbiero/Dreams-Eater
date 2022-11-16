@@ -18,7 +18,9 @@ public:
     void destroyBullet();
 
 private:
+    bool shrinking = false;
 
+    float shrinkRate = 0.99;
     float damage = 1.0f;
     float range = 5.0f;
     glm::vec2 startingPosition;

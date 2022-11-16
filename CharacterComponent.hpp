@@ -27,6 +27,8 @@ private:
     float shotSpeed = 10.0f;
     float knockback = 0;        //not working
 
+    float radius; // The radius of the physic component -> it is also the distance from which the bullet is spawned
+
     float shotCooldownTimer = 0;
     bool readyToShoot = true;
 

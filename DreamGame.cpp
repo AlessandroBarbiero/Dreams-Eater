@@ -64,7 +64,7 @@ void DreamGame::init() {
     //player
     PlayerSettings pSettings;
     pSettings.position = glm::vec2(3, 3);
-    pSettings.speed = 5.0f;
+    pSettings.speed = 8.0f;
     auto player = CharacterBuilder::createPlayer(pSettings);
     // Second player creation with different keybind
     //pSettings.name = "player2";
@@ -73,7 +73,7 @@ void DreamGame::init() {
     //auto player2 = CharacterBuilder::createPlayer(pSettings);
 
     EnemySettings eSettings;
-    eSettings.position = glm::vec2(5, 5);
+    eSettings.position = glm::vec2(15, 15);
     eSettings.player = player;
     eSettings.speed = 2.0f;
     CharacterBuilder::createEnemy(eSettings);
@@ -83,7 +83,7 @@ void DreamGame::init() {
     testRoom->name = "testRoom";
     auto roomPhys = testRoom->addComponent<PhysicsComponent>();
     auto room = testRoom->addComponent<RoomComponent>();
-    room->setRoomSize(glm::vec2(5, 5));
+    room->setRoomSize(glm::vec2(8, 8));
     room->buildFloor();
     room->buildWalls();
     camera->setFollowObject(testRoom, glm::vec2(0, 0));

@@ -21,13 +21,17 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     spriteComp->setSprite(sprite);
 
     auto playerPhysics = player->addComponent<PhysicsComponent>();
-    playerPhysics->initCircle(b2_dynamicBody, (sprite.getSpriteSize().x / 2) / physicsScale, player->getPosition(), 1);
+    float radius = (sprite.getSpriteSize().x / 2) / physicsScale;
+    playerPhysics->initCircle(b2_dynamicBody, radius, player->getPosition(), 1);
     playerPhysics->getBody()->SetLinearDamping(5.0f);
     playerPhysics->fixRotation();
 
     auto playerCharacter = player->addComponent<CharacterComponent>();
     auto shotSprite = spriteAtlas_baseWraith()->get("Spells-Effect.png");
     playerCharacter->setShotSprite(shotSprite);
+    playerCharacter->radius = radius;
+    playerCharacter->rateOfFire = settings.rateOfFire;
+    playerCharacter->shotSpeed = settings.shotSpeed;
 
     auto playerController = player->addComponent<PlayerController>();
     playerController->speed = settings.speed;
@@ -62,15 +66,24 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     spriteComp->setSprite(sprite);
 
     auto physics = enemy->addComponent<PhysicsComponent>();
-    physics->initCircle(b2_dynamicBody, (sprite.getSpriteSize().x / 2) / physicsScale, enemy->getPosition(), 1);
+    float radius = (sprite.getSpriteSize().x * sprite.getScale().x / 2) / physicsScale;
+    physics->initCircle(b2_dynamicBody, radius, enemy->getPosition(), 1);
     physics->getBody()->SetLinearDamping(5.0f);
     physics->fixRotation();
 
+    auto enemyCharacter = enemy->addComponent<CharacterComponent>();
+    auto shotSprite = spriteAtlas_baseWraith()->get("Spells-Effect.png");
+    enemyCharacter->setShotSprite(shotSprite);
+    enemyCharacter->radius = radius;
+    enemyCharacter->rateOfFire = settings.rateOfFire;
+    enemyCharacter->shotSpeed = settings.shotSpeed;
+
     auto enemyController = enemy->addComponent<EnemyController>();
+    enemyController->character = enemyCharacter;
     enemyController->speed = settings.speed;
     enemyController->physics = physics;
     enemyController->player = settings.player;
-    enemyController->idealDistance = settings.idealDistance;
+    enemyController->idealDistance = settings.idealDistance * physicsScale;
     enemyController->range = settings.range;
 
     return enemy;

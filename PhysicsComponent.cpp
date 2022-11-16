@@ -73,6 +73,19 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
     DreamGame::instance->registerPhysicsComponent(this);
 }
 
+void PhysicsComponent::setRadius(float radius) {
+    if (fixture != nullptr) {
+        fixture->GetShape()->m_radius = radius;
+    }
+}
+
+float PhysicsComponent::getRadius() {
+    if (fixture != nullptr) {
+        return fixture->GetShape()->m_radius;
+    }
+    return 0;
+}
+
 void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center, float density) {
     assert(body == nullptr);
     autoUpdate = type != b2_staticBody;
@@ -90,8 +103,6 @@ void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center
     fxD.shape = polygon;
     fxD.density = density;
     fixture = body->CreateFixture(&fxD);
-
-
 
     DreamGame::instance->registerPhysicsComponent(this);
 }

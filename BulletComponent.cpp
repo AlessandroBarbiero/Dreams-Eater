@@ -4,13 +4,21 @@
 #include "PhysicsComponent.hpp"
 #include "BulletComponent.hpp"
 #include "DreamGame.hpp"
+#include "SpriteComponent.hpp"
 
 BulletComponent::BulletComponent(GameObject* gameObject) : Component(gameObject) {
     valid = true;
 }
 
 void BulletComponent::update(float deltaTime) {
-
+    if (shrinking) {
+        auto phy = gameObject->getComponent<PhysicsComponent>();
+        phy->setRadius(phy->getRadius() * shrinkRate);
+        auto spr = gameObject->getComponent<SpriteComponent>();
+        auto sprite = spr->getSprite();
+        sprite.setScale(sprite.getScale() * shrinkRate);
+        spr->setSprite(sprite);
+    }
 }
 
 // Destroy the bullet if it collides with something that is not another bullet

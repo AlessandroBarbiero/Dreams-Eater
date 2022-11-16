@@ -53,6 +53,11 @@ void CharacterComponent::onCollisionEnd(PhysicsComponent* comp) {
 
 }
 
+// Shoot a bullet in the passed direction that is destroyed after it travels for range distance, this method is subjected to the stats:
+// - damage
+// - shotSpeed
+// - range
+// - rateOfFire
 void CharacterComponent::shot(glm::vec2 direction) {
     if (!readyToShoot) 
         return; // cooldown is not finished
@@ -63,7 +68,7 @@ void CharacterComponent::shot(glm::vec2 direction) {
     shot->name = "playerBullet";
     shot->tag = Tag::Bullet;
 
-    shot->setPosition(gameObject->getPosition()/ physicsScale + direction * 2.0f);
+    shot->setPosition(gameObject->getPosition()/ physicsScale + direction * (radius*2));
 
     auto spriteComp = shot->addComponent<SpriteComponent>();
     shotSprite.setScale(glm::vec2(damage));
@@ -73,6 +78,7 @@ void CharacterComponent::shot(glm::vec2 direction) {
     float radius = shotSprite.getSpriteSize().x * shotSprite.getScale().x / (2 * physicsScale);
     shotPhy->initCircle(b2_dynamicBody, radius, shot->getPosition(), 1);
     shotPhy->setLinearVelocity(direction * shotSpeed);
+    shotPhy->setSensor(true);
 
     auto bullet = shot->addComponent<BulletComponent>();
     bullet->startingPosition = gameObject->getPosition();
@@ -84,7 +90,7 @@ void CharacterComponent::shot(glm::vec2 direction) {
 
 void CharacterComponent::setShotSprite(const sre::Sprite& sprite) {
     shotSprite = sprite;
-    shotSprite.setOrderInBatch(Depth::Projectile);
+    shotSprite.setOrderInBatch(Depth::Bullet);
 }
 
 void CharacterComponent::startShotCooldown() {

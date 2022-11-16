@@ -45,6 +45,9 @@ public:
     //  update sprite transform based on ridig body
     void setAutoUpdate(bool autoUpdate);
 
+    void setRadius(float radius);
+    float getRadius();
+
     b2Body * getBody ();
 
     b2Fixture* getFixture();
