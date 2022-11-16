@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "Attacking/Wraith_03_Attack_000.png",
+	"filename": "Attack/0.png",
 	"frame": {"x":887,"y":827,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Attacking/Wraith_03_Attack_001.png",
+	"filename": "Attack/1.png",
 	"frame": {"x":886,"y":226,"w":218,"h":297},
 	"rotated": false,
 	"trimmed": true,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Attacking/Wraith_03_Attack_002.png",
+	"filename": "Attack/2.png",
 	"frame": {"x":883,"y":1737,"w":217,"h":294},
 	"rotated": false,
 	"trimmed": true,
@@ -25,7 +25,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Attacking/Wraith_03_Attack_003.png",
+	"filename": "Attack/3.png",
 	"frame": {"x":1102,"y":1421,"w":217,"h":292},
 	"rotated": false,
 	"trimmed": true,
@@ -33,7 +33,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Attacking/Wraith_03_Attack_004.png",
+	"filename": "Attack/4.png",
 	"frame": {"x":1102,"y":1715,"w":216,"h":292},
 	"rotated": false,
 	"trimmed": true,
@@ -41,7 +41,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Attacking/Wraith_03_Attack_005.png",
+	"filename": "Attack/5.png",
 	"frame": {"x":1319,"y":1127,"w":215,"h":292},
 	"rotated": false,
 	"trimmed": true,
@@ -49,7 +49,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Attacking/Wraith_03_Attack_006.png",
+	"filename": "Attack/6.png",
 	"frame": {"x":1321,"y":1421,"w":215,"h":291},
 	"rotated": false,
 	"trimmed": true,
@@ -57,7 +57,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Attacking/Wraith_03_Attack_007.png",
+	"filename": "Attack/7.png",
 	"frame": {"x":1106,"y":226,"w":217,"h":297},
 	"rotated": false,
 	"trimmed": true,
@@ -65,7 +65,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Attacking/Wraith_03_Attack_008.png",
+	"filename": "Attack/8.png",
 	"frame": {"x":1828,"y":1,"w":219,"h":306},
 	"rotated": false,
 	"trimmed": true,
@@ -73,7 +73,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Attacking/Wraith_03_Attack_009.png",
+	"filename": "Attack/9.png",
 	"frame": {"x":1,"y":954,"w":220,"h":311},
 	"rotated": false,
 	"trimmed": true,
@@ -81,7 +81,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Attacking/Wraith_03_Attack_010.png",
+	"filename": "Attack/10.png",
 	"frame": {"x":443,"y":223,"w":220,"h":309},
 	"rotated": false,
 	"trimmed": true,
@@ -89,7 +89,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Attacking/Wraith_03_Attack_011.png",
+	"filename": "Attack/11.png",
 	"frame": {"x":221,"y":319,"w":220,"h":304},
 	"rotated": false,
 	"trimmed": true,
@@ -97,7 +97,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_000.png",
+	"filename": "Die/0.png",
 	"frame": {"x":1107,"y":827,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -105,7 +105,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_001.png",
+	"filename": "Die/1.png",
 	"frame": {"x":223,"y":625,"w":220,"h":306},
 	"rotated": false,
 	"trimmed": true,
@@ -113,7 +113,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_002.png",
+	"filename": "Die/2.png",
 	"frame": {"x":1,"y":640,"w":220,"h":312},
 	"rotated": false,
 	"trimmed": true,
@@ -121,7 +121,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_003.png",
+	"filename": "Die/3.png",
 	"frame": {"x":221,"y":1,"w":220,"h":316},
 	"rotated": false,
 	"trimmed": true,
@@ -129,7 +129,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_004.png",
+	"filename": "Die/4.png",
 	"frame": {"x":1,"y":1,"w":218,"h":319},
 	"rotated": false,
 	"trimmed": true,
@@ -137,7 +137,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_005.png",
+	"filename": "Die/5.png",
 	"frame": {"x":1,"y":322,"w":217,"h":316},
 	"rotated": false,
 	"trimmed": true,
@@ -145,7 +145,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_006.png",
+	"filename": "Die/6.png",
 	"frame": {"x":223,"y":933,"w":215,"h":307},
 	"rotated": false,
 	"trimmed": true,
@@ -153,7 +153,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_007.png",
+	"filename": "Die/7.png",
 	"frame": {"x":1597,"y":1,"w":229,"h":283},
 	"rotated": false,
 	"trimmed": true,
@@ -161,7 +161,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_008.png",
+	"filename": "Die/8.png",
 	"frame": {"x":1348,"y":1,"w":247,"h":248},
 	"rotated": false,
 	"trimmed": true,
@@ -169,7 +169,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_009.png",
+	"filename": "Die/9.png",
 	"frame": {"x":1068,"y":1,"w":278,"h":223},
 	"rotated": false,
 	"trimmed": true,
@@ -177,7 +177,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_010.png",
+	"filename": "Die/10.png",
 	"frame": {"x":758,"y":1,"w":308,"h":216},
 	"rotated": false,
 	"trimmed": true,
@@ -185,7 +185,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_011.png",
+	"filename": "Die/11.png",
 	"frame": {"x":443,"y":1,"w":313,"h":220},
 	"rotated": false,
 	"trimmed": true,
@@ -193,7 +193,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_012.png",
+	"filename": "Die/12.png",
 	"frame": {"x":443,"y":1,"w":313,"h":220},
 	"rotated": false,
 	"trimmed": true,
@@ -201,7 +201,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_013.png",
+	"filename": "Die/13.png",
 	"frame": {"x":443,"y":1,"w":313,"h":220},
 	"rotated": false,
 	"trimmed": true,
@@ -209,7 +209,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Dying/Wraith_03_Dying_014.png",
+	"filename": "Die/14.png",
 	"frame": {"x":443,"y":1,"w":313,"h":220},
 	"rotated": false,
 	"trimmed": true,
@@ -217,7 +217,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_000.png",
+	"filename": "Hurt/0.png",
 	"frame": {"x":1107,"y":827,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -225,7 +225,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_001.png",
+	"filename": "Hurt/1.png",
 	"frame": {"x":1,"y":1267,"w":220,"h":310},
 	"rotated": false,
 	"trimmed": true,
@@ -233,7 +233,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_002.png",
+	"filename": "Hurt/2.png",
 	"frame": {"x":1,"y":1579,"w":220,"h":310},
 	"rotated": false,
 	"trimmed": true,
@@ -241,7 +241,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_003.png",
+	"filename": "Hurt/3.png",
 	"frame": {"x":223,"y":1242,"w":217,"h":303},
 	"rotated": false,
 	"trimmed": true,
@@ -249,7 +249,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_004.png",
+	"filename": "Hurt/4.png",
 	"frame": {"x":882,"y":1128,"w":214,"h":293},
 	"rotated": false,
 	"trimmed": true,
@@ -257,7 +257,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_005.png",
+	"filename": "Hurt/5.png",
 	"frame": {"x":1757,"y":1475,"w":211,"h":282},
 	"rotated": false,
 	"trimmed": true,
@@ -265,7 +265,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_006.png",
+	"filename": "Hurt/6.png",
 	"frame": {"x":1541,"y":1746,"w":211,"h":282},
 	"rotated": false,
 	"trimmed": true,
@@ -273,7 +273,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_007.png",
+	"filename": "Hurt/7.png",
 	"frame": {"x":1754,"y":1759,"w":211,"h":285},
 	"rotated": false,
 	"trimmed": true,
@@ -281,7 +281,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_008.png",
+	"filename": "Hurt/8.png",
 	"frame": {"x":1327,"y":837,"w":212,"h":287},
 	"rotated": false,
 	"trimmed": true,
@@ -289,7 +289,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_009.png",
+	"filename": "Hurt/9.png",
 	"frame": {"x":1541,"y":1454,"w":214,"h":290},
 	"rotated": false,
 	"trimmed": true,
@@ -297,7 +297,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_010.png",
+	"filename": "Hurt/10.png",
 	"frame": {"x":884,"y":1423,"w":216,"h":293},
 	"rotated": false,
 	"trimmed": true,
@@ -305,7 +305,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Hurt/Wraith_03_Hurt_011.png",
+	"filename": "Hurt/11.png",
 	"frame": {"x":664,"y":1737,"w":217,"h":296},
 	"rotated": false,
 	"trimmed": true,
@@ -313,7 +313,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_000.png",
+	"filename": "IdleBlink/0.png",
 	"frame": {"x":887,"y":827,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -321,7 +321,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_001.png",
+	"filename": "IdleBlink/1.png",
 	"frame": {"x":223,"y":1547,"w":219,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -329,7 +329,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_002.png",
+	"filename": "IdleBlink/2.png",
 	"frame": {"x":445,"y":534,"w":219,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -337,7 +337,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_003.png",
+	"filename": "IdleBlink/3.png",
 	"frame": {"x":665,"y":223,"w":219,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -345,7 +345,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_004.png",
+	"filename": "IdleBlink/4.png",
 	"frame": {"x":666,"y":525,"w":219,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -353,7 +353,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_005.png",
+	"filename": "IdleBlink/5.png",
 	"frame": {"x":887,"y":525,"w":218,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -361,7 +361,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_006.png",
+	"filename": "IdleBlink/6.png",
 	"frame": {"x":1107,"y":525,"w":218,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -369,7 +369,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_007.png",
+	"filename": "IdleBlink/7.png",
 	"frame": {"x":442,"y":1137,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -377,7 +377,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_008.png",
+	"filename": "IdleBlink/8.png",
 	"frame": {"x":444,"y":1437,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -385,7 +385,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_009.png",
+	"filename": "IdleBlink/9.png",
 	"frame": {"x":444,"y":1737,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -393,7 +393,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_010.png",
+	"filename": "IdleBlink/10.png",
 	"frame": {"x":662,"y":1137,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -401,7 +401,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle Blink/Wraith_03_Idle Blinking_011.png",
+	"filename": "IdleBlink/11.png",
 	"frame": {"x":445,"y":836,"w":219,"h":299},
 	"rotated": false,
 	"trimmed": true,
@@ -409,7 +409,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_000.png",
+	"filename": "Idle/0.png",
 	"frame": {"x":887,"y":827,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -417,7 +417,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_001.png",
+	"filename": "Idle/1.png",
 	"frame": {"x":223,"y":1547,"w":219,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -425,7 +425,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_002.png",
+	"filename": "Idle/2.png",
 	"frame": {"x":445,"y":534,"w":219,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -433,7 +433,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_003.png",
+	"filename": "Idle/3.png",
 	"frame": {"x":665,"y":223,"w":219,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -441,7 +441,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_004.png",
+	"filename": "Idle/4.png",
 	"frame": {"x":666,"y":525,"w":219,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -449,7 +449,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_005.png",
+	"filename": "Idle/5.png",
 	"frame": {"x":887,"y":525,"w":218,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -457,7 +457,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_006.png",
+	"filename": "Idle/6.png",
 	"frame": {"x":1107,"y":525,"w":218,"h":300},
 	"rotated": false,
 	"trimmed": true,
@@ -465,7 +465,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_007.png",
+	"filename": "Idle/7.png",
 	"frame": {"x":442,"y":1137,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -473,7 +473,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_008.png",
+	"filename": "Idle/8.png",
 	"frame": {"x":444,"y":1437,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -481,7 +481,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_009.png",
+	"filename": "Idle/9.png",
 	"frame": {"x":444,"y":1737,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -489,7 +489,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_010.png",
+	"filename": "Idle/10.png",
 	"frame": {"x":664,"y":1437,"w":218,"h":298},
 	"rotated": false,
 	"trimmed": true,
@@ -497,7 +497,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Idle/Wraith_03_Idle_011.png",
+	"filename": "Idle/11.png",
 	"frame": {"x":666,"y":827,"w":219,"h":299},
 	"rotated": false,
 	"trimmed": true,
@@ -513,7 +513,7 @@
 	"sourceSize": {"w":64,"h":64}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_000.png",
+	"filename": "Walk/0.png",
 	"frame": {"x":1320,"y":1715,"w":219,"h":291},
 	"rotated": false,
 	"trimmed": true,
@@ -521,7 +521,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_001.png",
+	"filename": "Walk/1.png",
 	"frame": {"x":1327,"y":251,"w":219,"h":291},
 	"rotated": false,
 	"trimmed": true,
@@ -529,7 +529,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_002.png",
+	"filename": "Walk/2.png",
 	"frame": {"x":1098,"y":1127,"w":219,"h":292},
 	"rotated": false,
 	"trimmed": true,
@@ -537,7 +537,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_003.png",
+	"filename": "Walk/3.png",
 	"frame": {"x":1327,"y":544,"w":219,"h":291},
 	"rotated": false,
 	"trimmed": true,
@@ -545,7 +545,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_004.png",
+	"filename": "Walk/4.png",
 	"frame": {"x":1548,"y":286,"w":219,"h":291},
 	"rotated": false,
 	"trimmed": true,
@@ -553,7 +553,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_005.png",
+	"filename": "Walk/5.png",
 	"frame": {"x":1769,"y":309,"w":218,"h":290},
 	"rotated": false,
 	"trimmed": true,
@@ -561,7 +561,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_006.png",
+	"filename": "Walk/6.png",
 	"frame": {"x":1769,"y":601,"w":218,"h":290},
 	"rotated": false,
 	"trimmed": true,
@@ -569,7 +569,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_007.png",
+	"filename": "Walk/7.png",
 	"frame": {"x":1762,"y":893,"w":218,"h":289},
 	"rotated": false,
 	"trimmed": true,
@@ -577,7 +577,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_008.png",
+	"filename": "Walk/8.png",
 	"frame": {"x":1538,"y":1163,"w":218,"h":289},
 	"rotated": false,
 	"trimmed": true,
@@ -585,7 +585,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_009.png",
+	"filename": "Walk/9.png",
 	"frame": {"x":1758,"y":1184,"w":218,"h":289},
 	"rotated": false,
 	"trimmed": true,
@@ -593,7 +593,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_010.png",
+	"filename": "Walk/10.png",
 	"frame": {"x":1548,"y":579,"w":219,"h":290},
 	"rotated": false,
 	"trimmed": true,
@@ -601,7 +601,7 @@
 	"sourceSize": {"w":520,"h":420}
 },
 {
-	"filename": "Walking/Wraith_03_Moving Forward_011.png",
+	"filename": "Walk/11.png",
 	"frame": {"x":1541,"y":871,"w":219,"h":290},
 	"rotated": false,
 	"trimmed": true,

@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "Attack/5_ATTACK_000.png",
+	"filename": "Attack/0.png",
 	"frame": {"x":393,"y":378,"w":340,"h":375},
 	"rotated": false,
 	"trimmed": true,
@@ -9,7 +9,7 @@
 	"sourceSize": {"w":654,"h":453}
 },
 {
-	"filename": "Attack/5_ATTACK_002.png",
+	"filename": "Attack/1.png",
 	"frame": {"x":1678,"y":388,"w":320,"h":382},
 	"rotated": false,
 	"trimmed": true,
@@ -17,7 +17,7 @@
 	"sourceSize": {"w":654,"h":453}
 },
 {
-	"filename": "Attack/5_ATTACK_004.png",
+	"filename": "Attack/2.png",
 	"frame": {"x":717,"y":1142,"w":321,"h":384},
 	"rotated": false,
 	"trimmed": true,
@@ -25,7 +25,7 @@
 	"sourceSize": {"w":654,"h":453}
 },
 {
-	"filename": "Attack/5_ATTACK_005.png",
+	"filename": "Attack/3.png",
 	"frame": {"x":1735,"y":1,"w":307,"h":377},
 	"rotated": false,
 	"trimmed": true,
@@ -33,7 +33,7 @@
 	"sourceSize": {"w":654,"h":453}
 },
 {
-	"filename": "Attack/5_ATTACK_006.png",
+	"filename": "Attack/4.png",
 	"frame": {"x":1,"y":1,"w":609,"h":375},
 	"rotated": false,
 	"trimmed": true,
@@ -41,7 +41,7 @@
 	"sourceSize": {"w":654,"h":453}
 },
 {
-	"filename": "Die/7_DIE_000.png",
+	"filename": "Die/0.png",
 	"frame": {"x":1335,"y":388,"w":341,"h":373},
 	"rotated": false,
 	"trimmed": true,
@@ -49,7 +49,7 @@
 	"sourceSize": {"w":350,"h":385}
 },
 {
-	"filename": "Die/7_DIE_004.png",
+	"filename": "Die/1.png",
 	"frame": {"x":735,"y":377,"w":254,"h":285},
 	"rotated": false,
 	"trimmed": true,
@@ -57,7 +57,7 @@
 	"sourceSize": {"w":350,"h":385}
 },
 {
-	"filename": "Die/7_DIE_006.png",
+	"filename": "Die/2.png",
 	"frame": {"x":1076,"y":762,"w":245,"h":269},
 	"rotated": false,
 	"trimmed": true,
@@ -65,7 +65,7 @@
 	"sourceSize": {"w":350,"h":385}
 },
 {
-	"filename": "Die/7_DIE_008.png",
+	"filename": "Die/3.png",
 	"frame": {"x":1076,"y":1033,"w":245,"h":221},
 	"rotated": false,
 	"trimmed": true,
@@ -73,7 +73,7 @@
 	"sourceSize": {"w":350,"h":385}
 },
 {
-	"filename": "Die/7_DIE_011.png",
+	"filename": "Die/4.png",
 	"frame": {"x":1040,"y":1256,"w":245,"h":188},
 	"rotated": false,
 	"trimmed": true,
@@ -81,7 +81,7 @@
 	"sourceSize": {"w":350,"h":385}
 },
 {
-	"filename": "Hurt/6_HURT_000.png",
+	"filename": "Hurt/0.png",
 	"frame": {"x":733,"y":762,"w":341,"h":375},
 	"rotated": false,
 	"trimmed": true,
@@ -89,7 +89,7 @@
 	"sourceSize": {"w":470,"h":419}
 },
 {
-	"filename": "Hurt/6_HURT_001.png",
+	"filename": "Hurt/1.png",
 	"frame": {"x":1,"y":1524,"w":369,"h":380},
 	"rotated": false,
 	"trimmed": true,
@@ -97,7 +97,7 @@
 	"sourceSize": {"w":470,"h":419}
 },
 {
-	"filename": "Hurt/6_HURT_002.png",
+	"filename": "Hurt/2.png",
 	"frame": {"x":1,"y":378,"w":390,"h":374},
 	"rotated": false,
 	"trimmed": true,
@@ -105,7 +105,7 @@
 	"sourceSize": {"w":470,"h":419}
 },
 {
-	"filename": "Hurt/6_HURT_003.png",
+	"filename": "Hurt/3.png",
 	"frame": {"x":612,"y":1,"w":390,"h":374},
 	"rotated": false,
 	"trimmed": true,
@@ -113,7 +113,7 @@
 	"sourceSize": {"w":470,"h":419}
 },
 {
-	"filename": "Hurt/6_HURT_004.png",
+	"filename": "Hurt/4.png",
 	"frame": {"x":1004,"y":1,"w":369,"h":380},
 	"rotated": false,
 	"trimmed": true,
@@ -121,7 +121,7 @@
 	"sourceSize": {"w":470,"h":419}
 },
 {
-	"filename": "Idle/1_IDLE_000.png",
+	"filename": "Idle/0.png",
 	"frame": {"x":1323,"y":763,"w":340,"h":374},
 	"rotated": false,
 	"trimmed": true,
@@ -129,7 +129,7 @@
 	"sourceSize": {"w":357,"h":379}
 },
 {
-	"filename": "Idle/1_IDLE_001.png",
+	"filename": "Idle/1.png",
 	"frame": {"x":1323,"y":1139,"w":337,"h":375},
 	"rotated": false,
 	"trimmed": true,
@@ -137,7 +137,7 @@
 	"sourceSize": {"w":357,"h":379}
 },
 {
-	"filename": "Idle/1_IDLE_002.png",
+	"filename": "Idle/2.png",
 	"frame": {"x":1665,"y":772,"w":336,"h":375},
 	"rotated": false,
 	"trimmed": true,
@@ -145,7 +145,7 @@
 	"sourceSize": {"w":357,"h":379}
 },
 {
-	"filename": "Idle/1_IDLE_003.png",
+	"filename": "Idle/3.png",
 	"frame": {"x":1372,"y":1526,"w":336,"h":375},
 	"rotated": false,
 	"trimmed": true,
@@ -153,7 +153,7 @@
 	"sourceSize": {"w":357,"h":379}
 },
 {
-	"filename": "Idle/1_IDLE_004.png",
+	"filename": "Idle/4.png",
 	"frame": {"x":1662,"y":1149,"w":337,"h":375},
 	"rotated": false,
 	"trimmed": true,
@@ -161,7 +161,7 @@
 	"sourceSize": {"w":357,"h":379}
 },
 {
-	"filename": "Run/3_RUN_000.png",
+	"filename": "Run/0.png",
 	"frame": {"x":372,"y":1524,"w":320,"h":389},
 	"rotated": false,
 	"trimmed": true,
@@ -169,7 +169,7 @@
 	"sourceSize": {"w":443,"h":437}
 },
 {
-	"filename": "Run/3_RUN_001.png",
+	"filename": "Run/1.png",
 	"frame": {"x":1375,"y":1,"w":358,"h":385},
 	"rotated": false,
 	"trimmed": true,
@@ -177,7 +177,7 @@
 	"sourceSize": {"w":443,"h":437}
 },
 {
-	"filename": "Run/3_RUN_002.png",
+	"filename": "Run/2.png",
 	"frame": {"x":1,"y":754,"w":370,"h":383},
 	"rotated": false,
 	"trimmed": true,
@@ -185,7 +185,7 @@
 	"sourceSize": {"w":443,"h":437}
 },
 {
-	"filename": "Run/3_RUN_003.png",
+	"filename": "Run/3.png",
 	"frame": {"x":1,"y":1139,"w":370,"h":383},
 	"rotated": false,
 	"trimmed": true,
@@ -193,7 +193,7 @@
 	"sourceSize": {"w":443,"h":437}
 },
 {
-	"filename": "Run/3_RUN_004.png",
+	"filename": "Run/4.png",
 	"frame": {"x":373,"y":755,"w":358,"h":385},
 	"rotated": false,
 	"trimmed": true,
@@ -201,7 +201,7 @@
 	"sourceSize": {"w":443,"h":437}
 },
 {
-	"filename": "Walk/2_WALK_000.png",
+	"filename": "Walk/0.png",
 	"frame": {"x":1710,"y":1526,"w":325,"h":374},
 	"rotated": false,
 	"trimmed": true,
@@ -209,7 +209,7 @@
 	"sourceSize": {"w":383,"h":394}
 },
 {
-	"filename": "Walk/2_WALK_001.png",
+	"filename": "Walk/1.png",
 	"frame": {"x":694,"y":1528,"w":337,"h":376},
 	"rotated": false,
 	"trimmed": true,
@@ -217,7 +217,7 @@
 	"sourceSize": {"w":383,"h":394}
 },
 {
-	"filename": "Walk/2_WALK_002.png",
+	"filename": "Walk/2.png",
 	"frame": {"x":373,"y":1142,"w":342,"h":377},
 	"rotated": false,
 	"trimmed": true,
@@ -225,7 +225,7 @@
 	"sourceSize": {"w":383,"h":394}
 },
 {
-	"filename": "Walk/2_WALK_003.png",
+	"filename": "Walk/3.png",
 	"frame": {"x":991,"y":383,"w":342,"h":377},
 	"rotated": false,
 	"trimmed": true,
@@ -233,7 +233,7 @@
 	"sourceSize": {"w":383,"h":394}
 },
 {
-	"filename": "Walk/2_WALK_004.png",
+	"filename": "Walk/4.png",
 	"frame": {"x":1033,"y":1528,"w":337,"h":376},
 	"rotated": false,
 	"trimmed": true,
