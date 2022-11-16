@@ -33,10 +33,11 @@ void PlayerController::update(float deltaTime) {
     // TODO: Conditional on knockback/stun/other
     if (movement != glm::vec2(0)) {
         lastDirection = glm::normalize(movement);
-        movement = lastDirection * speed;
-        playerPhysics->setLinearVelocity(movement);
+        //movement = lastDirection * speed;
+        playerPhysics->setLinearVelocity(lastDirection * speed);
     }
 
+    /*
     if (shooting) {
         glm::vec2 direction;
         if (movement != glm::vec2(0))
@@ -45,6 +46,7 @@ void PlayerController::update(float deltaTime) {
             direction = lastDirection;
         character->shot(direction);
     }
+    */
 }
 
 
@@ -84,7 +86,14 @@ bool PlayerController::onKey(SDL_Event& event) {
     }
     if (sym == keyShot) {
         if (event.type == SDL_KEYDOWN) {
-            shooting = true;
+            //shooting = true;
+            /*glm::vec2 direction;
+            if (movement != glm::vec2(0))
+                direction = glm::normalize(movement);
+            else
+                direction = lastDirection;*/
+            character->shot(lastDirection);
+            
         }
         else {
             shooting = false;

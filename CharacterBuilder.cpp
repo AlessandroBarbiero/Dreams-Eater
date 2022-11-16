@@ -16,7 +16,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     player->setPosition(settings.position);
 
     auto spriteComp = player->addComponent<SpriteComponent>();
-    auto sprite = spriteAtlas_baseWraith()->get("Idle/Wraith_01_Idle_000.png");
+    auto sprite = spriteAtlas_baseWraith()->get("Idle/0.png");
     sprite.setOrderInBatch(Depth::Player);
     spriteComp->setSprite(sprite);
 
@@ -55,7 +55,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemy->setPosition(settings.position);
 
     auto spriteComp = enemy->addComponent<SpriteComponent>();
-    auto sprite = spriteAtlas_baseWizard()->get("Idle/1_IDLE_000.png");
+    auto sprite = spriteAtlas_baseWizard()->get("Idle/0.png");
     //Set the Enemy sprite to be on top of the background but behind the player
     sprite.setOrderInBatch(Depth::Enemy);
     sprite.setScale(glm::vec2(0.9f));
