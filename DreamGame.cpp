@@ -90,15 +90,22 @@ void DreamGame::init() {
     
 }
 
-void DreamGame::update(float time) {
-    updatePhysics();
+void DreamGame::gameOver() {
+    gameState = GameState::GameOver;
+    std::cout << "Game Over!\nPress SPACE to restart" << std::endl;
+}
 
-    for (int i = 0;i < sceneObjects.size();i++) {
-        sceneObjects[i]->update(time);
+void DreamGame::update(float time) {
+    if (gameState == GameState::Running) {
+        updatePhysics();
+
+        for (int i = 0; i < sceneObjects.size(); i++) {
+            sceneObjects[i]->update(time);
+        }
+        // Remove elements marked for deletion
+        auto toErase = std::remove_if(sceneObjects.begin(), sceneObjects.end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
+        sceneObjects.erase(toErase, sceneObjects.end());
     }
-    // Remove elements marked for deletion
-    auto toErase = std::remove_if(sceneObjects.begin(), sceneObjects.end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
-    sceneObjects.erase(toErase, sceneObjects.end());
 }
 
 void DreamGame::render() {
@@ -124,17 +131,27 @@ void DreamGame::render() {
 }
 
 void DreamGame::onKey(SDL_Event& event) {
-    for (auto& gameObject : sceneObjects) {
-        for (auto& c : gameObject->getComponents()) {
-            bool consumed = c->onKey(event);
-            if (consumed) {
-                return;
+    if (gameState == GameState::Running) {
+        for (auto& gameObject : sceneObjects) {
+            for (auto& c : gameObject->getComponents()) {
+                bool consumed = c->onKey(event);
+                if (consumed) {
+                    return;
+                }
             }
         }
     }
 
+    // General Keys
+
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
+        case SDLK_SPACE:
+            if (gameState == GameState::GameOver) {
+                gameState = GameState::Running;
+                init();
+            }
+            break;
         case SDLK_r:
             init();
             break;

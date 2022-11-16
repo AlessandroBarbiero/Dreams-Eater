@@ -8,6 +8,13 @@
 // Forward declaration
 class Component;
 
+enum class Tag {
+    Empty,
+    Bullet,
+    Enemy,
+    Player
+};
+
 // GameObject are empty container objects, which contains Components
 class GameObject {
 public:
@@ -39,6 +46,7 @@ public:
     std::vector<std::shared_ptr<GameObject>> children;
 
     std::string name = "_";
+    Tag tag = Tag::Empty;
 
     void destroy();
 private:

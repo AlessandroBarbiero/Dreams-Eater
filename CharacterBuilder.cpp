@@ -3,19 +3,20 @@
 #include "PlayerController.hpp"
 #include "PhysicsComponent.hpp"
 #include "EnemyController.hpp"
+#include "CharacterComponent.hpp"
 
 
 std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settings) {
     auto game = DreamGame::instance;
-    auto physicsScale = DreamGame::instance->physicsScale;
+    auto physicsScale = game->physicsScale;
     
     auto player = game->createGameObject();
     player->name = settings.name;
+    player->tag = Tag::Player;
     player->setPosition(settings.position);
 
     auto spriteComp = player->addComponent<SpriteComponent>();
     auto sprite = spriteAtlas_baseWraith()->get("Idle/Wraith_01_Idle_000.png");
-    //Set the Player sprite to be on top of the background
     sprite.setOrderInBatch(Depth::Player);
     spriteComp->setSprite(sprite);
 
@@ -24,15 +25,21 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerPhysics->getBody()->SetLinearDamping(5.0f);
     playerPhysics->fixRotation();
 
+    auto playerCharacter = player->addComponent<CharacterComponent>();
+    auto shotSprite = spriteAtlas_baseWraith()->get("Spells-Effect.png");
+    playerCharacter->setShotSprite(shotSprite);
+
     auto playerController = player->addComponent<PlayerController>();
     playerController->speed = settings.speed;
     playerController->playerPhysics = playerPhysics;
+    playerController->character = playerCharacter;
 
     // Controls
     playerController->keyUp = settings.keybinds.up;
     playerController->keyDown = settings.keybinds.down;
     playerController->keyLeft = settings.keybinds.left;
     playerController->keyRight = settings.keybinds.right;
+    playerController->keyShot = settings.keybinds.shot;
 
     return player;
 }
@@ -44,6 +51,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
 
     auto enemy = game->createGameObject();
     enemy->name = settings.name;
+    enemy->tag = Tag::Enemy;
     enemy->setPosition(settings.position);
 
     auto spriteComp = enemy->addComponent<SpriteComponent>();

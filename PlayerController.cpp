@@ -17,8 +17,6 @@ void PlayerController::update(float deltaTime) {
       
     glm::vec2 movement{ 0,0 };
 
-
-
     if (up) {
         movement.y++;
     }
@@ -31,28 +29,21 @@ void PlayerController::update(float deltaTime) {
     if (right) {
         movement.x++;
     }
-
-    //float accelerationSpeed = 0.010f;
-    //playerPhysics->addImpulse(movement * accelerationSpeed);
-
-    auto linearVelocity = playerPhysics->getLinearVelocity();
-    /*
-    if (linearVelocity.x > maximumVelocity) {
-        linearVelocity.x = glm::sign(linearVelocity.x) * maximumVelocity;
-    }
-
-    if (linearVelocity.y > maximumVelocity) {
-        linearVelocity.y = glm::sign(linearVelocity.y) * maximumVelocity;
-    }
-    */
-
     
-    //playerPhysics -> setLinearVelocity(linearVelocity);
-
     // TODO: Conditional on knockback/stun/other
     if (movement != glm::vec2(0)) {
-        movement = glm::normalize(movement) * speed;
+        lastDirection = glm::normalize(movement);
+        movement = lastDirection * speed;
         playerPhysics->setLinearVelocity(movement);
+    }
+
+    if (shooting) {
+        glm::vec2 direction;
+        if (movement != glm::vec2(0))
+            direction = glm::normalize(movement);
+        else
+            direction = lastDirection;
+        character->shot(direction);
     }
 }
 
@@ -89,6 +80,14 @@ bool PlayerController::onKey(SDL_Event& event) {
         }
         else {
             right = false;
+        }
+    }
+    if (sym == keyShot) {
+        if (event.type == SDL_KEYDOWN) {
+            shooting = true;
+        }
+        else {
+            shooting = false;
         }
     }
 

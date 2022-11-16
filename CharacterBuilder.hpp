@@ -10,6 +10,7 @@ struct Controls {
 	SDL_Keycode down = SDLK_DOWN;
 	SDL_Keycode left = SDLK_LEFT;
 	SDL_Keycode right = SDLK_RIGHT;
+	SDL_Keycode shot = SDLK_SPACE;
 };
 
 struct PlayerSettings{

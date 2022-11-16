@@ -27,10 +27,14 @@ public:
 
     void EndContact(b2Contact* contact) override;
 
+    void gameOver();
+
     static DreamGame* instance;
 
     static constexpr float32 timeStep = 1.0f / 60.0f;
+    const float physicsScale = 100;
 private:
+    GameState gameState = GameState::Running;
     sre::SDLRenderer r;
 
     void init();
@@ -52,7 +56,7 @@ private:
 
     void updatePhysics();
     b2World* world = nullptr;
-    const float physicsScale = 100;
+
     void registerPhysicsComponent(PhysicsComponent* r);
     void deregisterPhysicsComponent(PhysicsComponent* r);
     std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
