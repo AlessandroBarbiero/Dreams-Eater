@@ -43,10 +43,29 @@ void CharacterComponent::update(float deltaTime) {
 
 
 void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
-    if (gameObject->tag == Tag::Player && comp->getGameObject()->tag == Tag::Enemy) {
-        gameObject->destroy();
-        DreamGame::instance->gameOver();
+    Tag myTag = gameObject->tag;
+    Tag hisTag = comp->getGameObject()->tag;
+    if (myTag == Tag::Player && hisTag == Tag::Enemy) {
+        die();
     }
+    if (myTag == Tag::Player && hisTag == Tag::EnemyBullet ||
+        myTag == Tag::Enemy && hisTag == Tag::PlayerBullet) {
+        auto bullet = comp->getGameObject()->getComponent<BulletComponent>();
+        float realDamage = bullet->getDamage() - armor;
+        if (realDamage > 0) {
+            hp -= realDamage;
+            std::cout << "Hit, new hp: " << hp << std::endl;
+            if (hp <= 0)
+                die();
+        }
+    }
+
+}
+
+void CharacterComponent::die() {
+    gameObject->destroy();
+    if (gameObject->tag == Tag::Player)
+        DreamGame::instance->gameOver();
 }
 
 void CharacterComponent::onCollisionEnd(PhysicsComponent* comp) {
@@ -65,8 +84,14 @@ void CharacterComponent::shot(glm::vec2 direction) {
     auto physicsScale = game->physicsScale;
 
     auto shot = game->createGameObject();
-    shot->name = "playerBullet";
-    shot->tag = Tag::Bullet;
+    shot->name = "Bullet";
+    if (gameObject->tag == Tag::Player)
+        shot->tag = Tag::PlayerBullet;
+    else if (gameObject->tag == Tag::Enemy)
+        shot->tag = Tag::EnemyBullet;
+    else
+        shot->tag = Tag::Bullet;
+
 
     shot->setPosition(gameObject->getPosition()/ physicsScale + direction * (radius*2));
 
@@ -83,6 +108,7 @@ void CharacterComponent::shot(glm::vec2 direction) {
     auto bullet = shot->addComponent<BulletComponent>();
     bullet->startingPosition = gameObject->getPosition();
     bullet->range = range;
+    bullet->damage = damage;
     std::weak_ptr<BulletComponent> weakBullet = bullet;
     flyingProj.push(weakBullet);
     startShotCooldown();

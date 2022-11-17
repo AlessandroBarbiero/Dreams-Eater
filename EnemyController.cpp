@@ -13,13 +13,17 @@ void EnemyController::update(float deltaTime) {
     
     glm::vec2 movement =  player->getPosition() - gameObject->getPosition();
     float distance = glm::length(movement);
+    glm::vec2 direction = glm::normalize(movement);
 
-    if (distance > idealDistance) {
-        movement = glm::normalize(movement) * speed;
-        physics->setLinearVelocity(movement);
+    if (canShoot) {
+        character->shot(direction);
+        if (distance < idealDistance)
+            return;     // Range enemies don't go toward the player until the end
     }
-    if(canShoot)
-        character->shot(glm::normalize(movement));
+
+    movement = direction * speed;
+    physics->setLinearVelocity(movement);
+  
 }
 
 

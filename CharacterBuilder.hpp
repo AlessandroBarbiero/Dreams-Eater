@@ -17,19 +17,30 @@ struct PlayerSettings{
 	std::string name = "player";
 	glm::vec2 position;
 	float speed = 5.0f;
+	Controls keybinds;
+
+	float hp = 5.0f;
+	float armor = 0;
+	float damage = 1.5f;
+	float range = 10.0f;
 	float rateOfFire = 5.0f;
 	float shotSpeed = 10.0f;
-	Controls keybinds;
+
 };
 
 struct EnemySettings {
 	std::string name = "enemy";
 	glm::vec2 position;
 	float speed = 2.0f;
+
 	float idealDistance = 6.0f; // meters 
-	float range = 5.0f;
+	float hp = 5.0f;
+	float armor = 0;
+	float damage = 1.5f;
+	float range = 6.0f;
 	float rateOfFire = 1.0f;
 	float shotSpeed = 5.0f;
+
 	std::shared_ptr<GameObject> player;
 
 };

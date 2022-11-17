@@ -30,6 +30,10 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     auto shotSprite = spriteAtlas_baseWraith()->get("Spells-Effect.png");
     playerCharacter->setShotSprite(shotSprite);
     playerCharacter->radius = radius;
+    playerCharacter->hp = settings.hp;
+    playerCharacter->armor = settings.armor;
+    playerCharacter->damage = settings.damage;
+    playerCharacter->range = settings.range;
     playerCharacter->rateOfFire = settings.rateOfFire;
     playerCharacter->shotSpeed = settings.shotSpeed;
 
@@ -75,6 +79,10 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     auto shotSprite = spriteAtlas_baseWraith()->get("Spells-Effect.png");
     enemyCharacter->setShotSprite(shotSprite);
     enemyCharacter->radius = radius;
+    enemyCharacter->hp = settings.hp;
+    enemyCharacter->armor = settings.armor;
+    enemyCharacter->damage = settings.damage;
+    enemyCharacter->range = settings.range;
     enemyCharacter->rateOfFire = settings.rateOfFire;
     enemyCharacter->shotSpeed = settings.shotSpeed;
 

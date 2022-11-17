@@ -11,6 +11,8 @@ class Component;
 enum class Tag {
     Empty,
     Bullet,
+    EnemyBullet,
+    PlayerBullet,
     Enemy,
     Player
 };

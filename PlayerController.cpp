@@ -36,11 +36,8 @@ void PlayerController::update(float deltaTime) {
         playerPhysics->setLinearVelocity(lastDirection * speed);
     }
 
-
     if (shooting)
         character->shot(lastDirection);
-
-
 }
 
 

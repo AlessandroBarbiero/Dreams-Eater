@@ -23,7 +23,8 @@ void BulletComponent::update(float deltaTime) {
 
 // Destroy the bullet if it collides with something that is not another bullet
 void BulletComponent::onCollisionStart(PhysicsComponent* comp) {
-    if (comp->getGameObject()->tag == Tag::Bullet)
+    Tag tag = comp->getGameObject()->tag;
+    if (tag == Tag::EnemyBullet || tag == Tag::PlayerBullet)
         return;
     destroyBullet();
 }
@@ -46,4 +47,8 @@ bool BulletComponent::finished() {
         return true;
     float travelDistance = glm::distance(gameObject->getPosition(), startingPosition);
     return travelDistance > range * DreamGame::instance->physicsScale;
+}
+
+float BulletComponent::getDamage() {
+    return damage;
 }

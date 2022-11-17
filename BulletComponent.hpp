@@ -17,6 +17,8 @@ public:
 
     void destroyBullet();
 
+    float getDamage();
+
 private:
     bool shrinking = false;
 

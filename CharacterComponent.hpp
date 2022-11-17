@@ -19,10 +19,10 @@ public:
 
 private:
 
-    float life = 5.0f;          //not working
+    float hp = 5.0f;
+    float armor = 0;
     float damage = 1.5f;
     float range = 10.0f;
-    float armor = 0;            //not working
     float rateOfFire = 3.0f;    // shot per second
     float shotSpeed = 10.0f;
     float knockback = 0;        //not working
@@ -36,6 +36,7 @@ private:
 
     sre::Sprite shotSprite;
     void startShotCooldown();
+    void die();
 
     friend class CharacterBuilder;
 };
