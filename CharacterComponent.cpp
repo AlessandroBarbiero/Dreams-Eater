@@ -92,18 +92,21 @@ void CharacterComponent::shot(glm::vec2 direction) {
     else
         shot->tag = Tag::Bullet;
 
-
-    shot->setPosition(gameObject->getPosition()/ physicsScale + direction * (radius*2));
+    glm::vec2 position = gameObject->getPosition() / physicsScale + direction * (radius * 2);
+    shot->setPosition(position * physicsScale);
+    
 
     auto spriteComp = shot->addComponent<SpriteComponent>();
     shotSprite.setScale(glm::vec2(damage));
     spriteComp->setSprite(shotSprite);
 
+
     auto shotPhy = shot->addComponent<PhysicsComponent>();
     float radius = shotSprite.getSpriteSize().x * shotSprite.getScale().x / (2 * physicsScale);
-    shotPhy->initCircle(b2_dynamicBody, radius, shot->getPosition(), 1);
+    shotPhy->initCircle(b2_dynamicBody, radius, position, 1);
     shotPhy->setLinearVelocity(direction * shotSpeed);
     shotPhy->setSensor(true);
+
 
     auto bullet = shot->addComponent<BulletComponent>();
     bullet->startingPosition = gameObject->getPosition();
@@ -112,6 +115,7 @@ void CharacterComponent::shot(glm::vec2 direction) {
     std::weak_ptr<BulletComponent> weakBullet = bullet;
     flyingProj.push(weakBullet);
     startShotCooldown();
+
 }
 
 void CharacterComponent::setShotSprite(const sre::Sprite& sprite) {

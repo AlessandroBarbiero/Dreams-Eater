@@ -38,44 +38,31 @@ void PlayerController::update(float deltaTime) {
 
     if (shooting)
         character->shot(lastDirection);
+
 }
 
 
 bool PlayerController::onKey(SDL_Event& event) {
     auto sym = event.key.keysym.sym;
     if (sym == keyUp) {
-        if (event.type == SDL_KEYDOWN)
-            up = true;
-        else 
-            up = false;
+        up = event.type == SDL_KEYDOWN;
         
     }
     if (sym == keyDown) {
-        if (event.type == SDL_KEYDOWN) 
-            down = true;
-        else 
-            down = false;
+        down = event.type == SDL_KEYDOWN;
         
     }
     if (sym == keyLeft) {
-        if (event.type == SDL_KEYDOWN) 
-            left = true;
-        else 
-            left = false;
+        left = event.type == SDL_KEYDOWN;
         
     }
     if (sym == keyRight) {
-        if (event.type == SDL_KEYDOWN) 
-            right = true;
-        else 
-            right = false;
-        
+        right = event.type == SDL_KEYDOWN;
+
     }
     if (sym == keyShot) {
-        if (event.type == SDL_KEYDOWN)
-            shooting = true;
-        else 
-            shooting = false;
+        shooting = event.type == SDL_KEYDOWN;
+     
     }
 
     return false;

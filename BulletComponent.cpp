@@ -11,6 +11,7 @@ BulletComponent::BulletComponent(GameObject* gameObject) : Component(gameObject)
 }
 
 void BulletComponent::update(float deltaTime) {
+
     if (shrinking) {
         auto phy = gameObject->getComponent<PhysicsComponent>();
         phy->setRadius(phy->getRadius() * shrinkRate);
