@@ -53,3 +53,8 @@ bool BulletComponent::finished() {
 float BulletComponent::getDamage() {
     return damage;
 }
+
+float BulletComponent::getKnockback()
+{
+    return knockback;
+}

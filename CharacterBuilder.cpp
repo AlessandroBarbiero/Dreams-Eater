@@ -36,6 +36,13 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerCharacter->range = settings.range;
     playerCharacter->rateOfFire = settings.rateOfFire;
     playerCharacter->shotSpeed = settings.shotSpeed;
+    playerCharacter->knockback = settings.knockback;
+    playerCharacter->useShootingKeys = true;
+    playerCharacter->keyShootUp = settings.keybinds.shootUp;
+    playerCharacter->keyShootDown = settings.keybinds.shootDown;
+    playerCharacter->keyShootLeft = settings.keybinds.shootLeft;
+    playerCharacter->keyShootRight = settings.keybinds.shootRight;
+
 
     auto playerController = player->addComponent<PlayerController>();
     playerController->speed = settings.speed;
@@ -85,6 +92,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemyCharacter->range = settings.range;
     enemyCharacter->rateOfFire = settings.rateOfFire;
     enemyCharacter->shotSpeed = settings.shotSpeed;
+    enemyCharacter->knockback = settings.knockback;
 
     auto enemyController = enemy->addComponent<EnemyController>();
     enemyController->character = enemyCharacter;

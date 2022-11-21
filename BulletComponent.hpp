@@ -18,6 +18,7 @@ public:
     void destroyBullet();
 
     float getDamage();
+    float getKnockback();
 
 private:
     bool shrinking = false;
@@ -25,6 +26,7 @@ private:
     float shrinkRate = 0.99;
     float damage = 1.0f;
     float range = 5.0f;
+    float knockback = 0;
     glm::vec2 startingPosition;
     bool valid;
 

@@ -6,22 +6,55 @@
 #include "DreamGame.hpp"
 #include "SpriteComponent.hpp"
 #include "BulletComponent.hpp"
+#define KNOCKBACK_SCALE 100
 
 CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameObject) {
 }
 
-//Look for the first projectile shot and check if it has to be destroyed
+
 void CharacterComponent::update(float deltaTime) {
+    checkRateOfFire(deltaTime);
+
+    if(useShootingKeys)
+        fireOnKeyPress();
+   
+    updateFlyingProj();
+}
+
+// If the keys for fire are pressed generate a bullet in the right direction
+void CharacterComponent::fireOnKeyPress() {
+
+    glm::vec2 direction{ 0,0 };
+    if (up)
+        direction.y++;
+    if (down)
+        direction.y--;
+    if (left)
+        direction.x--;
+    if (right)
+        direction.x++;
+
+    if (direction != glm::vec2(0)) {
+        direction = glm::normalize(direction);
+        shot(direction);
+    }
+}
+
+// Update readyToShoot variable based on rateOfFire and cooldownTimer
+void CharacterComponent::checkRateOfFire(float deltaTime) {
     if (!readyToShoot) {
         shotCooldownTimer += deltaTime;
         if (shotCooldownTimer >= 1 / rateOfFire)
             readyToShoot = true;
     }
+}
 
+//Look for the first projectile shot still in the scene and check if it has to be destroyed (reached the range)
+void CharacterComponent::updateFlyingProj() {
     if (flyingProj.empty())
         return;
 
-    auto lastProj = flyingProj.front();
+    auto& lastProj = flyingProj.front();
     // Remove the projectiles collided and already destroyed
     while (lastProj.expired()) {
         flyingProj.pop();
@@ -36,11 +69,25 @@ void CharacterComponent::update(float deltaTime) {
             bullet->destroyBullet();
         }
     }
-    else 
+    else
         flyingProj.pop();
 }
 
+bool CharacterComponent::onKey(SDL_Event& event) {
+    if (useShootingKeys) {
+        auto sym = event.key.keysym.sym;
+        if (sym == keyShootUp) 
+            up = event.type == SDL_KEYDOWN;        
+        if (sym == keyShootDown) 
+            down = event.type == SDL_KEYDOWN;        
+        if (sym == keyShootLeft) 
+            left = event.type == SDL_KEYDOWN;        
+        if (sym == keyShootRight) 
+            right = event.type == SDL_KEYDOWN;
+    }
 
+    return false;
+}
 
 
 void CharacterComponent::onGui() {
@@ -64,12 +111,10 @@ void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
         float realDamage = bullet->getDamage() - armor;
         if (realDamage > 0) {
             hp -= realDamage;
-            //std::cout << "Hit, new hp: " << hp << std::endl;
             if (hp <= 0)
                 die();
         }
     }
-
 }
 
 void CharacterComponent::die() {
@@ -130,6 +175,7 @@ void CharacterComponent::onCollisionEnd(PhysicsComponent* comp) {
 void CharacterComponent::shot(glm::vec2 direction) {
     if (!readyToShoot) 
         return; // cooldown is not finished
+
     auto game = DreamGame::instance;
     auto physicsScale = game->physicsScale;
 
@@ -142,7 +188,7 @@ void CharacterComponent::shot(glm::vec2 direction) {
     else
         shot->tag = Tag::Bullet;
 
-    glm::vec2 position = gameObject->getPosition() / physicsScale + direction * (radius * 2);
+    glm::vec2 position = gameObject->getPosition() / physicsScale + direction * (radius + damage/2);
     shot->setPosition(position * physicsScale);
     
 
@@ -153,15 +199,18 @@ void CharacterComponent::shot(glm::vec2 direction) {
 
     auto shotPhy = shot->addComponent<PhysicsComponent>();
     float radius = shotSprite.getSpriteSize().x * shotSprite.getScale().x / (2 * physicsScale);
-    shotPhy->initCircle(b2_dynamicBody, radius, position, 1);
+    float density = knockback > 0 ? (knockback * KNOCKBACK_SCALE) : 1.0f;
+    shotPhy->initCircle(b2_dynamicBody, radius, position, density);
     shotPhy->setLinearVelocity(direction * shotSpeed);
-    shotPhy->setSensor(true);
+    if (knockback <= 0)
+        shotPhy->setSensor(true);
 
 
     auto bullet = shot->addComponent<BulletComponent>();
     bullet->startingPosition = gameObject->getPosition();
     bullet->range = range;
     bullet->damage = damage;
+    bullet->knockback = knockback;
     std::weak_ptr<BulletComponent> weakBullet = bullet;
     flyingProj.push(weakBullet);
     startShotCooldown();

@@ -12,6 +12,8 @@ public:
 
     void onCollisionEnd(PhysicsComponent* comp) override;
 
+    bool onKey(SDL_Event& event) override;
+
     void onGui() override;
     
     void update(float deltaTime) override;
@@ -21,15 +23,21 @@ public:
 
 private:
 
+    void checkRateOfFire(float deltaTime);
+    void updateFlyingProj();
+    void fireOnKeyPress();
+
     float hp = 5.0f;
     float armor = 0;
     float damage = 1.5f;
     float range = 10.0f;
-    float rateOfFire = 3.0f;    // shot per second
+    // shots per second
+    float rateOfFire = 3.0f;    
     float shotSpeed = 10.0f;
-    float knockback = 0;        //not working
+    float knockback = 0;
 
-    float radius; // The radius of the physic component -> it is also the distance from which the bullet is spawned
+    // The radius of the physic component -> it is also the distance from which the bullet is spawned
+    float radius; 
 
     float shotCooldownTimer = 0;
     bool readyToShoot = true;
@@ -54,4 +62,16 @@ private:
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoScrollbar;
+
+    // If this variable is set to true you can control the shooting of this character using passed keybind
+    bool useShootingKeys = false;   
+    bool up = false;
+    bool down = false;
+    bool left = false;
+    bool right = false;
+
+    SDL_Keycode keyShootUp;
+    SDL_Keycode keyShootDown;
+    SDL_Keycode keyShootLeft;
+    SDL_Keycode keyShootRight;
 };

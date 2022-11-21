@@ -65,17 +65,14 @@ void DreamGame::init() {
     PlayerSettings pSettings;
     pSettings.position = glm::vec2(3, 3);
     pSettings.speed = 8.0f;
+    pSettings.knockback = 1.0f;
     auto player = CharacterBuilder::createPlayer(pSettings);
-    // Second player creation with different keybind
-    //pSettings.name = "player2";
-    //pSettings.position = glm::vec2(10,10);
-    //pSettings.keybinds = { SDLK_w, SDLK_s, SDLK_a, SDLK_d };
-    //auto player2 = CharacterBuilder::createPlayer(pSettings);
 
     EnemySettings eSettings;
     eSettings.position = glm::vec2(15, 15);
     eSettings.player = player;
     eSettings.speed = 2.0f;
+    eSettings.knockback = 1.0f;
     CharacterBuilder::createEnemy(eSettings);
 
     // Test room

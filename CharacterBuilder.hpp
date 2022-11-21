@@ -6,11 +6,17 @@
 #include <SDL_events.h>
 
 struct Controls {
-	SDL_Keycode up = SDLK_UP;
-	SDL_Keycode down = SDLK_DOWN;
-	SDL_Keycode left = SDLK_LEFT;
-	SDL_Keycode right = SDLK_RIGHT;
+	SDL_Keycode up = SDLK_w;
+	SDL_Keycode down = SDLK_s;
+	SDL_Keycode left = SDLK_a;
+	SDL_Keycode right = SDLK_d;
+
 	SDL_Keycode shot = SDLK_SPACE;
+
+	SDL_Keycode shootUp = SDLK_UP;
+	SDL_Keycode shootDown = SDLK_DOWN;
+	SDL_Keycode shootLeft = SDLK_LEFT;
+	SDL_Keycode shootRight = SDLK_RIGHT;
 };
 
 struct PlayerSettings{
@@ -25,6 +31,7 @@ struct PlayerSettings{
 	float range = 10.0f;
 	float rateOfFire = 5.0f;
 	float shotSpeed = 10.0f;
+	float knockback = 0;
 
 };
 
@@ -40,6 +47,7 @@ struct EnemySettings {
 	float range = 6.0f;
 	float rateOfFire = 1.0f;
 	float shotSpeed = 5.0f;
+	float knockback = 0;
 
 	std::shared_ptr<GameObject> player;
 
