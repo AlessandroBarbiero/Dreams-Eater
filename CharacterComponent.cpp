@@ -6,9 +6,9 @@
 #include "DreamGame.hpp"
 #include "SpriteComponent.hpp"
 #include "BulletComponent.hpp"
+#include "DreamInspector.hpp"
 
-CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameObject) {
-}
+CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameObject) {}
 
 //Look for the first projectile shot and check if it has to be destroyed
 void CharacterComponent::update(float deltaTime) {
@@ -41,16 +41,16 @@ void CharacterComponent::update(float deltaTime) {
 }
 
 
-
-
 void CharacterComponent::onGui() {
     if (gameObject->tag == Tag::Player)
         setPlayerGui();
     else
         setEnemyGui();
+
+    if (DreamGame::instance->doDebugDraw) {
+        DreamInspector::instance->updateCharacterGui(gameObject->name,&hp, &armor, &damage, &rateOfFire, &shotSpeed, &knockback);
+    }
 }
-
-
 
 void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
     Tag myTag = gameObject->tag;
@@ -82,11 +82,11 @@ void CharacterComponent::setPlayerGui(){
     auto r = sre::Renderer::instance;
     auto winsize = r->getWindowSize();
     
-    ImVec2 pos =  { 0,0 };
+    ImVec2 pos = {0,0};
 
-    ImGui::SetNextWindowPos(pos, cond, guiPivot);
+    ImGui::SetNextWindowPos(pos, ImGuiCond_Always, guiPivot);
 
-    ImGui::SetNextWindowSize(guiSize, cond);
+    ImGui::SetNextWindowSize(guiSize, ImGuiCond_Always);
 
     bool* open = nullptr;
 
@@ -96,6 +96,8 @@ void CharacterComponent::setPlayerGui(){
     ImGui::Text("Health: %.2f", hp);
 
     ImGui::End();
+
+    
 }
 
 void CharacterComponent::setEnemyGui(){
@@ -104,9 +106,9 @@ void CharacterComponent::setEnemyGui(){
 
     ImVec2 pos = { winsize.x - guiSize.x, 0 };
 
-    ImGui::SetNextWindowPos(pos, cond, guiPivot);
+    ImGui::SetNextWindowPos(pos, ImGuiCond_Always, guiPivot);
 
-    ImGui::SetNextWindowSize(guiSize, cond);
+    ImGui::SetNextWindowSize(guiSize, ImGuiCond_Always);
    
     bool* open = nullptr;
 

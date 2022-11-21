@@ -1,4 +1,4 @@
-#include <sre/Inspector.hpp>
+#include "DreamInspector.hpp"
 #include <iostream>
 #include "DreamGame.hpp"
 #include "GameObject.hpp"
@@ -66,6 +66,7 @@ void DreamGame::init() {
     pSettings.position = glm::vec2(3, 3);
     pSettings.speed = 8.0f;
     auto player = CharacterBuilder::createPlayer(pSettings);
+
     // Second player creation with different keybind
     //pSettings.name = "player2";
     //pSettings.position = glm::vec2(10,10);
@@ -109,6 +110,7 @@ void DreamGame::update(float time) {
 }
 
 void DreamGame::render() {
+
     auto rp = RenderPass::create()
         .withCamera(camera->getCamera())
         .build();
@@ -131,10 +133,19 @@ void DreamGame::render() {
     rp.draw(sb);
 
     if (doDebugDraw) {
+        
         world->DrawDebugData();
         rp.drawLines(debugDraw.getLines());
         debugDraw.clear();
+
+        
+        DreamInspector::instance->updateSceneObjectsSize(sceneObjects.size());
     }
+
+    
+
+
+    
 }
 
 void DreamGame::onKey(SDL_Event& event) {

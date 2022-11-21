@@ -33,6 +33,9 @@ public:
 
     static constexpr float32 timeStep = 1.0f / 60.0f;
     const float physicsScale = 100;
+
+    bool doDebugDraw = false;
+
 private:
     GameState gameState = GameState::Running;
     sre::SDLRenderer r;
@@ -61,9 +64,9 @@ private:
     void deregisterPhysicsComponent(PhysicsComponent* r);
     std::map<b2Fixture*, PhysicsComponent*> physicsComponentLookup;
 
-    Box2DDebugDraw debugDraw;
-    bool doDebugDraw = false;
 
+    Box2DDebugDraw debugDraw;
+    
     friend class PhysicsComponent;
     friend class RoomComponent;
     friend class PlayerController;
