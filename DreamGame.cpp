@@ -1,4 +1,4 @@
-#include <sre/Inspector.hpp>
+#include "DreamInspector.hpp"
 #include <iostream>
 #include "DreamGame.hpp"
 #include "GameObject.hpp"
@@ -76,6 +76,7 @@ void DreamGame::init() {
     CharacterBuilder::createEnemy(eSettings);
 
     // Test room
+    /*
     auto testRoom = createGameObject();
     testRoom->name = "testRoom";
     auto roomPhys = testRoom->addComponent<PhysicsComponent>();
@@ -83,6 +84,17 @@ void DreamGame::init() {
     room->setRoomSize(glm::vec2(8, 8));
     room->buildFloor();
     room->buildWalls();
+    */
+    RoomSettings rSettings;
+    rSettings.name = "TestRoom";
+    rSettings.position = {0,0};
+    rSettings.size = { 7,7 };
+    rSettings.tileSetFloor = WoodFloor;
+    rSettings.tileSetWalls = WoodWalls;
+    rSettings.doors.push_back(Door{ false, TopLeft });
+    rSettings.doors.push_back(Door{ false, TopRight });
+    rSettings.doors.push_back(Door{ false, Bottom });
+    auto testRoom = RoomBuilder::createRoom(rSettings);
     camera->setFollowObject(testRoom, glm::vec2(0, 0));
     
 }
@@ -106,6 +118,7 @@ void DreamGame::update(float time) {
 }
 
 void DreamGame::render() {
+
     auto rp = RenderPass::create()
         .withCamera(camera->getCamera())
         .build();
@@ -128,10 +141,19 @@ void DreamGame::render() {
     rp.draw(sb);
 
     if (doDebugDraw) {
+        
         world->DrawDebugData();
         rp.drawLines(debugDraw.getLines());
         debugDraw.clear();
+
+        
+        DreamInspector::instance->updateSceneObjectsSize(sceneObjects.size());
     }
+
+    
+
+
+    
 }
 
 void DreamGame::onKey(SDL_Event& event) {

@@ -19,6 +19,7 @@ public:
     void update(float deltaTime) override;
 
     void shot(glm::vec2 direction);
+
     void setShotSprite(const sre::Sprite& sprite);
 
 private:
@@ -45,16 +46,14 @@ private:
     std::queue<std::weak_ptr<BulletComponent>> flyingProj;
 
     sre::Sprite shotSprite;
+
     void startShotCooldown();
     void die();
-
-    friend class CharacterBuilder;
 
     void setPlayerGui();
     void setEnemyGui();
 
     ImVec2 guiSize = { 180, 50 };
-    bool cond = ImGuiCond_Always;
     ImVec2 guiPivot = { 0,0 };
 
     bool flags =
@@ -74,4 +73,6 @@ private:
     SDL_Keycode keyShootDown;
     SDL_Keycode keyShootLeft;
     SDL_Keycode keyShootRight;
+
+    friend class CharacterBuilder;
 };
