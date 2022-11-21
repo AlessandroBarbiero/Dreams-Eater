@@ -11,6 +11,8 @@ public:
     void onCollisionStart(PhysicsComponent* comp) override;
 
     void onCollisionEnd(PhysicsComponent* comp) override;
+
+    void onGui() override;
     
     void update(float deltaTime) override;
 
@@ -39,4 +41,17 @@ private:
     void die();
 
     friend class CharacterBuilder;
+
+    void setPlayerGui();
+    void setEnemyGui();
+
+    ImVec2 guiSize = { 180, 50 };
+    bool cond = ImGuiCond_Always;
+    ImVec2 guiPivot = { 0,0 };
+
+    bool flags =
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoScrollbar;
 };

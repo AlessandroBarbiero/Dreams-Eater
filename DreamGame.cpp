@@ -120,6 +120,13 @@ void DreamGame::render() {
         go->renderSprite(spriteBatchBuilder);
     }
 
+    // render gui
+    for (auto& go : sceneObjects) {
+        for (auto& comp : go->getComponents()) {
+            comp->onGui();
+        }
+    }
+
     auto sb = spriteBatchBuilder.build();
     rp.draw(sb);
 

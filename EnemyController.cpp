@@ -26,6 +26,10 @@ void EnemyController::update(float deltaTime) {
   
 }
 
+void EnemyController::onGui()
+{
+}
+
 
 void EnemyController::onCollisionStart(PhysicsComponent* comp) {
 

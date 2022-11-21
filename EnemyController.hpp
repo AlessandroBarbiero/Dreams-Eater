@@ -13,6 +13,8 @@ public:
                                                          
     void update(float deltaTime) override;
 
+    void onGui() override;
+
 private:
 
     std::shared_ptr<PhysicsComponent> physics;

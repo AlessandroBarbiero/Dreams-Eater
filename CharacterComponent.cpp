@@ -8,7 +8,6 @@
 #include "BulletComponent.hpp"
 
 CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameObject) {
-    
 }
 
 //Look for the first projectile shot and check if it has to be destroyed
@@ -42,6 +41,17 @@ void CharacterComponent::update(float deltaTime) {
 }
 
 
+
+
+void CharacterComponent::onGui() {
+    if (gameObject->tag == Tag::Player)
+        setPlayerGui();
+    else
+        setEnemyGui();
+}
+
+
+
 void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
     Tag myTag = gameObject->tag;
     Tag hisTag = comp->getGameObject()->tag;
@@ -54,7 +64,7 @@ void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
         float realDamage = bullet->getDamage() - armor;
         if (realDamage > 0) {
             hp -= realDamage;
-            std::cout << "Hit, new hp: " << hp << std::endl;
+            //std::cout << "Hit, new hp: " << hp << std::endl;
             if (hp <= 0)
                 die();
         }
@@ -66,6 +76,46 @@ void CharacterComponent::die() {
     gameObject->destroy();
     if (gameObject->tag == Tag::Player)
         DreamGame::instance->gameOver();
+}
+
+void CharacterComponent::setPlayerGui(){
+    auto r = sre::Renderer::instance;
+    auto winsize = r->getWindowSize();
+    
+    ImVec2 pos =  { 0,0 };
+
+    ImGui::SetNextWindowPos(pos, cond, guiPivot);
+
+    ImGui::SetNextWindowSize(guiSize, cond);
+
+    bool* open = nullptr;
+
+    ImGui::Begin("#player", open, flags);
+
+    ImGui::Text("PLAYER");
+    ImGui::Text("Health: %.2f", hp);
+
+    ImGui::End();
+}
+
+void CharacterComponent::setEnemyGui(){
+    auto r = sre::Renderer::instance;
+    auto winsize = r->getWindowSize();
+
+    ImVec2 pos = { winsize.x - guiSize.x, 0 };
+
+    ImGui::SetNextWindowPos(pos, cond, guiPivot);
+
+    ImGui::SetNextWindowSize(guiSize, cond);
+   
+    bool* open = nullptr;
+
+    ImGui::Begin("#enemy", open, flags);
+
+    ImGui::Text("ENEMY");
+    ImGui::Text("Health: %.2f", hp);
+
+    ImGui::End();
 }
 
 void CharacterComponent::onCollisionEnd(PhysicsComponent* comp) {
@@ -127,6 +177,8 @@ void CharacterComponent::startShotCooldown() {
     readyToShoot = false;
     shotCooldownTimer = 0;
 }
+
+
 
 
 

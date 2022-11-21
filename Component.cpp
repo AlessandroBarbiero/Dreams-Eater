@@ -17,6 +17,10 @@ void Component::update(float deltaTime) {
 
 }
 
+void Component::onGui() {
+
+}
+
 GameObject *Component::getGameObject() {
     return gameObject;
 }

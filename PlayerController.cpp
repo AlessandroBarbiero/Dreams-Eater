@@ -4,10 +4,12 @@
 
 #include <SDL_events.h>
 #include <iostream>
+#include <sre/Renderer.hpp>
 #include "GameObject.hpp"
 #include "PhysicsComponent.hpp"
 #include "PlayerController.hpp"
 #include "DreamGame.hpp"
+
 
 PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) {
     
@@ -40,6 +42,7 @@ void PlayerController::update(float deltaTime) {
         character->shot(lastDirection);
 
 }
+
 
 
 bool PlayerController::onKey(SDL_Event& event) {
