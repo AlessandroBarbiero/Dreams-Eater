@@ -26,7 +26,120 @@ glm::vec2 RoomComponent::getRoomSize() {
 	return roomSize;
 }
 
+void RoomComponent::DoorsToPositions(std::vector<Door> doors, int (&skips)[4][2]) {
+
+	int* skipTop = skips[0];
+	int* skipBottom = skips[1];
+	int* skipLeft = skips[2];
+	int* skipRight = skips[3];
+	for each (Door d in doors)
+	{
+		switch (d.position) {
+		case Top:
+			if (skipTop[0] == 0) {
+				skipTop[0] = std::ceil((roomSize.x - 2) / 2.0f);
+			}
+			else {
+				skipTop[1] = std::ceil((roomSize.x - 2) / 2.0f);
+			}
+			break;
+		case TopLeft:
+			if (skipTop[0] == 0) {
+				skipTop[0] = std::ceil((roomSize.x - 2) / 4.0f);
+			}
+			else {
+				skipTop[1] = std::ceil((roomSize.x - 2) / 4.0f);
+			}
+			break;
+		case TopRight:
+			if (skipTop[0] == 0) {
+				skipTop[0] = std::ceil((roomSize.x - 2) * 0.75f);
+			}
+			else {
+				skipTop[1] = std::ceil((roomSize.x - 2) * 0.75f);
+			}
+			break;
+		case Bottom:
+			if (skipBottom[0] == 0) {
+				skipBottom[0] = std::ceil((roomSize.x - 2) / 2.0f);
+			}
+			else {
+				skipBottom[1] = std::ceil((roomSize.x - 2) / 2.0f);
+			}
+			break;
+		case BottomLeft:
+			if (skipBottom[0] == 0) {
+				skipBottom[0] = std::ceil((roomSize.x - 2) / 4.0f);
+			}
+			else {
+				skipBottom[1] = std::ceil((roomSize.x - 2) / 4.0f);
+			}
+			break;
+		case BottomRight:
+			if (skipBottom[0] == 0) {
+				skipBottom[0] = std::ceil((roomSize.x - 2) * 0.75f);
+			}
+			else {
+				skipBottom[1] = std::ceil((roomSize.x - 2) * 0.75f);
+			}
+			break;
+		case Left:
+			if (skipLeft[0] == 0) {
+				skipLeft[0] = std::ceil((roomSize.y - 2) / 2.0f);
+			}
+			else {
+				skipLeft[1] = std::ceil((roomSize.y - 2) / 2.0f);
+			}
+			break;
+		case LeftBottom:
+			if (skipLeft[0] == 0) {
+				skipLeft[0] = std::ceil((roomSize.y - 2) / 4.0f);
+			}
+			else {
+				skipLeft[1] = std::ceil((roomSize.y - 2) / 4.0f);
+			}
+			break;
+		case LeftTop:
+			if (skipLeft[0] == 0) {
+				skipLeft[0] = std::ceil((roomSize.y - 2) * 0.75f);
+			}
+			else {
+				skipLeft[1] = std::ceil((roomSize.y - 2) * 0.75f);
+			}
+			break;
+		case Right:
+			if (skipRight[0] == 0) {
+				skipRight[0] = std::ceil((roomSize.y - 2) / 2.0f);
+			}
+			else {
+				skipRight[1] = std::ceil((roomSize.y - 2) / 2.0f);
+			}
+			break;
+		case RightBottom:
+			if (skipRight[0] == 0) {
+				skipRight[0] = std::ceil((roomSize.y - 2) / 4.0f);
+			}
+			else {
+				skipRight[1] = std::ceil((roomSize.y - 2) / 4.0f);
+			}
+			break;
+		case RightTop:
+			if (skipRight[0] == 0) {
+				skipRight[0] = std::ceil((roomSize.y - 2) * 0.75f);
+			}
+			else {
+				skipRight[1] = std::ceil((roomSize.y - 2) * 0.75f);
+			}
+			break;
+		}
+	}
+
+}
+
 glm::vec2 RoomComponent::getRoomSizeInPixels() {
+	std::string wallString = TileSetWallsToString.at(tileSetWalls);
+	// TODO: Change sprite names in json file
+	//auto spriteWallHorizontalBottom = DreamGame::instance->spriteAtlas_inside->get(wallString + "Bottom.png");
 	auto spriteWallHorizontalBottom = DreamGame::instance->spriteAtlas_inside->get("Walls/walls_0005_Layer-6.png");
 	float length = spriteWallHorizontalBottom.getSpriteSize().x;
 	return roomSize * length;
@@ -37,9 +150,20 @@ void RoomComponent::setRoomSize(glm::vec2 newSize) {
 	roomSize = newSize + glm::vec2(2, 2);
 }
 
+const std::map<TileSetWalls, std::string> RoomComponent::TileSetWallsToString {
+		{TileSetWalls::WoodWalls, "Walls/Wood/"},
+};
+
+const std::map<TileSetFloor, std::string> RoomComponent::TileSetFloorToString{
+		{TileSetFloor::WoodFloor, "Floor/Floor1"},
+};
+
 void RoomComponent::buildWalls() {
 	auto go = getGameObject();
 	auto game = DreamGame::instance;
+
+	/*
+	*/
 	auto spriteWallHorizontalBottom = game->spriteAtlas_inside->get("Walls/walls_0005_Layer-6.png");
 	auto spriteWallHorizontalTop = game->spriteAtlas_inside->get("Walls/walls_0006_Layer-7.png");
 
@@ -50,6 +174,22 @@ void RoomComponent::buildWalls() {
 	auto spriteWallTopRight = game->spriteAtlas_inside->get("Walls/walls_0007_Layer-8.png");
 	auto spriteWallBottomLeft = game->spriteAtlas_inside->get("Walls/walls_0004_Layer-5.png");
 	auto spriteWallBottomRight = game->spriteAtlas_inside->get("Walls/walls_0009_Layer-10.png");
+
+	// TODO: Change sprite names in json file
+	/*
+	std::string wallString = TileSetWallsToString.at(tileSetWalls);
+
+	auto spriteWallHorizontalBottom = game->spriteAtlas_inside->get(wallString + "Bottom.png");
+	auto spriteWallHorizontalTop = game->spriteAtlas_inside->get(wallString + "Top.png");
+
+	auto spriteWallVerticalLeft = game->spriteAtlas_inside->get(wallString + "Left.png");
+	auto spriteWallVerticalRight = game->spriteAtlas_inside->get(wallString + "Right.png");
+
+	auto spriteWallTopLeft = game->spriteAtlas_inside->get(wallString + "TopLeft.png");
+	auto spriteWallTopRight = game->spriteAtlas_inside->get(wallString + "TopRight.png");
+	auto spriteWallBottomLeft = game->spriteAtlas_inside->get(wallString + "BottomLeft.png");
+	auto spriteWallBottomRight = game->spriteAtlas_inside->get(wallString + "BottomRight.png");
+	*/
 
 	// Offset between center of corners and straight walls
 	// corner center is 170.5, horizontal center is 49.5, 170.5 - 49.5 = 121 offset
@@ -73,30 +213,50 @@ void RoomComponent::buildWalls() {
 	position = glm::vec2((roomSize.x - 1) * spriteWallHorizontalBottom.getSpriteSize().x, (roomSize.y - 1) * spriteWallVerticalLeft.getSpriteSize().y);
 	go->children.push_back(spawnWall(spriteWallTopRight, position));
 
+
+	int skips[4][2] = { {0,0}, {0,0}, {0,0}, {0,0} };
+	DoorsToPositions(doors, skips);
+
+	int* skipTop = skips[0];
+	int* skipBottom = skips[1];
+	int* skipLeft = skips[2];
+	int* skipRight = skips[3];
+
+	// All walls use HorizontalBottom length because it is 1 pixel longer. Otherwise they leave a gap.
+
 	// Horizontal walls
 	for (int x = 1; x < roomSize.x-1; x++)
 	{
 		// Bottom Wall
-		auto position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x, -offset);
-		go->children.push_back(spawnWall(spriteWallHorizontalBottom, position));
+		if (x != skipBottom[0] && x != skipBottom[1]) {
+			auto position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x, -offset);
+			go->children.push_back(spawnWall(spriteWallHorizontalBottom, position));
+		}
 
 		// Top Wall
 		int y = roomSize.y - 1;
-		position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x, y * spriteWallVerticalLeft.getSpriteSize().y + offset);
-		go->children.push_back(spawnWall(spriteWallHorizontalTop, position));
+
+		if (x != skipTop[0] && x != skipTop[1]) {
+			position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x, y * spriteWallVerticalLeft.getSpriteSize().y + offset);
+			go->children.push_back(spawnWall(spriteWallHorizontalTop, position));
+		}
 	}
 	
 	// Vertical walls. Starts at 1 and ends at max-1 because they already exist from the previous loop
 	for (int y = 1; y < roomSize.y-1; y++)
 	{
 		// Left Wall
-		auto position = glm::vec2(-offset, y * spriteWallVerticalLeft.getSpriteSize().y);
-		go->children.push_back(spawnWall(spriteWallVerticalLeft, position));
+		if (y != skipLeft[0] && y != skipLeft[1]) {
+			auto position = glm::vec2(-offset, y * spriteWallVerticalLeft.getSpriteSize().y);
+			go->children.push_back(spawnWall(spriteWallVerticalLeft, position));
+		}
 
 		// Right Wall
 		int x = roomSize.x - 1;
-		position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x + offset, y * spriteWallVerticalLeft.getSpriteSize().y);
-		go->children.push_back(spawnWall(spriteWallVerticalRight, position));
+		if (y != skipRight[0] && y != skipRight[1]) {
+			position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x + offset, y * spriteWallVerticalLeft.getSpriteSize().y);
+			go->children.push_back(spawnWall(spriteWallVerticalRight, position));
+		}
 	}
 
 	getGameObject()->setPosition(glm::vec2( (roomSize.x-1)* spriteWallHorizontalBottom.getSpriteSize().x / 2, (roomSize.y-1)* spriteWallVerticalLeft.getSpriteSize().y / 2));
@@ -122,8 +282,10 @@ void RoomComponent::buildWalls() {
 void RoomComponent::buildFloor() {
 	auto go = getGameObject();
 	auto game = DreamGame::instance;
-	auto spriteFloor = game->spriteAtlas_inside->get("Floor/Floor1.png"); // Change to right sprite later
-	
+
+	std::string floorString = TileSetFloorToString.at(tileSetFloor);
+	auto spriteFloor = game->spriteAtlas_inside->get(floorString + ".png");
+
 	//roomObjects.push_back(spawnFloor(spriteFloor, (roomSize.x-1)/2, (roomSize.y-1)/2));
 
 	auto horizontal = roomSize.x * 341;

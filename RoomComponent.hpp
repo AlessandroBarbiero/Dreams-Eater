@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Component.hpp"
+#include "RoomBuilder.hpp"
 
 class RoomComponent : public Component {
 public:
@@ -20,5 +21,16 @@ private:
 
     std::shared_ptr<GameObject> RoomComponent::spawnWall(sre::Sprite spriteWall, glm::vec2 pos);
     std::shared_ptr<GameObject> RoomComponent::spawnFloor(sre::Sprite spriteFloor, glm::vec2 pos);
+
+    void DoorsToPositions(std::vector<Door> doors, int(&skips)[4][2]); // Pairs are ((Top, Bottom),(Left, Right))
+    std::vector<Door> doors;
+
+    TileSetWalls tileSetWalls;
+    TileSetFloor tileSetFloor;
+
+    const static std::map<TileSetWalls, std::string> TileSetWallsToString;
+    const static std::map<TileSetFloor, std::string> TileSetFloorToString;
+
+    friend class RoomBuilder;
 };
 
