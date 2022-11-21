@@ -6,7 +6,7 @@
 struct LevelSettings {
 	std::string name = "room";
 	int rooms;
-
+	int difficulty;
 
 
 };

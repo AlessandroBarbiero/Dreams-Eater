@@ -138,6 +138,7 @@ void RoomComponent::DoorsToPositions(std::vector<Door> doors, int (&skips)[4][2]
 
 glm::vec2 RoomComponent::getRoomSizeInPixels() {
 	std::string wallString = TileSetWallsToString.at(tileSetWalls);
+	// TODO: Change sprite names in json file
 	//auto spriteWallHorizontalBottom = DreamGame::instance->spriteAtlas_inside->get(wallString + "Bottom.png");
 	auto spriteWallHorizontalBottom = DreamGame::instance->spriteAtlas_inside->get("Walls/walls_0005_Layer-6.png");
 	float length = spriteWallHorizontalBottom.getSpriteSize().x;
@@ -174,6 +175,7 @@ void RoomComponent::buildWalls() {
 	auto spriteWallBottomLeft = game->spriteAtlas_inside->get("Walls/walls_0004_Layer-5.png");
 	auto spriteWallBottomRight = game->spriteAtlas_inside->get("Walls/walls_0009_Layer-10.png");
 
+	// TODO: Change sprite names in json file
 	/*
 	std::string wallString = TileSetWallsToString.at(tileSetWalls);
 
@@ -219,6 +221,8 @@ void RoomComponent::buildWalls() {
 	int* skipBottom = skips[1];
 	int* skipLeft = skips[2];
 	int* skipRight = skips[3];
+
+	// All walls use HorizontalBottom length because it is 1 pixel longer. Otherwise they leave a gap.
 
 	// Horizontal walls
 	for (int x = 1; x < roomSize.x-1; x++)
