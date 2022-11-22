@@ -15,12 +15,7 @@ public:
 
     void onGui() override;
 
-    void stunned(float stunTimeout);
-    void stunned(bool stun);
-
 private:
-
-    void updateStunTimeout(float deltaTime);
 
     std::shared_ptr<PhysicsComponent> physics;
     std::shared_ptr<CharacterComponent> character;
@@ -28,14 +23,7 @@ private:
     std::shared_ptr<GameObject> player;
 
     bool canShoot = true; //Set it to false for melee enemies
-    float speed = 5.0;
-    float range = 5.0f;
     float idealDistance = 600.0f;
-
-    // If set to true the enemy cannot move
-    bool stun = false;
-
-    float stunTimeout = 0;
 
     friend class CharacterBuilder;
 };

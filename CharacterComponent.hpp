@@ -3,13 +3,13 @@
 #include "Component.hpp"
 #include "BulletComponent.hpp"
 #include <queue>
+constexpr auto KNOCKBACK_TIME = 0.2;
 
 class CharacterComponent : public Component {
 public:
     explicit CharacterComponent(GameObject* gameObject);
 
     void onCollisionStart(PhysicsComponent* comp) override;
-
     void onCollisionEnd(PhysicsComponent* comp) override;
 
     bool onKey(SDL_Event& event) override;
@@ -19,17 +19,25 @@ public:
     void update(float deltaTime) override;
 
     void shot(glm::vec2 direction);
-
     void setShotSprite(const sre::Sprite& sprite);
+
+    void stunned(float stunTimeout);
+    void stunned(bool stun);
 
 private:
 
+    void updateStunTimeout(float deltaTime);
     void checkRateOfFire(float deltaTime);
     void updateFlyingProj();
     void fireOnKeyPress();
 
+    // If set to true the character cannot move
+    bool stun = false;
+    float stunTimeout = 0;
+
     float hp = 5.0f;
     float armor = 0;
+    float speed = 5.0f;
     float damage = 1.5f;
     float range = 10.0f;
     // shots per second
@@ -75,4 +83,6 @@ private:
     SDL_Keycode keyShootRight;
 
     friend class CharacterBuilder;
+    friend class PlayerController;
+    friend class EnemyController;
 };

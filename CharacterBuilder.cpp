@@ -31,6 +31,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerCharacter->setShotSprite(shotSprite);
     playerCharacter->radius = radius;
     playerCharacter->hp = settings.hp;
+    playerCharacter->speed = settings.speed;
     playerCharacter->armor = settings.armor;
     playerCharacter->damage = settings.damage;
     playerCharacter->range = settings.range;
@@ -45,7 +46,6 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
 
 
     auto playerController = player->addComponent<PlayerController>();
-    playerController->speed = settings.speed;
     playerController->playerPhysics = playerPhysics;
     playerController->character = playerCharacter;
 
@@ -88,6 +88,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemyCharacter->radius = radius;
     enemyCharacter->hp = settings.hp;
     enemyCharacter->armor = settings.armor;
+    enemyCharacter->speed = settings.speed;
     enemyCharacter->damage = settings.damage;
     enemyCharacter->range = settings.range;
     enemyCharacter->rateOfFire = settings.rateOfFire;
@@ -96,11 +97,9 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
 
     auto enemyController = enemy->addComponent<EnemyController>();
     enemyController->character = enemyCharacter;
-    enemyController->speed = settings.speed;
     enemyController->physics = physics;
     enemyController->player = settings.player;
     enemyController->idealDistance = settings.idealDistance * physicsScale;
-    enemyController->range = settings.range;
 
     return enemy;
 }
