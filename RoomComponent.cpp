@@ -8,6 +8,7 @@
 #include <Box2D/Box2D.h>
 #include "SpriteComponent.hpp"
 #include "PhysicsComponent.hpp"
+#include "DreamInspector.hpp"
 
 RoomComponent::RoomComponent(GameObject *gameObject) : Component(gameObject) {}
 
@@ -138,9 +139,8 @@ void RoomComponent::DoorsToPositions(std::vector<Door> doors, int (&skips)[4][2]
 
 glm::vec2 RoomComponent::getRoomSizeInPixels() {
 	std::string wallString = TileSetWallsToString.at(tileSetWalls);
-	// TODO: Change sprite names in json file
-	//auto spriteWallHorizontalBottom = DreamGame::instance->spriteAtlas_inside->get(wallString + "Bottom.png");
-	auto spriteWallHorizontalBottom = DreamGame::instance->spriteAtlas_inside->get("Walls/walls_0005_Layer-6.png");
+	auto spriteWallHorizontalBottom = DreamGame::instance->spriteAtlas_inside->get(wallString + "Bottom.png");
+	//auto spriteWallHorizontalBottom = DreamGame::instance->spriteAtlas_inside->get("Walls/walls_0005_Layer-6.png");
 	float length = spriteWallHorizontalBottom.getSpriteSize().x;
 	return roomSize * length;
 }
@@ -152,10 +152,18 @@ void RoomComponent::setRoomSize(glm::vec2 newSize) {
 
 const std::map<TileSetWalls, std::string> RoomComponent::TileSetWallsToString {
 		{TileSetWalls::WoodWalls, "Walls/Wood/"},
+		{TileSetWalls::BricksWalls, "Walls/Bricks/"},
+		{TileSetWalls::LightWoodWalls, "Walls/LightWood/"},
+		{TileSetWalls::StoneWalls, "Walls/Stone/"},
+		{TileSetWalls::ShogiWalls, "Walls/Shogi/"}
 };
 
 const std::map<TileSetFloor, std::string> RoomComponent::TileSetFloorToString{
-		{TileSetFloor::WoodFloor, "Floor/Floor1"},
+		{TileSetFloor::WoodFloor, "Floor/Floor5"},
+		{TileSetFloor::LightWoodFloor, "Floor/Floor1"},
+		{TileSetFloor::ShogiFloor, "Floor/Floor3"},
+		{TileSetFloor::StoneFloor, "Floor/Floor4"},
+		{TileSetFloor::BricksFloor, "Floor/Floor2"},
 };
 
 void RoomComponent::buildWalls() {
@@ -163,7 +171,6 @@ void RoomComponent::buildWalls() {
 	auto game = DreamGame::instance;
 
 	/*
-	*/
 	auto spriteWallHorizontalBottom = game->spriteAtlas_inside->get("Walls/walls_0005_Layer-6.png");
 	auto spriteWallHorizontalTop = game->spriteAtlas_inside->get("Walls/walls_0006_Layer-7.png");
 
@@ -174,9 +181,9 @@ void RoomComponent::buildWalls() {
 	auto spriteWallTopRight = game->spriteAtlas_inside->get("Walls/walls_0007_Layer-8.png");
 	auto spriteWallBottomLeft = game->spriteAtlas_inside->get("Walls/walls_0004_Layer-5.png");
 	auto spriteWallBottomRight = game->spriteAtlas_inside->get("Walls/walls_0009_Layer-10.png");
+	*/
 
-	// TODO: Change sprite names in json file
-	/*
+	
 	std::string wallString = TileSetWallsToString.at(tileSetWalls);
 
 	auto spriteWallHorizontalBottom = game->spriteAtlas_inside->get(wallString + "Bottom.png");
@@ -189,7 +196,7 @@ void RoomComponent::buildWalls() {
 	auto spriteWallTopRight = game->spriteAtlas_inside->get(wallString + "TopRight.png");
 	auto spriteWallBottomLeft = game->spriteAtlas_inside->get(wallString + "BottomLeft.png");
 	auto spriteWallBottomRight = game->spriteAtlas_inside->get(wallString + "BottomRight.png");
-	*/
+	
 
 	// Offset between center of corners and straight walls
 	// corner center is 170.5, horizontal center is 49.5, 170.5 - 49.5 = 121 offset
@@ -301,6 +308,7 @@ void RoomComponent::buildFloor() {
 	}
 }
 
+
 std::shared_ptr<GameObject> RoomComponent::spawnFloor(sre::Sprite spriteFloor, glm::vec2 pos) {
 	auto game = DreamGame::instance;
 
@@ -335,4 +343,16 @@ std::shared_ptr<GameObject> RoomComponent::spawnWall(sre::Sprite spriteWall, glm
 	//phys->initBox(b2_staticBody, s / game->physicsScale, { wall->getPosition().x / game->physicsScale, wall->getPosition().y / game->physicsScale }, 1);
 	
 	return wall;
+}
+
+
+
+void RoomComponent::onGui() {
+
+	if (DreamGame::instance->doDebugDraw) {
+		auto wallType = TileSetWallsToString.at(tileSetWalls); //get name
+		wallType.pop_back(); //remove last character(/) and then get string after "Walls/"ww 
+		DreamInspector::instance->updateRoomGui(gameObject->name, getRoomSize(), wallType.substr(6, -1)); 
+	}
+
 }

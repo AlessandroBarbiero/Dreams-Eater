@@ -3,14 +3,21 @@
 #include "GameObject.hpp"
 #include "sre/SpriteAtlas.hpp"
 
-// Insert wall set names
 enum TileSetWalls {
-	WoodWalls
+	WoodWalls,
+	BricksWalls,
+	LightWoodWalls,
+	StoneWalls,
+	ShogiWalls
 };
 
 // Insert floor names
 enum TileSetFloor {
-	WoodFloor
+	LightWoodFloor,
+	WoodFloor,
+	ShogiFloor,
+	StoneFloor,
+	BricksFloor
 };
 
 enum DoorPosition {

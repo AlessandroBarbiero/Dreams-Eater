@@ -15,6 +15,8 @@ public:
     void buildWalls();
     void buildFloor();
 
+    void onGui() override;
+
 private:
     std::vector<std::shared_ptr<GameObject>> roomObjects;
     glm::vec2 roomSize;

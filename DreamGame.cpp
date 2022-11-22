@@ -89,8 +89,26 @@ void DreamGame::init() {
     rSettings.name = "TestRoom";
     rSettings.position = {0,0};
     rSettings.size = { 7,7 };
-    rSettings.tileSetFloor = WoodFloor;
-    rSettings.tileSetWalls = WoodWalls;
+    
+    //rSettings.tileSetFloor = WoodFloor;
+    //rSettings.tileSetWalls = WoodWalls;
+
+    rSettings.tileSetFloor = BricksFloor;
+    rSettings.tileSetWalls = BricksWalls;
+
+    //rSettings.tileSetFloor = StoneFloor;
+    //rSettings.tileSetWalls = StoneWalls;
+
+    //rSettings.tileSetFloor = LightWoodFloor;
+    //rSettings.tileSetWalls = LightWoodWalls;
+
+    //rSettings.tileSetFloor = ShogiFloor;
+    //rSettings.tileSetWalls = ShogiWalls;
+     
+    
+    //
+
+
     rSettings.doors.push_back(Door{ false, TopLeft });
     rSettings.doors.push_back(Door{ false, TopRight });
     rSettings.doors.push_back(Door{ false, Bottom });
