@@ -3,7 +3,6 @@
 #include "GameObject.hpp"
 #include "PhysicsComponent.hpp"
 #include "EnemyController.hpp"
-#include "PlayerController.hpp"
 #include "DreamGame.hpp"
 
 EnemyController::EnemyController(GameObject* gameObject) : Component(gameObject) {
@@ -12,10 +11,8 @@ EnemyController::EnemyController(GameObject* gameObject) : Component(gameObject)
 
 void EnemyController::update(float deltaTime) {
 
-    if (stun) {
-        updateStunTimeout(deltaTime);
+    if (character->stun)
         return;
-    }
     
     glm::vec2 movement =  player->getPosition() - gameObject->getPosition();
     float distance = glm::length(movement);
@@ -27,41 +24,23 @@ void EnemyController::update(float deltaTime) {
             return;     // Range enemies don't go toward the player until the end
     }
 
-    movement = direction * speed;
+    movement = direction * character->speed;
     physics->setLinearVelocity(movement);
-  
 }
 
 void EnemyController::onGui()
 {
 }
 
-void EnemyController::updateStunTimeout(float deltaTime) {
-    stunTimeout -= deltaTime;
-    std::cout << stunTimeout << std::endl;
-    if (stunTimeout <= 0) {
-        stun = false;
-        stunTimeout = 0;
-    }
-}
-
-void EnemyController::stunned(float stunTimeout) {
-    this->stun = true;
-    this->stunTimeout += stunTimeout;
-}
-
-void EnemyController::stunned(bool stun) {
-    this->stun = stun;
-    if (stun)
-        stunTimeout += KNOCKBACK_TIME;
-
-}
-
 void EnemyController::onCollisionStart(PhysicsComponent* comp) {
     if (comp->getGameObject()->tag == Tag::PlayerBullet) {
         auto bullet = comp->getGameObject()->getComponent<BulletComponent>();
-        if (bullet->getKnockback() > 0)
-            stunned(true);
+        float knockback = bullet->getKnockback();
+        if (knockback > 0) {
+            character->stunned(true);
+            glm::vec2 direction = glm::normalize(gameObject->getPosition() - comp->getGameObject()->getPosition());
+            physics->addImpulse(direction * knockback);
+        }
     }
 }
 

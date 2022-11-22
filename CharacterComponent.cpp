@@ -7,12 +7,14 @@
 #include "SpriteComponent.hpp"
 #include "BulletComponent.hpp"
 #include "DreamInspector.hpp"
-#define KNOCKBACK_SCALE 100
+#define KNOCKBACK_SCALE 10
 
 CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameObject) {}
 
-
 void CharacterComponent::update(float deltaTime) {
+    if(stun)
+        updateStunTimeout(deltaTime);
+
     checkRateOfFire(deltaTime);
 
     if(useShootingKeys)
@@ -89,18 +91,6 @@ bool CharacterComponent::onKey(SDL_Event& event) {
     return false;
 }
 
-
-void CharacterComponent::onGui() {
-    if (gameObject->tag == Tag::Player)
-        setPlayerGui();
-    else
-        setEnemyGui();
-
-    if (DreamGame::instance->doDebugDraw) {
-        DreamInspector::instance->updateCharacterGui(gameObject->name,&hp, &armor, &damage, &rateOfFire, &shotSpeed, &knockback);
-    }
-}
-
 void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
     Tag myTag = gameObject->tag;
     Tag hisTag = comp->getGameObject()->tag;
@@ -119,57 +109,36 @@ void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
     }
 }
 
+void CharacterComponent::onCollisionEnd(PhysicsComponent* comp) {
+
+}
+
 void CharacterComponent::die() {
     gameObject->destroy();
     if (gameObject->tag == Tag::Player)
         DreamGame::instance->gameOver();
 }
 
-void CharacterComponent::setPlayerGui(){
-    auto r = sre::Renderer::instance;
-    auto winsize = r->getWindowSize();
-    
-    ImVec2 pos = {0,0};
 
-    ImGui::SetNextWindowPos(pos, ImGuiCond_Always, guiPivot);
-
-    ImGui::SetNextWindowSize(guiSize, ImGuiCond_Always);
-
-    bool* open = nullptr;
-
-    ImGui::Begin("#player", open, flags);
-
-    ImGui::Text("PLAYER");
-    ImGui::Text("Health: %.2f", hp);
-
-    ImGui::End();
-
-    
+void CharacterComponent::updateStunTimeout(float deltaTime) {
+    stunTimeout -= deltaTime;
+    if (stunTimeout <= 0) {
+        stun = false;
+        stunTimeout = 0;
+    }
 }
 
-void CharacterComponent::setEnemyGui(){
-    auto r = sre::Renderer::instance;
-    auto winsize = r->getWindowSize();
-
-    ImVec2 pos = { winsize.x - guiSize.x, 0 };
-
-    ImGui::SetNextWindowPos(pos, ImGuiCond_Always, guiPivot);
-
-    ImGui::SetNextWindowSize(guiSize, ImGuiCond_Always);
-   
-    bool* open = nullptr;
-
-    ImGui::Begin("#enemy", open, flags);
-
-    ImGui::Text("ENEMY");
-    ImGui::Text("Health: %.2f", hp);
-
-    ImGui::End();
+void CharacterComponent::stunned(float stunTimeout) {
+    this->stun = true;
+    this->stunTimeout += stunTimeout;
 }
 
-void CharacterComponent::onCollisionEnd(PhysicsComponent* comp) {
-
+void CharacterComponent::stunned(bool stun) {
+    this->stun = stun;
+    if (stun)
+        stunTimeout = KNOCKBACK_TIME;
 }
+
 
 // Shoot a bullet in the passed direction that is destroyed after it travels for range distance, this method is subjected to the stats:
 // - damage
@@ -203,22 +172,19 @@ void CharacterComponent::shot(glm::vec2 direction) {
 
     auto shotPhy = shot->addComponent<PhysicsComponent>();
     float radius = shotSprite.getSpriteSize().x * shotSprite.getScale().x / (2 * physicsScale);
-    float density = knockback > 0 ? (knockback * KNOCKBACK_SCALE) : 1.0f;
-    shotPhy->initCircle(b2_dynamicBody, radius, position, density);
+    shotPhy->initCircle(b2_dynamicBody, radius, position, 1);
     shotPhy->setLinearVelocity(direction * shotSpeed);
-    if (knockback <= 0)
-        shotPhy->setSensor(true);
+    shotPhy->setSensor(true);
 
 
     auto bullet = shot->addComponent<BulletComponent>();
     bullet->startingPosition = gameObject->getPosition();
     bullet->range = range;
     bullet->damage = damage;
-    bullet->knockback = knockback;
+    bullet->knockback = knockback * KNOCKBACK_SCALE;
     std::weak_ptr<BulletComponent> weakBullet = bullet;
     flyingProj.push(weakBullet);
     startShotCooldown();
-
 }
 
 void CharacterComponent::setShotSprite(const sre::Sprite& sprite) {
@@ -233,7 +199,57 @@ void CharacterComponent::startShotCooldown() {
 
 
 
+// %%%%%%%%%%%%%%%%% GUI %%%%%%%%%%%%%%%%%%%%%%%%
+
+void CharacterComponent::onGui() {
+    if (gameObject->tag == Tag::Player)
+        setPlayerGui();
+    else
+        setEnemyGui();
+
+    if (DreamGame::instance->doDebugDraw) {
+        DreamInspector::instance->updateCharacterGui(gameObject->name, &hp, &armor, &damage, &rateOfFire, &shotSpeed, &knockback);
+    }
+}
+
+void CharacterComponent::setPlayerGui() {
+    auto r = sre::Renderer::instance;
+    auto winsize = r->getWindowSize();
+
+    ImVec2 pos = { 0,0 };
+
+    ImGui::SetNextWindowPos(pos, ImGuiCond_Always, guiPivot);
+
+    ImGui::SetNextWindowSize(guiSize, ImGuiCond_Always);
+
+    bool* open = nullptr;
+
+    ImGui::Begin("#player", open, flags);
+
+    ImGui::Text("PLAYER");
+    ImGui::Text("Health: %.2f", hp);
+
+    ImGui::End();
 
 
+}
 
+void CharacterComponent::setEnemyGui() {
+    auto r = sre::Renderer::instance;
+    auto winsize = r->getWindowSize();
 
+    ImVec2 pos = { winsize.x - guiSize.x, 0 };
+
+    ImGui::SetNextWindowPos(pos, ImGuiCond_Always, guiPivot);
+
+    ImGui::SetNextWindowSize(guiSize, ImGuiCond_Always);
+
+    bool* open = nullptr;
+
+    ImGui::Begin("#enemy", open, flags);
+
+    ImGui::Text("ENEMY");
+    ImGui::Text("Health: %.2f", hp);
+
+    ImGui::End();
+}

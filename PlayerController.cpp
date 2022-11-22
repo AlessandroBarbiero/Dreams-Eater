@@ -1,7 +1,3 @@
-//
-// Created by Morten Nobel-Jørgensen on 19/10/2017.
-//
-
 #include <SDL_events.h>
 #include <iostream>
 #include <sre/Renderer.hpp>
@@ -10,19 +6,13 @@
 #include "PlayerController.hpp"
 #include "DreamGame.hpp"
 
-
-PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) {
-    
-}
+PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) { }
 
 void PlayerController::update(float deltaTime) {
 
-    if (stun) {
-        updateStunTimeout(deltaTime);
+    if (character->stun)
         return;
-    }
         
-      
     glm::vec2 movement{ 0,0 };
 
     if (up) 
@@ -36,31 +26,11 @@ void PlayerController::update(float deltaTime) {
     
     if (movement != glm::vec2(0)) {
         lastDirection = glm::normalize(movement);
-        playerPhysics->setLinearVelocity(lastDirection * speed);
+        playerPhysics->setLinearVelocity(lastDirection * character->speed);
     }
 
     if (shooting)
         character->shot(lastDirection);
-}
-
-void PlayerController::updateStunTimeout(float deltaTime) {
-    stunTimeout -= deltaTime;
-    if (stunTimeout <= 0) {
-        stun = false;
-        stunTimeout = 0;
-    }
-}
-
-void PlayerController::stunned(float stunTimeout) {
-    this->stun = true;
-    this->stunTimeout += stunTimeout;
-}
-
-void PlayerController::stunned(bool stun) {
-    this->stun = stun;
-    if (stun)
-        stunTimeout += KNOCKBACK_TIME;
-
 }
 
 bool PlayerController::onKey(SDL_Event& event) {
@@ -84,16 +54,15 @@ bool PlayerController::onKey(SDL_Event& event) {
 void PlayerController::onCollisionStart(PhysicsComponent* comp) {
     if (comp->getGameObject()->tag == Tag::EnemyBullet) {
         auto bullet = comp->getGameObject()->getComponent<BulletComponent>();
-        if (bullet->getKnockback() > 0)
-            stunned(true);
+        float knockback = bullet->getKnockback();
+        if (knockback > 0) {
+            character->stunned(true);
+            glm::vec2 direction = glm::normalize(gameObject->getPosition() - comp->getGameObject()->getPosition());
+            playerPhysics->addImpulse(direction * knockback);
+        }
     }
 }
 
 void PlayerController::onCollisionEnd(PhysicsComponent* comp) {
 
 }
-
-
-
-
-
