@@ -2,7 +2,7 @@
 
 {
 	"filename": "Floor/Floor1.png",
-	"frame": {"x":1088,"y":184,"w":128,"h":128},
+	"frame": {"x":1428,"y":182,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -10,7 +10,7 @@
 },
 {
 	"filename": "Floor/Floor2.png",
-	"frame": {"x":1216,"y":184,"w":128,"h":128},
+	"frame": {"x":1556,"y":182,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -18,7 +18,7 @@
 },
 {
 	"filename": "Floor/Floor3.png",
-	"frame": {"x":1344,"y":184,"w":128,"h":128},
+	"frame": {"x":1684,"y":182,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -26,7 +26,7 @@
 },
 {
 	"filename": "Floor/Floor4.png",
-	"frame": {"x":1472,"y":184,"w":128,"h":128},
+	"frame": {"x":1812,"y":182,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -34,7 +34,7 @@
 },
 {
 	"filename": "Floor/Floor5.png",
-	"frame": {"x":1600,"y":184,"w":128,"h":128},
+	"frame": {"x":0,"y":310,"w":128,"h":128},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":128},
@@ -42,7 +42,7 @@
 },
 {
 	"filename": "Walls/Bricks/Bottom.png",
-	"frame": {"x":0,"y":184,"w":353,"h":110},
+	"frame": {"x":340,"y":182,"w":353,"h":110},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":353,"h":110},
@@ -50,7 +50,7 @@
 },
 {
 	"filename": "Walls/Bricks/BottomLeft.png",
-	"frame": {"x":0,"y":1348,"w":353,"h":354},
+	"frame": {"x":792,"y":1332,"w":353,"h":354},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":353,"h":354},
@@ -58,7 +58,7 @@
 },
 {
 	"filename": "Walls/Bricks/BottomRight.png",
-	"frame": {"x":353,"y":1348,"w":354,"h":354},
+	"frame": {"x":1145,"y":1332,"w":354,"h":354},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":354,"h":354},
@@ -66,7 +66,7 @@
 },
 {
 	"filename": "Walls/Bricks/Left.png",
-	"frame": {"x":707,"y":1348,"w":110,"h":354},
+	"frame": {"x":1499,"y":1332,"w":110,"h":354},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":354},
@@ -74,7 +74,7 @@
 },
 {
 	"filename": "Walls/Bricks/Right.png",
-	"frame": {"x":1799,"y":995,"w":110,"h":353},
+	"frame": {"x":682,"y":1332,"w":110,"h":353},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":110,"h":353},
@@ -82,7 +82,7 @@
 },
 {
 	"filename": "Walls/Bricks/Top.png",
-	"frame": {"x":353,"y":184,"w":353,"h":110},
+	"frame": {"x":693,"y":182,"w":353,"h":110},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":353,"h":110},
@@ -90,7 +90,7 @@
 },
 {
 	"filename": "Walls/Bricks/TopLeft.png",
-	"frame": {"x":817,"y":1348,"w":353,"h":354},
+	"frame": {"x":1609,"y":1332,"w":353,"h":354},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":353,"h":354},
@@ -98,7 +98,7 @@
 },
 {
 	"filename": "Walls/Bricks/TopRight.png",
-	"frame": {"x":1170,"y":1348,"w":354,"h":354},
+	"frame": {"x":0,"y":1686,"w":354,"h":354},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":354,"h":354},
@@ -106,15 +106,15 @@
 },
 {
 	"filename": "Walls/LightWood/Bottom.png",
-	"frame": {"x":681,"y":85,"w":341,"h":99},
+	"frame": {"x":851,"y":83,"w":342,"h":99},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":99},
-	"sourceSize": {"w":341,"h":99}
+	"spriteSourceSize": {"x":0,"y":0,"w":342,"h":99},
+	"sourceSize": {"w":342,"h":99}
 },
 {
 	"filename": "Walls/LightWood/BottomLeft.png",
-	"frame": {"x":98,"y":654,"w":341,"h":341},
+	"frame": {"x":878,"y":650,"w":341,"h":341},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":341},
@@ -122,7 +122,7 @@
 },
 {
 	"filename": "Walls/LightWood/BottomRight.png",
-	"frame": {"x":439,"y":654,"w":341,"h":341},
+	"frame": {"x":1219,"y":650,"w":341,"h":341},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":341},
@@ -130,7 +130,7 @@
 },
 {
 	"filename": "Walls/LightWood/DarkDoor.png",
-	"frame": {"x":1743,"y":0,"w":45,"h":77},
+	"frame": {"x":1813,"y":0,"w":45,"h":77},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":77},
@@ -138,7 +138,7 @@
 },
 {
 	"filename": "Walls/LightWood/Floor.png",
-	"frame": {"x":838,"y":184,"w":250,"h":125},
+	"frame": {"x":1178,"y":182,"w":250,"h":125},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":125},
@@ -146,15 +146,15 @@
 },
 {
 	"filename": "Walls/LightWood/Left.png",
-	"frame": {"x":780,"y":654,"w":100,"h":341},
+	"frame": {"x":1795,"y":310,"w":99,"h":340},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":341},
-	"sourceSize": {"w":100,"h":341}
+	"spriteSourceSize": {"x":0,"y":0,"w":99,"h":340},
+	"sourceSize": {"w":99,"h":340}
 },
 {
 	"filename": "Walls/LightWood/LightDoor.png",
-	"frame": {"x":706,"y":184,"w":66,"h":122},
+	"frame": {"x":1046,"y":182,"w":66,"h":122},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":66,"h":122},
@@ -170,23 +170,23 @@
 },
 {
 	"filename": "Walls/LightWood/Right.png",
-	"frame": {"x":1072,"y":314,"w":99,"h":340},
+	"frame": {"x":1560,"y":650,"w":100,"h":341},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":99,"h":340},
-	"sourceSize": {"w":99,"h":340}
+	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":341},
+	"sourceSize": {"w":100,"h":341}
 },
 {
 	"filename": "Walls/LightWood/Top.png",
-	"frame": {"x":1022,"y":85,"w":342,"h":99},
+	"frame": {"x":1193,"y":83,"w":341,"h":99},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":342,"h":99},
-	"sourceSize": {"w":342,"h":99}
+	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":99},
+	"sourceSize": {"w":341,"h":99}
 },
 {
 	"filename": "Walls/LightWood/TopLeft.png",
-	"frame": {"x":1458,"y":995,"w":341,"h":342},
+	"frame": {"x":341,"y":1332,"w":341,"h":342},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":342},
@@ -194,7 +194,7 @@
 },
 {
 	"filename": "Walls/LightWood/TopRight.png",
-	"frame": {"x":880,"y":654,"w":341,"h":341},
+	"frame": {"x":1660,"y":650,"w":341,"h":341},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":341},
@@ -202,95 +202,95 @@
 },
 {
 	"filename": "Walls/Shogi/Bottom.png",
-	"frame": {"x":1315,"y":0,"w":214,"h":61},
+	"frame": {"x":1315,"y":0,"w":249,"h":71},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":214,"h":61},
-	"sourceSize": {"w":214,"h":61}
+	"spriteSourceSize": {"x":0,"y":0,"w":249,"h":71},
+	"sourceSize": {"w":249,"h":71}
 },
 {
 	"filename": "Walls/Shogi/BottomLeft.png",
-	"frame": {"x":0,"y":314,"w":214,"h":214},
+	"frame": {"x":431,"y":310,"w":249,"h":249},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":214,"h":214},
-	"sourceSize": {"w":214,"h":214}
+	"spriteSourceSize": {"x":0,"y":0,"w":249,"h":249},
+	"sourceSize": {"w":249,"h":249}
 },
 {
 	"filename": "Walls/Shogi/BottomRight.png",
-	"frame": {"x":214,"y":314,"w":214,"h":214},
+	"frame": {"x":680,"y":310,"w":249,"h":249},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":214,"h":214},
-	"sourceSize": {"w":214,"h":214}
+	"spriteSourceSize": {"x":0,"y":0,"w":249,"h":249},
+	"sourceSize": {"w":249,"h":249}
 },
 {
 	"filename": "Walls/Shogi/Door.png",
-	"frame": {"x":1524,"y":1348,"w":196,"h":380},
+	"frame": {"x":1570,"y":310,"w":131,"h":253},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":196,"h":380},
-	"sourceSize": {"w":196,"h":380}
+	"spriteSourceSize": {"x":0,"y":0,"w":131,"h":253},
+	"sourceSize": {"w":131,"h":253}
 },
 {
 	"filename": "Walls/Shogi/Floor.png",
-	"frame": {"x":1728,"y":184,"w":260,"h":130},
+	"frame": {"x":128,"y":310,"w":303,"h":151},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":260,"h":130},
-	"sourceSize": {"w":260,"h":130}
+	"spriteSourceSize": {"x":0,"y":0,"w":303,"h":151},
+	"sourceSize": {"w":303,"h":151}
 },
 {
 	"filename": "Walls/Shogi/Left.png",
-	"frame": {"x":428,"y":314,"w":62,"h":214},
+	"frame": {"x":929,"y":310,"w":72,"h":249},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":62,"h":214},
-	"sourceSize": {"w":62,"h":214}
+	"spriteSourceSize": {"x":0,"y":0,"w":72,"h":249},
+	"sourceSize": {"w":72,"h":249}
 },
 {
 	"filename": "Walls/Shogi/Right.png",
-	"frame": {"x":490,"y":314,"w":61,"h":214},
+	"frame": {"x":1001,"y":310,"w":71,"h":249},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":61,"h":214},
-	"sourceSize": {"w":61,"h":214}
+	"spriteSourceSize": {"x":0,"y":0,"w":71,"h":249},
+	"sourceSize": {"w":71,"h":249}
 },
 {
 	"filename": "Walls/Shogi/Top.png",
-	"frame": {"x":1529,"y":0,"w":214,"h":62},
+	"frame": {"x":1564,"y":0,"w":249,"h":72},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":214,"h":62},
-	"sourceSize": {"w":214,"h":62}
+	"spriteSourceSize": {"x":0,"y":0,"w":249,"h":72},
+	"sourceSize": {"w":249,"h":72}
 },
 {
 	"filename": "Walls/Shogi/TopLeft.png",
-	"frame": {"x":551,"y":314,"w":213,"h":214},
+	"frame": {"x":1072,"y":310,"w":249,"h":249},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":213,"h":214},
-	"sourceSize": {"w":213,"h":214}
+	"spriteSourceSize": {"x":0,"y":0,"w":249,"h":249},
+	"sourceSize": {"w":249,"h":249}
 },
 {
 	"filename": "Walls/Shogi/TopRight.png",
-	"frame": {"x":764,"y":314,"w":214,"h":214},
+	"frame": {"x":1321,"y":310,"w":249,"h":250},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":214,"h":214},
-	"sourceSize": {"w":214,"h":214}
+	"spriteSourceSize": {"x":0,"y":0,"w":249,"h":250},
+	"sourceSize": {"w":249,"h":250}
 },
 {
 	"filename": "Walls/Stone/Bottom.png",
-	"frame": {"x":0,"y":85,"w":341,"h":94},
+	"frame": {"x":170,"y":83,"w":340,"h":94},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":94},
-	"sourceSize": {"w":341,"h":94}
+	"spriteSourceSize": {"x":0,"y":0,"w":340,"h":94},
+	"sourceSize": {"w":340,"h":94}
 },
 {
 	"filename": "Walls/Stone/BottomLeft.png",
-	"frame": {"x":1221,"y":654,"w":340,"h":341},
+	"frame": {"x":0,"y":991,"w":340,"h":341},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":340,"h":341},
@@ -298,7 +298,7 @@
 },
 {
 	"filename": "Walls/Stone/BottomRight.png",
-	"frame": {"x":1561,"y":654,"w":341,"h":341},
+	"frame": {"x":340,"y":991,"w":341,"h":341},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":341},
@@ -306,7 +306,7 @@
 },
 {
 	"filename": "Walls/Stone/Door.png",
-	"frame": {"x":1788,"y":0,"w":39,"h":83},
+	"frame": {"x":1858,"y":0,"w":39,"h":83},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":39,"h":83},
@@ -314,7 +314,7 @@
 },
 {
 	"filename": "Walls/Stone/Left.png",
-	"frame": {"x":1902,"y":654,"w":94,"h":341},
+	"frame": {"x":681,"y":991,"w":94,"h":341},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":341},
@@ -330,7 +330,7 @@
 },
 {
 	"filename": "Walls/Stone/Right.png",
-	"frame": {"x":0,"y":995,"w":94,"h":341},
+	"frame": {"x":775,"y":991,"w":94,"h":341},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":341},
@@ -338,15 +338,15 @@
 },
 {
 	"filename": "Walls/Stone/Top.png",
-	"frame": {"x":341,"y":85,"w":340,"h":94},
+	"frame": {"x":510,"y":83,"w":341,"h":94},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":340,"h":94},
-	"sourceSize": {"w":340,"h":94}
+	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":94},
+	"sourceSize": {"w":341,"h":94}
 },
 {
 	"filename": "Walls/Stone/TopLeft.png",
-	"frame": {"x":1171,"y":314,"w":341,"h":340},
+	"frame": {"x":0,"y":650,"w":341,"h":340},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":340},
@@ -354,7 +354,7 @@
 },
 {
 	"filename": "Walls/Stone/TopRight.png",
-	"frame": {"x":94,"y":995,"w":341,"h":341},
+	"frame": {"x":869,"y":991,"w":341,"h":341},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":341},
@@ -362,7 +362,7 @@
 },
 {
 	"filename": "Walls/Wood/Bottom.png",
-	"frame": {"x":1364,"y":85,"w":341,"h":99},
+	"frame": {"x":1534,"y":83,"w":341,"h":99},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":99},
@@ -370,7 +370,7 @@
 },
 {
 	"filename": "Walls/Wood/BottomLeft.png",
-	"frame": {"x":435,"y":995,"w":341,"h":341},
+	"frame": {"x":1210,"y":991,"w":341,"h":341},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":341},
@@ -378,7 +378,7 @@
 },
 {
 	"filename": "Walls/Wood/BottomRight.png",
-	"frame": {"x":1512,"y":314,"w":340,"h":340},
+	"frame": {"x":341,"y":650,"w":340,"h":340},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":340,"h":340},
@@ -386,7 +386,7 @@
 },
 {
 	"filename": "Walls/Wood/Door.png",
-	"frame": {"x":772,"y":184,"w":66,"h":123},
+	"frame": {"x":1112,"y":182,"w":66,"h":123},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":66,"h":123},
@@ -394,7 +394,7 @@
 },
 {
 	"filename": "Walls/Wood/HorizontalWall.png",
-	"frame": {"x":1827,"y":0,"w":170,"h":85},
+	"frame": {"x":0,"y":83,"w":170,"h":85},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":170,"h":85},
@@ -402,7 +402,7 @@
 },
 {
 	"filename": "Walls/Wood/Left.png",
-	"frame": {"x":1852,"y":314,"w":99,"h":340},
+	"frame": {"x":681,"y":650,"w":99,"h":340},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":99,"h":340},
@@ -418,7 +418,7 @@
 },
 {
 	"filename": "Walls/Wood/Right.png",
-	"frame": {"x":0,"y":654,"w":98,"h":340},
+	"frame": {"x":780,"y":650,"w":98,"h":340},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":98,"h":340},
@@ -426,7 +426,7 @@
 },
 {
 	"filename": "Walls/Wood/Top.png",
-	"frame": {"x":1705,"y":85,"w":340,"h":99},
+	"frame": {"x":0,"y":182,"w":340,"h":99},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":340,"h":99},
@@ -434,7 +434,7 @@
 },
 {
 	"filename": "Walls/Wood/TopLeft.png",
-	"frame": {"x":776,"y":995,"w":341,"h":341},
+	"frame": {"x":1551,"y":991,"w":341,"h":341},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":341},
@@ -442,7 +442,7 @@
 },
 {
 	"filename": "Walls/Wood/TopRight.png",
-	"frame": {"x":1117,"y":995,"w":341,"h":341},
+	"frame": {"x":0,"y":1332,"w":341,"h":341},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":341,"h":341},
@@ -450,7 +450,7 @@
 },
 {
 	"filename": "Walls/Wood/VerticalWall.png",
-	"frame": {"x":978,"y":314,"w":94,"h":265},
+	"frame": {"x":1701,"y":310,"w":94,"h":265},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":94,"h":265},
@@ -463,6 +463,6 @@
 	"format": "RGBA8888",
 	"size": {"w":2048,"h":2048},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:04f15b51803b77da0503e0f362ec70d3:83ff77c837b8f8c0d90dad21dd721de3:85e24cf66afcac0692dcc5ad399ad776$"
+	"smartupdate": "$TexturePacker:SmartUpdate:515636a3609598ab31ad750676998fdc:5af2bb0d592779578effdad42b73c470:85e24cf66afcac0692dcc5ad399ad776$"
 }
 }

@@ -90,21 +90,21 @@ void DreamGame::init() {
     rSettings.position = {0,0};
     rSettings.size = { 7,7 };
     
-    //rSettings.tileSetFloor = WoodFloor;
-    //rSettings.tileSetWalls = WoodWalls;
+    //rSettings.tileSetFloor = WoodFloor; 
+    //rSettings.tileSetWalls = WoodWalls; 
 
     rSettings.tileSetFloor = BricksFloor;
-    rSettings.tileSetWalls = BricksWalls;
+    rSettings.tileSetWalls = BricksWalls; //"hole" problem
 
-    //rSettings.tileSetFloor = StoneFloor;
+    //rSettings.tileSetFloor = StoneFloor; 
     //rSettings.tileSetWalls = StoneWalls;
 
     //rSettings.tileSetFloor = LightWoodFloor;
     //rSettings.tileSetWalls = LightWoodWalls;
 
-    //rSettings.tileSetFloor = ShogiFloor;
+    //rSettings.tileSetFloor = ShogiFloor; //scaling problem
     //rSettings.tileSetWalls = ShogiWalls;
-     
+    
     
     //
 
