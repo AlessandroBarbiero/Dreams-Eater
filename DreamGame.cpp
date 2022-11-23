@@ -13,7 +13,7 @@
 using namespace std;
 using namespace sre;
 
-const glm::vec2 DreamGame::windowSize(600, 600);
+const glm::vec2 DreamGame::windowSize(1200, 700);
 
 DreamGame* DreamGame::instance = nullptr;
 

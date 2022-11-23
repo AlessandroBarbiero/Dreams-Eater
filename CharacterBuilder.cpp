@@ -4,6 +4,7 @@
 #include "PhysicsComponent.hpp"
 #include "EnemyController.hpp"
 #include "CharacterComponent.hpp"
+#include "SpriteAnimationComponent.hpp"
 
 
 std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settings) {
@@ -16,7 +17,8 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     player->setPosition(settings.position);
 
     auto spriteComp = player->addComponent<SpriteComponent>();
-    auto sprite = spriteAtlas_baseWraith()->get("Idle/0.png");
+    auto spriteAtlas = spriteAtlas_baseWraith();
+    auto sprite = spriteAtlas->get("Idle/0.png");
     sprite.setOrderInBatch(Depth::Player);
     spriteComp->setSprite(sprite);
 
@@ -56,6 +58,15 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerController->keyRight = settings.keybinds.right;
     playerController->keyShot = settings.keybinds.shot;
 
+    auto animation = player->addComponent<SpriteAnimationComponent>();
+    std::vector<sre::Sprite> spriteAnim(12);
+    std::string spriteName = "Idle/";
+    for (int i = 0; i < spriteAnim.size(); i++) {
+        spriteAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+    }
+    animation->setSprites(spriteAnim);
+    animation->setAnimationTime(0.1f);
+
     return player;
 }
 
@@ -70,7 +81,8 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemy->setPosition(settings.position);
 
     auto spriteComp = enemy->addComponent<SpriteComponent>();
-    auto sprite = spriteAtlas_baseWizard()->get("Idle/0.png");
+    auto spriteAtlas = spriteAtlas_baseWizard();
+    auto sprite = spriteAtlas->get("Idle/0.png");
     //Set the Enemy sprite to be on top of the background but behind the player
     sprite.setOrderInBatch(Depth::Enemy);
     sprite.setScale(glm::vec2(0.9f));
@@ -100,6 +112,17 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemyController->physics = physics;
     enemyController->player = settings.player;
     enemyController->idealDistance = settings.idealDistance * physicsScale;
+
+    auto animation = enemy->addComponent<SpriteAnimationComponent>();
+    std::vector<sre::Sprite> spriteAnim(5);
+    std::string spriteName = "Idle/";
+    for (int i = 0; i < spriteAnim.size(); i++) {
+        sre::Sprite animSpr = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        animSpr.setScale(glm::vec2(0.9f));
+        spriteAnim[i] = animSpr;
+    }
+    animation->setSprites(spriteAnim);
+    animation->setAnimationTime(0.2f);
 
     return enemy;
 }
