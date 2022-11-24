@@ -23,7 +23,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     spriteComp->setSprite(sprite);
 
     auto playerPhysics = player->addComponent<PhysicsComponent>();
-    float radius = (sprite.getSpriteSize().x / 2) / physicsScale;
+    float radius = (sprite.getSpriteSize().x / 2.0f) / physicsScale;
     playerPhysics->initCircle(b2_dynamicBody, radius, player->getPosition(), 1);
     playerPhysics->getBody()->SetLinearDamping(5.0f);
     playerPhysics->fixRotation();
@@ -57,12 +57,13 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerController->keyLeft = settings.keybinds.left;
     playerController->keyRight = settings.keybinds.right;
     playerController->keyShot = settings.keybinds.shot;
-
+     
     auto animation = player->addComponent<SpriteAnimationComponent>();
     std::vector<sre::Sprite> spriteAnim(12);
     std::string spriteName = "Idle/";
     for (int i = 0; i < spriteAnim.size(); i++) {
         spriteAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        spriteAnim[i].setOrderInBatch(Depth::Player);
     }
     animation->setSprites(spriteAnim);
     animation->setAnimationTime(0.1f);
@@ -120,6 +121,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
         sre::Sprite animSpr = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
         animSpr.setScale(glm::vec2(0.9f));
         spriteAnim[i] = animSpr;
+        spriteAnim[i].setOrderInBatch(Depth::Enemy);
     }
     animation->setSprites(spriteAnim);
     animation->setAnimationTime(0.2f);
