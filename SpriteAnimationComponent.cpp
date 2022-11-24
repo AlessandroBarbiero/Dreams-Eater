@@ -2,6 +2,7 @@
 #include "GameObject.hpp"
 #include <memory>
 #include "DreamGame.hpp"
+#include "DreamInspector.hpp";
 
 SpriteAnimationComponent::SpriteAnimationComponent(GameObject *gameObject) : Component(gameObject) {}
 
@@ -34,8 +35,6 @@ void SpriteAnimationComponent::setAnimationTime(float animationTime) {
 void SpriteAnimationComponent::onGui() {
     std::string name = gameObject->name;
     if (DreamGame::instance->doDebugDraw) {
-        if (ImGui::CollapsingHeader(name.c_str())) {
-            ImGui::DragFloat(name.insert(0, "AnimationTime##").c_str(), &animationTime, 0.05f, 0.05f, 5);
-        }
+        DreamInspector::instance->updateAnimationGui(gameObject->name, &animationTime);
     }
 }

@@ -18,6 +18,8 @@ public:
 
     void updateSceneObjectsSize(int size);
 
+    void DreamInspector::updateAnimationGui(std::string name, float* animationTime);
+
     static DreamInspector* instance;
 
 private:

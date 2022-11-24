@@ -29,8 +29,11 @@ void DreamInspector::updateRoomGui(std::string name, glm::vec2 roomSize, std::st
 }
 
 void DreamInspector::updateSceneObjectsSize(int size){
-    ImGui::SetNextWindowPos(ImVec2(sre::Renderer::instance->getWindowSize().x / 2 - 100, .0f));
-    ImGui::SetNextWindowSize(ImVec2(200, 500));
-
     ImGui::Text("TOTAL GAME OBJECTS: %i", size);
+}
+
+void DreamInspector::updateAnimationGui(std::string name, float* animationTime) {
+    if (ImGui::CollapsingHeader(name.append(" Animation##sprite").c_str())) {
+        ImGui::DragFloat(name.insert(0, "AnimationTime##").c_str(), animationTime, 0.05f, 0.05f, 5);
+    }
 }
