@@ -197,28 +197,36 @@ void RoomComponent::buildWalls() {
 	auto spriteWallBottomLeft = game->spriteAtlas_inside->get(wallString + "BottomLeft.png");
 	auto spriteWallBottomRight = game->spriteAtlas_inside->get(wallString + "BottomRight.png");
 	
+	// Offsets are used for positioning
+	int wallWidth = spriteWallHorizontalBottom.getSpriteSize().y;
+	int offsetWidth = wallWidth / 2.0f;
+	int wallLength = spriteWallHorizontalBottom.getSpriteSize().x;
+	int offsetLength = wallLength / 2.0f;
+	std::cout << "wallLength: " << wallLength << std::endl;
 
-	// Offset between center of corners and straight walls
-	// corner center is 170.5, horizontal center is 49.5, 170.5 - 49.5 = 121 offset
-	int offset = (spriteWallBottomLeft.getSpriteSize().y / 2) - (spriteWallHorizontalBottom.getSpriteSize().y / 2);
+	// Calculate dimensions
+	auto roomSizePixels = getRoomSizeInPixels();
+	glm::vec2 bottomLeft = { -(roomSizePixels.x / 2.0f), -(roomSizePixels.y / 2.0f) };
+	glm::vec2 bottomRight = { roomSizePixels.x / 2.0f, -(roomSizePixels.y / 2.0f) };
+	glm::vec2 topRight = { roomSizePixels.x / 2.0f, roomSizePixels.y / 2.0f };
+	glm::vec2 topLeft = { -(roomSizePixels.x / 2.0f), roomSizePixels.y / 2.0f };
 	
-	//std::cout << offset << std::endl;
 
 	// Bottom Left corner
-	auto position = glm::vec2(0, 0);
-	go->children.push_back(spawnWall(spriteWallBottomLeft, glm::vec2(0,0)));
+	auto position = bottomLeft + glm::vec2(spriteWallBottomLeft.getSpriteSize().x / 2.0f, spriteWallBottomLeft.getSpriteSize().y / 2.0f);
+	go->addChild(spawnWall(spriteWallBottomLeft, position).get());
 
 	// Bottom Right corner
-	position = glm::vec2((roomSize.x - 1) * spriteWallHorizontalBottom.getSpriteSize().x, 0);
-	go->children.push_back(spawnWall(spriteWallBottomRight, position));
+	position = bottomRight + glm::vec2(-spriteWallBottomRight.getSpriteSize().x / 2.0f, spriteWallBottomRight.getSpriteSize().y / 2.0f);
+	go->addChild(spawnWall(spriteWallBottomRight, position).get());
 
 	// Top Left corner
-	position = glm::vec2(0, (roomSize.y - 1) * spriteWallVerticalLeft.getSpriteSize().y);
-	go->children.push_back(spawnWall(spriteWallTopLeft, position));
+	position = topLeft + glm::vec2(spriteWallTopLeft.getSpriteSize().x / 2.0f, -spriteWallTopLeft.getSpriteSize().y / 2.0f);
+	go->addChild(spawnWall(spriteWallTopLeft, position).get());
 
 	// Top Right corner
-	position = glm::vec2((roomSize.x - 1) * spriteWallHorizontalBottom.getSpriteSize().x, (roomSize.y - 1) * spriteWallVerticalLeft.getSpriteSize().y);
-	go->children.push_back(spawnWall(spriteWallTopRight, position));
+	position = topRight + glm::vec2(-spriteWallTopRight.getSpriteSize().x / 2.0f, -spriteWallTopRight.getSpriteSize().y / 2.0f);
+	go->addChild(spawnWall(spriteWallTopRight, position).get());
 
 
 	int skips[4][2] = { {0,0}, {0,0}, {0,0}, {0,0} };
@@ -236,16 +244,16 @@ void RoomComponent::buildWalls() {
 	{
 		// Bottom Wall
 		if (x != skipBottom[0] && x != skipBottom[1]) {
-			auto position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x, -offset);
-			go->children.push_back(spawnWall(spriteWallHorizontalBottom, position));
+			position = bottomLeft + glm::vec2(x * wallLength + offsetLength, offsetWidth);
+			go->addChild(spawnWall(spriteWallHorizontalBottom, position).get());
 		}
 
 		// Top Wall
 		int y = roomSize.y - 1;
 
 		if (x != skipTop[0] && x != skipTop[1]) {
-			position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x, y * spriteWallVerticalLeft.getSpriteSize().y + offset);
-			go->children.push_back(spawnWall(spriteWallHorizontalTop, position));
+			position = topLeft + glm::vec2(x * wallLength + offsetLength, -offsetWidth);
+			go->addChild(spawnWall(spriteWallHorizontalTop, position).get());
 		}
 	}
 	
@@ -254,27 +262,27 @@ void RoomComponent::buildWalls() {
 	{
 		// Left Wall
 		if (y != skipLeft[0] && y != skipLeft[1]) {
-			auto position = glm::vec2(-offset, y * spriteWallVerticalLeft.getSpriteSize().y);
-			go->children.push_back(spawnWall(spriteWallVerticalLeft, position));
+			position = bottomLeft + glm::vec2(offsetWidth, y * wallLength + offsetLength);
+			go->addChild(spawnWall(spriteWallVerticalLeft, position).get());
 		}
 
 		// Right Wall
 		int x = roomSize.x - 1;
 		if (y != skipRight[0] && y != skipRight[1]) {
-			position = glm::vec2(x * spriteWallHorizontalBottom.getSpriteSize().x + offset, y * spriteWallVerticalLeft.getSpriteSize().y);
-			go->children.push_back(spawnWall(spriteWallVerticalRight, position));
+			position = bottomRight + glm::vec2(-offsetWidth, y * wallLength + offsetLength);
+			go->addChild(spawnWall(spriteWallVerticalRight, position).get());
 		}
 	}
 
-	getGameObject()->setPosition(glm::vec2( (roomSize.x-1)* spriteWallHorizontalBottom.getSpriteSize().x / 2, (roomSize.y-1)* spriteWallVerticalLeft.getSpriteSize().y / 2));
+	//getGameObject()->setPosition(glm::vec2( (roomSize.x-1)* spriteWallHorizontalBottom.getSpriteSize().x / 2, (roomSize.y-1)* spriteWallVerticalLeft.getSpriteSize().y / 2));
 	// Collision
 	auto size = glm::vec2(getRoomSizeInPixels().x - 198, getRoomSizeInPixels().y - 198) / game->physicsScale;
 	auto center = getGameObject()->getPosition() / game->physicsScale;
 	b2Vec2 points[4];
-	glm::vec2 bottomLeft =	glm::vec2(center.x - (size.x/2), center.y - (size.y/2));
-	glm::vec2 bottomRight = glm::vec2(center.x + (size.x/2), center.y - (size.y/2));
-	glm::vec2 topRight =	glm::vec2(center.x + (size.x/2), center.y + (size.y/2));
-	glm::vec2 topLeft =		glm::vec2(center.x - (size.x/2), center.y + (size.y/2));
+	bottomLeft = glm::vec2(center.x - (size.x / 2), center.y - (size.y / 2));
+	bottomRight = glm::vec2(center.x + (size.x / 2), center.y - (size.y / 2));
+	topRight = glm::vec2(center.x + (size.x / 2), center.y + (size.y / 2));
+	topLeft = glm::vec2(center.x - (size.x / 2), center.y + (size.y / 2));
 
 	points[0].Set(bottomLeft.x, bottomLeft.y); // bottom left
 	points[1].Set(bottomRight.x, bottomRight.y); // bottom right
@@ -283,7 +291,7 @@ void RoomComponent::buildWalls() {
 
 	getGameObject()->getComponent<PhysicsComponent>()->initChain(b2_staticBody, points, 4, center / game->physicsScale, 1);
 
-	game->camera->getCamera().setOrthographicProjection((roomSize.x) * spriteWallHorizontalBottom.getSpriteSize().x/2, -1, 1); // Fit room width to window
+	game->camera->getCamera().setOrthographicProjection((roomSize.x) * wallLength / 2, -1, 1); // Fit room width to window
 }
 
 void RoomComponent::buildFloor() {
@@ -292,18 +300,24 @@ void RoomComponent::buildFloor() {
 
 	std::string floorString = TileSetFloorToString.at(tileSetFloor);
 	auto spriteFloor = game->spriteAtlas_inside->get(floorString + ".png");
+	
+	std::string wallString = TileSetWallsToString.at(tileSetWalls);
+	auto spriteWallHorizontalBottom = game->spriteAtlas_inside->get(wallString + "Bottom.png");
+	int wallLength = spriteWallHorizontalBottom.getSpriteSize().x;
 
-	//roomObjects.push_back(spawnFloor(spriteFloor, (roomSize.x-1)/2, (roomSize.y-1)/2));
+	auto roomSizePixels = getRoomSizeInPixels();
+	glm::vec2 bottomLeft = { -(roomSizePixels.x / 2.0f), -(roomSizePixels.y / 2.0f) };
 
-	auto horizontal = roomSize.x * 341;
-	auto vertical = roomSize.y * 341;
+	// Wall length is 341 pixels per segment
+	auto horizontal = roomSize.x * wallLength;
+	auto vertical = roomSize.y * wallLength;
 
 	auto floorSize = glm::vec2(horizontal / spriteFloor.getSpriteSize().x, vertical / spriteFloor.getSpriteSize().y);
 	
 	for (int x = 0; x < floorSize.x; x++) {
 		for (int y = 0; y < floorSize.y; y++) {
-			auto position = glm::vec2(x * spriteFloor.getSpriteSize().x - 170.5f, y * spriteFloor.getSpriteSize().y - 170.5f);
-			go->children.push_back(spawnFloor(spriteFloor, position));
+			auto position = bottomLeft + glm::vec2(x * spriteFloor.getSpriteSize().x + spriteFloor.getSpriteSize().x/2, y * spriteFloor.getSpriteSize().y + spriteFloor.getSpriteSize().y/2);
+			go->addChild(spawnFloor(spriteFloor, position).get());
 		}
 	}
 }

@@ -44,8 +44,11 @@ public:
 
     const std::vector<std::shared_ptr<Component>>& getComponents();
 
-    std::shared_ptr<GameObject> parent;
-    std::vector<std::shared_ptr<GameObject>> children;
+    GameObject* parent;
+    std::vector<GameObject*> children;
+
+    void addChild(GameObject* child);
+    void removeChild(GameObject* child);
 
     std::string name = "_";
     Tag tag = Tag::Empty;

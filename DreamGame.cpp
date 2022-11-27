@@ -112,6 +112,8 @@ void DreamGame::init() {
     rSettings.doors.push_back(Door{ false, TopLeft });
     rSettings.doors.push_back(Door{ false, TopRight });
     rSettings.doors.push_back(Door{ false, Bottom });
+    rSettings.doors.push_back(Door{ false, Left });
+    rSettings.doors.push_back(Door{ false, Right });
     auto testRoom = RoomBuilder::createRoom(rSettings);
     camera->setFollowObject(testRoom, glm::vec2(0, 0));
     

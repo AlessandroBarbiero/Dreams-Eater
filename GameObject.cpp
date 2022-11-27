@@ -2,6 +2,7 @@
 #include <cassert>
 #include <algorithm>
 #include "Component.hpp"
+#include <iostream>
 
 GameObject::~GameObject(){
     // remove reference to this in components
@@ -10,6 +11,9 @@ GameObject::~GameObject(){
     }
     for (auto& c : children) {
         c->parent = nullptr;
+    }
+    if (parent != nullptr) {
+        parent->removeChild(this);
     }
 }
 
@@ -52,6 +56,21 @@ void GameObject::update(float deltaTime) {
 const std::vector<std::shared_ptr<Component>> &GameObject::getComponents() {
     return components;
 }
+
+void GameObject::addChild(GameObject* child) {
+    if (child->parent != nullptr) {
+        std::cout << "Reparenting" << std::endl;
+        child->parent->removeChild(child);
+    }
+    children.push_back(child);
+    child->parent = this;
+}
+
+void GameObject::removeChild(GameObject* child) {
+    children.erase(std::remove(children.begin(), children.end(), child), children.end());
+    child->parent = nullptr;
+}
+
 
 void GameObject::destroy() {
     destroyed = true;
