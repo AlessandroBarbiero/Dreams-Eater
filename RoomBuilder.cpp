@@ -14,6 +14,8 @@ std::shared_ptr<GameObject> RoomBuilder::createRoom(RoomSettings settings) {
     auto room = roomObject->addComponent<RoomComponent>();
     room->setRoomSize(settings.size);
 
+    room->roomType = settings.roomType;
+
     room->tileSetWalls = settings.tileSetWalls;
     room->tileSetFloor = settings.tileSetFloor;
 

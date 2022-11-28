@@ -73,6 +73,16 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
     DreamGame::instance->registerPhysicsComponent(this);
 }
 
+// Only works for circles
+void PhysicsComponent::setScale(float scale) {
+    if (fixture != nullptr) {
+        auto shape = fixture->GetShape();
+        if (circle != nullptr) {
+            circle->m_radius *= scale;
+        }
+    }
+}
+
 void PhysicsComponent::setRadius(float radius) {
     if (fixture != nullptr) {
         fixture->GetShape()->m_radius = radius;

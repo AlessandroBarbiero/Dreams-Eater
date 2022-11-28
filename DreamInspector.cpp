@@ -9,7 +9,7 @@ DreamInspector::DreamInspector(){
     instance = this;
 }
 
-void DreamInspector::updateCharacterGui(std::string name, float* hp, float* armor, float* damage, float* rateOfFire, float* shotSpeed, float* knockback) {
+void DreamInspector::updateCharacterGui(std::string name, float* hp, float* armor, float* damage, float* rateOfFire, float* shotSpeed, float* knockback, GameObject* go) {
 
     if (ImGui::CollapsingHeader(name.c_str())) {
         ImGui::DragFloat(name.insert(0, "Hp##").c_str(), hp, 0.1f, 0, 5);
@@ -18,6 +18,14 @@ void DreamInspector::updateCharacterGui(std::string name, float* hp, float* armo
         ImGui::DragFloat(name.insert(0, "Rate of Fire##").c_str(), rateOfFire, 0.1f, 0, 10);
         ImGui::DragFloat(name.insert(0, "Shoot Speed##").c_str(), shotSpeed, 0.1f, 0, 10);
         ImGui::DragFloat(name.insert(0, "Knockback##").c_str(), knockback, 0.1f, 0, 10);
+        //ImGui::DragFloat(name.insert(0, "Scale##").c_str(), scale, 0.1f, 0, 10);
+        ImGui::Text("Scale: %.2f", go->getScale());
+        if (ImGui::Button("Scale+", { 100,50 })) {
+            go->setScale(go->getScale() + 0.1f);
+        }
+        if (ImGui::Button("Scale-", { 100,50 })) {
+            go->setScale(go->getScale() - 0.1f);
+        }
     }
 }
 

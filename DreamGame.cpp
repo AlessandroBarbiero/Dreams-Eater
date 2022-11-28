@@ -9,6 +9,7 @@
 #include "RoomComponent.hpp"
 #include "PlayerController.hpp"
 #include "CharacterBuilder.hpp"
+#include "LevelBuilder.hpp"
 
 using namespace std;
 using namespace sre;
@@ -25,6 +26,9 @@ DreamGame::DreamGame()
     r.init()
         .withSdlInitFlags(SDL_INIT_EVERYTHING)
         .withSdlWindowFlags(SDL_WINDOW_OPENGL);
+
+    time_t t;   // random seed based on time
+    srand((unsigned)time(&t));
 
     init();
 
@@ -68,12 +72,14 @@ void DreamGame::init() {
     pSettings.knockback = 1.0f;
     auto player = CharacterBuilder::createPlayer(pSettings);
 
+    /*
     EnemySettings eSettings;
-    eSettings.position = glm::vec2(15, 15);
+    eSettings.position = glm::vec2(10, 10);
     eSettings.player = player;
     eSettings.speed = 2.0f;
     eSettings.knockback = 1.0f;
     CharacterBuilder::createEnemy(eSettings);
+    */
 
     // Test room
     /*
@@ -108,15 +114,30 @@ void DreamGame::init() {
     rSettings.tileSetFloor = WoodFloor;
     rSettings.tileSetWalls = WoodWalls;
 
+    rSettings.roomType = BossRoom;
 
-    rSettings.doors.push_back(Door{ false, TopLeft });
-    rSettings.doors.push_back(Door{ false, TopRight });
+    rSettings.doors.push_back(Door{ false, Top });
     rSettings.doors.push_back(Door{ false, Bottom });
     rSettings.doors.push_back(Door{ false, Left });
     rSettings.doors.push_back(Door{ false, Right });
-    auto testRoom = RoomBuilder::createRoom(rSettings);
-    camera->setFollowObject(testRoom, glm::vec2(0, 0));
+    //auto testRoom = RoomBuilder::createRoom(rSettings);
+
+    auto testLevel = Level();
+
+    testLevel.name = "test";
+    testLevel.difficulty = 1;
+    testLevel.player = player;
+    testLevel.roomSettings.push_back(rSettings);
+    testLevel.roomEntered.push_back(false);
+    testLevel.rooms = 1;
+    testLevel.startRoom = 0;
+
+    testLevel.loadRoom(0);
     
+    camera->setFollowObject(testLevel.currentRoom, glm::vec2(0, 0));
+    // Fit room width to window
+
+    camera->getCamera().setOrthographicProjection(testLevel.currentRoom->getComponent<RoomComponent>()->getRoomSizeInPixels().x / 2.0f, -1, 1); 
 }
 
 void DreamGame::gameOver() {
@@ -232,6 +253,11 @@ std::shared_ptr<GameObject> DreamGame::createGameObject() {
     return obj;
 }
 
+std::shared_ptr<GameObject> DreamGame::reactivateGameObject(std::shared_ptr<GameObject> obj) {
+    obj->destroyed = false;
+    sceneObjects.push_back(obj);
+    return obj;
+}
 void DreamGame::updatePhysics() {
 
     const int positionIterations = 4;

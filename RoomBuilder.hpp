@@ -5,19 +5,19 @@
 
 enum TileSetWalls {
 	WoodWalls,
-	BricksWalls,
 	LightWoodWalls,
+	BricksWalls,
 	StoneWalls,
 	ShogiWalls
 };
 
 // Insert floor names
 enum TileSetFloor {
-	LightWoodFloor,
 	WoodFloor,
-	ShogiFloor,
+	LightWoodFloor,
+	BricksFloor,
 	StoneFloor,
-	BricksFloor
+	ShogiFloor
 };
 
 enum DoorPosition {
@@ -35,10 +35,24 @@ enum DoorPosition {
 	RightBottom
 };
 
+enum RoomType {
+	EnemyRoom,
+	PowerUpRoom,
+	BossRoom,
+	SpawnRoom
+};
+
+enum RoomSize {
+	Medium,
+	Wide,
+	Long,
+	Large
+};
+
 struct Door {
 	bool locked = false;
 	DoorPosition position;
-	// TODO: Add destination
+	int destinationRoom;
 };
 
 struct RoomSettings {
@@ -49,6 +63,9 @@ struct RoomSettings {
 	TileSetWalls tileSetWalls;
 	TileSetFloor tileSetFloor;
 	std::vector<Door> doors;
+
+	RoomType roomType;
+	RoomSize roomSize;
 };
 
 class RoomBuilder {
