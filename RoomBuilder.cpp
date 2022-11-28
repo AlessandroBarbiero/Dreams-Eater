@@ -7,7 +7,7 @@ std::shared_ptr<GameObject> RoomBuilder::createRoom(RoomSettings settings) {
     auto game = DreamGame::instance;
     auto physicsScale = game->physicsScale;
 
-    auto roomObject = game->createGameObject();
+    auto roomObject = game->currentScene->createGameObject();
     roomObject->name = settings.name;
     roomObject->setPosition(settings.position);
     auto roomPhys = roomObject->addComponent<PhysicsComponent>();

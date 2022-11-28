@@ -152,7 +152,7 @@ void CharacterComponent::shot(glm::vec2 direction) {
     auto game = DreamGame::instance;
     auto physicsScale = game->physicsScale;
 
-    auto shot = game->createGameObject();
+    auto shot = game->currentScene->createGameObject();
     shot->name = "Bullet";
     if (gameObject->tag == Tag::Player)
         shot->tag = Tag::PlayerBullet;

@@ -63,6 +63,7 @@ private:
     bool destroyed = false;
 
     friend class DreamGame;
+    friend class Scene;
 };
 
 // definition of the template member function addComponent

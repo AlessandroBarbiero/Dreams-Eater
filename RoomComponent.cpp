@@ -326,7 +326,7 @@ void RoomComponent::buildFloor() {
 std::shared_ptr<GameObject> RoomComponent::spawnFloor(sre::Sprite spriteFloor, glm::vec2 pos) {
 	auto game = DreamGame::instance;
 
-	auto floor = game->createGameObject();
+	auto floor = game->currentScene->createGameObject();
 
 	floor->name = "Floor";
 	auto sprite = floor->addComponent<SpriteComponent>();
@@ -342,7 +342,7 @@ std::shared_ptr<GameObject> RoomComponent::spawnFloor(sre::Sprite spriteFloor, g
 std::shared_ptr<GameObject> RoomComponent::spawnWall(sre::Sprite spriteWall, glm::vec2 pos) {
 	auto game = DreamGame::instance;
 
-	auto wall = game->createGameObject();
+	auto wall = game->currentScene->createGameObject();
 	
 	wall->name = "Wall";
 	auto sprite = wall->addComponent<SpriteComponent>();
