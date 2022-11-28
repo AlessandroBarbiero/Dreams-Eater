@@ -27,11 +27,13 @@ DreamGame::DreamGame()
         .withSdlInitFlags(SDL_INIT_EVERYTHING)
         .withSdlWindowFlags(SDL_WINDOW_OPENGL);
 
+    spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");
+
     time_t t;   // random seed based on time
     srand((unsigned)time(&t));
 
     init();
-    buildStartMenu();
+    buildMenus();
 
     // setup callback functions
     r.keyEvent = [&](SDL_Event& e) {
@@ -47,9 +49,12 @@ DreamGame::DreamGame()
     r.startEventLoop();
 }
 
-void DreamGame::buildStartMenu() {
-    auto gameObject = startMenu.createGameObject();
-    auto mmc = gameObject->addComponent<StartMenuComponent>();
+void DreamGame::buildMenus() {
+    auto start = startMenu.createGameObject();
+    start->addComponent<StartMenuComponent>();
+
+    auto end = endMenu.createGameObject();
+    end->addComponent<EndMenuComponent>();
 }
 
 void DreamGame::init() {
@@ -76,22 +81,6 @@ void DreamGame::play() {
 
     currentScene = &game;
 
-    RoomSettings rSettings;
-    rSettings.name = "TestRoom";
-    rSettings.position = { 0,0 };
-    rSettings.size = { 7,7 };
-
-    rSettings.tileSetFloor = WoodFloor;
-    rSettings.tileSetWalls = WoodWalls;
-
-    rSettings.doors.push_back(Door{ false, TopLeft });
-    rSettings.doors.push_back(Door{ false, TopRight });
-    rSettings.doors.push_back(Door{ false, Bottom });
-    rSettings.doors.push_back(Door{ false, Left });
-    rSettings.doors.push_back(Door{ false, Right });
-    auto testRoom = RoomBuilder::createRoom(rSettings);
-    camera->setFollowObject(testRoom, glm::vec2(0, 0));
-
     PlayerSettings pSettings;
     pSettings.position = glm::vec2(3, 3);
     pSettings.speed = 8.0f;
@@ -105,17 +94,70 @@ void DreamGame::play() {
     eSettings.speed = 2.0f;
     eSettings.knockback = 1.0f;
     CharacterBuilder::createEnemy(eSettings);
+    */
+
+    // Test room
+    /*
+    auto testRoom = createGameObject();
+    testRoom->name = "testRoom";
+    auto roomPhys = testRoom->addComponent<PhysicsComponent>();
+    auto room = testRoom->addComponent<RoomComponent>();
+    room->setRoomSize(glm::vec2(8, 8));
+    room->buildFloor();
+    room->buildWalls();
+    */
+    RoomSettings rSettings;
+    rSettings.name = "TestRoom";
+    rSettings.position = { 0,0 };
+    rSettings.size = { 7,7 };
+
+
+    /*rSettings.tileSetFloor = BricksFloor;
+    rSettings.tileSetWalls = BricksWalls;
+    rSettings.tileSetFloor = ShogiFloor;
+    rSettings.tileSetWalls = ShogiWalls;
+    rSettings.tileSetFloor = StoneFloor;
+    rSettings.tileSetWalls = StoneWalls;
+    rSettings.tileSetFloor = LightWoodFloor;
+    rSettings.tileSetWalls = LightWoodWalls;*/
+
+
+    rSettings.tileSetFloor = WoodFloor;
+    rSettings.tileSetWalls = WoodWalls;
+
+    rSettings.roomType = BossRoom;
+
+    rSettings.doors.push_back(Door{ false, Top });
+    rSettings.doors.push_back(Door{ false, Bottom });
+    rSettings.doors.push_back(Door{ false, Left });
+    rSettings.doors.push_back(Door{ false, Right });
+    //auto testRoom = RoomBuilder::createRoom(rSettings);
+
+    auto testLevel = Level();
+
+    testLevel.name = "test";
+    testLevel.difficulty = 1;
+    testLevel.player = player;
+    testLevel.roomSettings.push_back(rSettings);
+    testLevel.roomEntered.push_back(false);
+    testLevel.rooms = 1;
+    testLevel.startRoom = 0;
+
+    testLevel.loadRoom(0);
+
+    camera->setFollowObject(testLevel.currentRoom, glm::vec2(0, 0));
+    // Fit room width to window
+
+    camera->getCamera().setOrthographicProjection(testLevel.currentRoom->getComponent<RoomComponent>()->getRoomSizeInPixels().x / 2.0f, -1, 1);
+
 }
+
 
 
 void DreamGame::gameOver() {
     gameState = GameState::GameOver;
     //std::cout << "Game Over!\nPress SPACE to restart" << std::endl;
     currentScene = &endMenu;
-
-    auto gameObject = endMenu.createGameObject();
-    auto emc = gameObject->addComponent<EndMenuComponent>();
-
 }
 
 void DreamGame::update(float time) {
@@ -207,6 +249,7 @@ void DreamGame::onKey(SDL_Event& event) {
                 }
             }
             break;
+
         case SDLK_y:
             // press 'd' for physics debug
             doDebugDraw = !doDebugDraw;
@@ -225,7 +268,7 @@ void DreamGame::onKey(SDL_Event& event) {
 
 std::shared_ptr<GameObject> DreamGame::reactivateGameObject(std::shared_ptr<GameObject> obj) {
     obj->destroyed = false;
-    sceneObjects.push_back(obj);
+    currentScene->getSceneObjects()->push_back(obj);
     return obj;
 }
 void DreamGame::updatePhysics() {

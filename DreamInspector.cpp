@@ -10,22 +10,23 @@ DreamInspector::DreamInspector(){
 }
 
 void DreamInspector::updateCharacterGui(std::string name, float* hp, float* armor, float* damage, float* rateOfFire, float* shotSpeed, float* knockback, GameObject* go) {
+    
+    if (ImGui::CollapsingHeader(std::string("Character Component - ").append(name).c_str())) {
+        ImGui::DragFloat(std::string("HP ##").append(name).c_str(), hp, 0.1f, 0, 5);
+        ImGui::DragFloat(std::string("Armor##").append(name).c_str(), armor, 0.1f, 0, 5);
+        ImGui::DragFloat(std::string("Damage##").append(name).c_str(), damage, 0.1f, 0, 5);
+        ImGui::DragFloat(std::string("Damage##").append(name).c_str(), rateOfFire, 0.1f, 0, 10);
+        ImGui::DragFloat(std::string("Shoot Speed##").append(name).c_str(), shotSpeed, 0.1f, 0, 10);
+        ImGui::DragFloat(std::string("Knockback##").append(name).c_str(), knockback, 0.1f, 0, 10);
+        ImGui::Text("Scale % .2f", go->getScale());
 
-    if (ImGui::CollapsingHeader(name.c_str())) {
-        ImGui::DragFloat(name.insert(0, "Hp##").c_str(), hp, 0.1f, 0, 5);
-        ImGui::DragFloat(name.insert(0, "Armor##").c_str(), armor, 0.1f, 0, 5);
-        ImGui::DragFloat(name.insert(0, "Damage##").c_str(), damage, 0.1f, 0, 5);
-        ImGui::DragFloat(name.insert(0, "Rate of Fire##").c_str(), rateOfFire, 0.1f, 0, 10);
-        ImGui::DragFloat(name.insert(0, "Shoot Speed##").c_str(), shotSpeed, 0.1f, 0, 10);
-        ImGui::DragFloat(name.insert(0, "Knockback##").c_str(), knockback, 0.1f, 0, 10);
-        //ImGui::DragFloat(name.insert(0, "Scale##").c_str(), scale, 0.1f, 0, 10);
-        ImGui::Text("Scale: %.2f", go->getScale());
-        if (ImGui::Button("Scale+", { 100,50 })) {
+        if (ImGui::Button(std::string("Scale+##").append(name).c_str(), { 100,25 })) {
             go->setScale(go->getScale() + 0.1f);
         }
-        if (ImGui::Button("Scale-", { 100,50 })) {
+        if (ImGui::Button(std::string("Scale-##").append(name).c_str(), { 100,25 })) {
             go->setScale(go->getScale() - 0.1f);
         }
+        
     }
 }
 
@@ -41,7 +42,7 @@ void DreamInspector::updateSceneObjectsSize(int size){
 }
 
 void DreamInspector::updateAnimationGui(std::string name, float* animationTime) {
-    if (ImGui::CollapsingHeader(name.append(" Animation##sprite").c_str())) {
+    if (ImGui::CollapsingHeader(name.insert(0, "SpriteAnimationComponent - ").c_str())) {
         ImGui::DragFloat(name.insert(0, "AnimationTime##").c_str(), animationTime, 0.05f, 0.05f, 5);
     }
 }

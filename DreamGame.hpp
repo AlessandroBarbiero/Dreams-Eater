@@ -25,6 +25,8 @@ public:
     DreamGame();
 
     //std::shared_ptr<GameObject> createGameObject();
+    std::shared_ptr<GameObject> reactivateGameObject(std::shared_ptr<GameObject> obj);
+
     static const glm::vec2 windowSize;
 
     void BeginContact(b2Contact* contact) override;
@@ -40,7 +42,6 @@ public:
 
     bool doDebugDraw = false;
 
-    
     Scene* currentScene;
 
 private:
@@ -59,7 +60,7 @@ private:
 
     void handleContact(b2Contact* contact, bool begin);
 
-    void buildStartMenu();
+    void buildMenus();
 
     void play();
 
