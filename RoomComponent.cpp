@@ -202,7 +202,10 @@ void RoomComponent::buildWalls() {
 	int offsetWidth = wallWidth / 2.0f;
 	int wallLength = spriteWallHorizontalBottom.getSpriteSize().x;
 	int offsetLength = wallLength / 2.0f;
-	std::cout << "wallLength: " << wallLength << std::endl;
+	std::cout << "BottomWallLength: " << spriteWallHorizontalBottom.getSpriteSize().x << std::endl;
+	std::cout << "TopWallLength: " << spriteWallHorizontalTop.getSpriteSize().x << std::endl;
+	std::cout << "LeftWallLength: " << spriteWallVerticalLeft.getSpriteSize().y << std::endl;
+	std::cout << "RightWallLength: " << spriteWallVerticalRight.getSpriteSize().y << std::endl;
 
 	// Calculate dimensions
 	auto roomSizePixels = getRoomSizeInPixels();
@@ -276,7 +279,7 @@ void RoomComponent::buildWalls() {
 
 	//getGameObject()->setPosition(glm::vec2( (roomSize.x-1)* spriteWallHorizontalBottom.getSpriteSize().x / 2, (roomSize.y-1)* spriteWallVerticalLeft.getSpriteSize().y / 2));
 	// Collision
-	auto size = glm::vec2(getRoomSizeInPixels().x - 198, getRoomSizeInPixels().y - 198) / game->physicsScale;
+	auto size = glm::vec2(getRoomSizeInPixels().x - (2 * wallWidth), getRoomSizeInPixels().y - (2 * wallWidth)) / game->physicsScale;
 	auto center = getGameObject()->getPosition() / game->physicsScale;
 	b2Vec2 points[4];
 	bottomLeft = glm::vec2(center.x - (size.x / 2), center.y - (size.y / 2));
@@ -290,8 +293,6 @@ void RoomComponent::buildWalls() {
 	points[3].Set(topLeft.x, topLeft.y); // top left
 
 	getGameObject()->getComponent<PhysicsComponent>()->initChain(b2_staticBody, points, 4, center / game->physicsScale, 1);
-
-	game->camera->getCamera().setOrthographicProjection((roomSize.x) * wallLength / 2, -1, 1); // Fit room width to window
 }
 
 void RoomComponent::buildFloor() {
@@ -300,6 +301,10 @@ void RoomComponent::buildFloor() {
 
 	std::string floorString = TileSetFloorToString.at(tileSetFloor);
 	auto spriteFloor = game->spriteAtlas_inside->get(floorString + ".png");
+	glm::vec2 spriteFloorSize = spriteFloor.getSpriteSize();
+	float scale = 0.9*6.0f; // Scaled by 0.9 to fit size of room, then by an even number
+	spriteFloorSize *= scale;
+	
 	
 	std::string wallString = TileSetWallsToString.at(tileSetWalls);
 	auto spriteWallHorizontalBottom = game->spriteAtlas_inside->get(wallString + "Bottom.png");
@@ -312,18 +317,17 @@ void RoomComponent::buildFloor() {
 	auto horizontal = roomSize.x * wallLength;
 	auto vertical = roomSize.y * wallLength;
 
-	auto floorSize = glm::vec2(horizontal / spriteFloor.getSpriteSize().x, vertical / spriteFloor.getSpriteSize().y);
+	auto floorSize = glm::vec2(horizontal / spriteFloorSize.x, vertical / spriteFloorSize.y);
 	
 	for (int x = 0; x < floorSize.x; x++) {
 		for (int y = 0; y < floorSize.y; y++) {
-			auto position = bottomLeft + glm::vec2(x * spriteFloor.getSpriteSize().x + spriteFloor.getSpriteSize().x/2, y * spriteFloor.getSpriteSize().y + spriteFloor.getSpriteSize().y/2);
-			go->addChild(spawnFloor(spriteFloor, position).get());
+			auto position = bottomLeft + glm::vec2(x * spriteFloorSize.x + spriteFloorSize.x/2, y * spriteFloorSize.y + spriteFloorSize.y/2);
+			go->addChild(spawnFloor(spriteFloor, position, scale).get());
 		}
 	}
 }
 
-
-std::shared_ptr<GameObject> RoomComponent::spawnFloor(sre::Sprite spriteFloor, glm::vec2 pos) {
+std::shared_ptr<GameObject> RoomComponent::spawnFloor(sre::Sprite spriteFloor, glm::vec2 pos, float scale) {
 	auto game = DreamGame::instance;
 
 	auto floor = game->currentScene->createGameObject();
@@ -332,7 +336,9 @@ std::shared_ptr<GameObject> RoomComponent::spawnFloor(sre::Sprite spriteFloor, g
 	auto sprite = floor->addComponent<SpriteComponent>();
 
 	floor->setPosition(pos);
+	floor->setScale(scale);
 	sprite->setSprite(spriteFloor);
+	
 
 	glm::vec2 s{ spriteFloor.getSpriteSize().x * spriteFloor.getScale().x / 2, spriteFloor.getSpriteSize().y * spriteFloor.getScale().y / 2 };
 

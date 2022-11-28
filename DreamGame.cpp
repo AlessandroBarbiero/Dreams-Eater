@@ -9,6 +9,7 @@
 #include "RoomComponent.hpp"
 #include "PlayerController.hpp"
 #include "CharacterBuilder.hpp"
+#include "LevelBuilder.hpp"
 
 using namespace std;
 using namespace sre;
@@ -26,7 +27,8 @@ DreamGame::DreamGame()
         .withSdlInitFlags(SDL_INIT_EVERYTHING)
         .withSdlWindowFlags(SDL_WINDOW_OPENGL);
 
-    spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");
+    time_t t;   // random seed based on time
+    srand((unsigned)time(&t));
 
     init();
     buildStartMenu();
@@ -96,8 +98,9 @@ void DreamGame::play() {
     pSettings.knockback = 1.0f;
     auto player = CharacterBuilder::createPlayer(pSettings);
 
+    /*
     EnemySettings eSettings;
-    eSettings.position = glm::vec2(15, 15);
+    eSettings.position = glm::vec2(10, 10);
     eSettings.player = player;
     eSettings.speed = 2.0f;
     eSettings.knockback = 1.0f;
@@ -220,6 +223,11 @@ void DreamGame::onKey(SDL_Event& event) {
 }
 
 
+std::shared_ptr<GameObject> DreamGame::reactivateGameObject(std::shared_ptr<GameObject> obj) {
+    obj->destroyed = false;
+    sceneObjects.push_back(obj);
+    return obj;
+}
 void DreamGame::updatePhysics() {
 
     const int positionIterations = 4;

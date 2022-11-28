@@ -12,7 +12,7 @@ public:
 
     explicit DreamInspector();
 
-    void updateCharacterGui(std::string name, float* hp, float* armor, float* damage, float* rateOfFire, float* shotSpeed, float* knockback);
+    void updateCharacterGui(std::string name, float* hp, float* armor, float* damage, float* rateOfFire, float* shotSpeed, float* knockback, GameObject* go);
 
     void updateRoomGui(std::string name, glm::vec2 roomSize, std::string wallsType);
 

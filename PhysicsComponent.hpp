@@ -48,6 +48,8 @@ public:
     void setRadius(float radius);
     float getRadius();
 
+    void setScale(float scale);
+
     b2Body * getBody ();
 
     b2Fixture* getFixture();

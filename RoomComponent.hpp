@@ -15,6 +15,8 @@ public:
     void buildWalls();
     void buildFloor();
 
+    RoomType roomType;
+
     void onGui() override;
 
 private:
@@ -22,7 +24,8 @@ private:
     glm::vec2 roomSize;
 
     std::shared_ptr<GameObject> RoomComponent::spawnWall(sre::Sprite spriteWall, glm::vec2 pos);
-    std::shared_ptr<GameObject> RoomComponent::spawnFloor(sre::Sprite spriteFloor, glm::vec2 pos);
+    std::shared_ptr<GameObject> RoomComponent::spawnFloor(sre::Sprite spriteFloor, glm::vec2 pos, float scale);
+
 
     void DoorsToPositions(std::vector<Door> doors, int(&skips)[4][2]); // Pairs are ((Top, Bottom),(Left, Right))
     std::vector<Door> doors;
@@ -34,5 +37,6 @@ private:
     const static std::map<TileSetFloor, std::string> TileSetFloorToString;
 
     friend class RoomBuilder;
+    friend class Level;
 };
 

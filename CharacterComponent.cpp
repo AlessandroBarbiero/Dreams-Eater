@@ -166,16 +166,17 @@ void CharacterComponent::shot(glm::vec2 direction) {
     
 
     auto spriteComp = shot->addComponent<SpriteComponent>();
-    shotSprite.setScale(glm::vec2(damage));
+    //shotSprite.setScale(glm::vec2(damage));
     spriteComp->setSprite(shotSprite);
 
 
     auto shotPhy = shot->addComponent<PhysicsComponent>();
-    float radius = shotSprite.getSpriteSize().x * shotSprite.getScale().x / (2 * physicsScale);
+    float radius = shotSprite.getSpriteSize().x / (2 * physicsScale);
     shotPhy->initCircle(b2_dynamicBody, radius, position, 1);
     shotPhy->setLinearVelocity(direction * shotSpeed);
     shotPhy->setSensor(true);
 
+    shot->setScale({ damage });
 
     auto bullet = shot->addComponent<BulletComponent>();
     bullet->startingPosition = gameObject->getPosition();
@@ -208,7 +209,7 @@ void CharacterComponent::onGui() {
         setEnemyGui();
 
     if (DreamGame::instance->doDebugDraw) {
-        DreamInspector::instance->updateCharacterGui(gameObject->name, &hp, &armor, &damage, &rateOfFire, &shotSpeed, &knockback);
+        DreamInspector::instance->updateCharacterGui(gameObject->name, &hp, &armor, &damage, &rateOfFire, &shotSpeed, &knockback, gameObject);
     }
 }
 

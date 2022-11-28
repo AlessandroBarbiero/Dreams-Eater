@@ -10,6 +10,7 @@ SpriteComponent::SpriteComponent(GameObject *gameObject) : Component(gameObject)
 void SpriteComponent::renderSprite(sre::SpriteBatch::SpriteBatchBuilder &spriteBatchBuilder) {
     sprite.setPosition(gameObject->getPosition());
     sprite.setRotation(glm::degrees(gameObject->getRotation()));
+    sprite.setScale({ gameObject->getScale(), gameObject->getScale()});
     spriteBatchBuilder.addSprite(sprite);
 }
 
