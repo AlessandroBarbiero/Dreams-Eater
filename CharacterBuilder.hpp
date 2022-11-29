@@ -4,6 +4,7 @@
 #include "GameObject.hpp"
 #include "sre/SpriteAtlas.hpp"
 #include <SDL_events.h>
+#include "SpriteAnimationComponent.hpp"
 
 struct Controls {
 	SDL_Keycode up = SDLK_w;
@@ -59,6 +60,10 @@ public:
 	static std::shared_ptr<GameObject> createEnemy(EnemySettings settings);
 
 private:
+
+	static void animationSetup(std::shared_ptr<SpriteAnimationComponent> animation, std::shared_ptr<sre::SpriteAtlas> spriteAtlas,
+		std::map<State, int> AnimationSizes, float baseAnimTime);
+
 	static std::shared_ptr<sre::SpriteAtlas> spriteAtlas_baseWraith() {
 		static std::shared_ptr<sre::SpriteAtlas> WraithAtlas = sre::SpriteAtlas::create("Sprites/Wraith/Wraith_base_atlas.json", "Sprites/Wraith/Wraith_base_atlas.png");
 		return WraithAtlas;

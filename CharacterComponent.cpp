@@ -7,6 +7,7 @@
 #include "SpriteComponent.hpp"
 #include "BulletComponent.hpp"
 #include "DreamInspector.hpp"
+#include "SpriteAnimationComponent.hpp"
 #define KNOCKBACK_SCALE 10
 
 CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameObject) {}
@@ -37,9 +38,20 @@ void CharacterComponent::fireOnKeyPress() {
         direction.x++;
 
     if (direction != glm::vec2(0)) {
+        auto anim = gameObject->getComponent<SpriteAnimationComponent>();
         direction = glm::normalize(direction);
-        shot(direction);
+        if(direction.x<0)
+            anim->displayCompleteAnimation(State::AttackLeft, 1 / rateOfFire, [direction, this]() {shot(direction); });
+        else
+            anim->displayCompleteAnimation(State::AttackRight, 1 / rateOfFire, [direction, this]() { shot(direction); });
+        //shot(direction);
+        return;
     }
+}
+
+void CharacterComponent::changeState(State newState)
+{
+    state = newState;
 }
 
 // Update readyToShoot variable based on rateOfFire and cooldownTimer
@@ -92,10 +104,14 @@ bool CharacterComponent::onKey(SDL_Event& event) {
 }
 
 void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
+    if (hp <= 0)
+        return;
     Tag myTag = gameObject->tag;
     Tag hisTag = comp->getGameObject()->tag;
     if (myTag == Tag::Player && hisTag == Tag::Enemy) {
-        die();
+        auto anim = gameObject->getComponent<SpriteAnimationComponent>();
+        anim->displayCompleteAnimation(State::Die, [this]() {die(); }, true);
+        //die();
     }
     if (myTag == Tag::Player && hisTag == Tag::EnemyBullet ||
         myTag == Tag::Enemy && hisTag == Tag::PlayerBullet) {
@@ -103,8 +119,10 @@ void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
         float realDamage = bullet->getDamage() - armor;
         if (realDamage > 0) {
             hp -= realDamage;
-            if (hp <= 0)
-                die();
+            if (hp <= 0) {
+                auto anim = gameObject->getComponent<SpriteAnimationComponent>();
+                anim->displayCompleteAnimation(State::Die, [this]() {die(); }, true);
+            }
         }
     }
 }
@@ -137,6 +155,11 @@ void CharacterComponent::stunned(bool stun) {
     this->stun = stun;
     if (stun)
         stunTimeout = KNOCKBACK_TIME;
+}
+
+State CharacterComponent::getState()
+{
+    return state;
 }
 
 

@@ -10,7 +10,6 @@
 std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settings) {
     auto game = DreamGame::instance;
     auto physicsScale = game->physicsScale;
-    
     auto player = game->createGameObject();
     player->name = settings.name;
     player->tag = Tag::Player;
@@ -59,16 +58,63 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerController->keyShot = settings.keybinds.shot;
      
     auto animation = player->addComponent<SpriteAnimationComponent>();
-    std::vector<sre::Sprite> spriteAnim(12);
-    std::string spriteName = "Idle/";
-    for (int i = 0; i < spriteAnim.size(); i++) {
-        spriteAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
-        spriteAnim[i].setOrderInBatch(Depth::Player);
-    }
-    animation->setSprites(spriteAnim);
-    animation->setAnimationTime(0.1f);
+    std::map<State, int> animationSizes;
+    animationSizes.insert({ State::Idle, 12 });
+    animationSizes.insert({ State::AttackRight, 12 });
+    animationSizes.insert({ State::WalkRight, 12 });
+    animationSizes.insert({ State::Die, 15 });
+    animationSetup(animation, spriteAtlas, animationSizes, 0.1f);
 
     return player;
+}
+
+void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> animation,
+    std::shared_ptr<sre::SpriteAtlas> spriteAtlas, std::map<State, int> animationSizes, float baseAnimTime) {
+    std::vector<sre::Sprite> idleAnim(animationSizes[State::Idle]);
+    std::string spriteName = "Idle/";
+    for (int i = 0; i < idleAnim.size(); i++) {
+        idleAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        idleAnim[i].setOrderInBatch(Depth::Player);
+    }
+
+    std::vector<sre::Sprite> attackRAnim(animationSizes[State::AttackRight]);
+    spriteName = "Attack/";
+    for (int i = 0; i < attackRAnim.size(); i++) {
+        attackRAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        attackRAnim[i].setOrderInBatch(Depth::Player);
+    }
+    std::vector<sre::Sprite> attackLAnim(attackRAnim.size());
+    for (int i = 0; i < attackLAnim.size(); i++) {
+        attackLAnim[i] = attackRAnim[i];
+        attackLAnim[i].setFlip({ true, false });
+    }
+
+    std::vector<sre::Sprite> walkRAnim(animationSizes[State::AttackRight]);
+    spriteName = "Walk/";
+    for (int i = 0; i < walkRAnim.size(); i++) {
+        walkRAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        walkRAnim[i].setOrderInBatch(Depth::Player);
+    }
+    std::vector<sre::Sprite> walkLAnim(walkRAnim.size());
+    for (int i = 0; i < walkLAnim.size(); i++) {
+        walkLAnim[i] = walkRAnim[i];
+        walkLAnim[i].setFlip({ true, false });
+    }
+
+    std::vector<sre::Sprite> dieAnim(animationSizes[State::Die]);
+    spriteName = "Die/";
+    for (int i = 0; i < dieAnim.size(); i++) {
+        dieAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        dieAnim[i].setOrderInBatch(Depth::Player);
+    }
+
+    animation->addAnimationSequence(State::Idle, idleAnim);
+    animation->addAnimationSequence(State::WalkRight, walkRAnim);
+    animation->addAnimationSequence(State::WalkLeft, walkLAnim);
+    animation->addAnimationSequence(State::AttackRight, attackRAnim);
+    animation->addAnimationSequence(State::AttackLeft, attackLAnim);
+    animation->addAnimationSequence(State::Die, dieAnim);
+    animation->setBaseAnimationTime(baseAnimTime);
 }
 
 
@@ -114,16 +160,30 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemyController->player = settings.player;
     enemyController->idealDistance = settings.idealDistance * physicsScale;
 
+
+    // TODO: change this to the common animation function
+
     auto animation = enemy->addComponent<SpriteAnimationComponent>();
     std::vector<sre::Sprite> spriteAnim(5);
     std::string spriteName = "Idle/";
+    sre::Sprite animSpr;
     for (int i = 0; i < spriteAnim.size(); i++) {
-        sre::Sprite animSpr = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        animSpr = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
         animSpr.setScale(glm::vec2(0.9f));
         spriteAnim[i] = animSpr;
         spriteAnim[i].setOrderInBatch(Depth::Enemy);
     }
-    animation->setSprites(spriteAnim);
+    std::vector<sre::Sprite> dieAnim(5);
+    spriteName = "Die/";
+    for (int i = 0; i < dieAnim.size(); i++) {
+        animSpr = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        animSpr.setScale(glm::vec2(0.9f));
+        dieAnim[i] = animSpr;
+        dieAnim[i].setOrderInBatch(Depth::Enemy);
+    }
+
+    animation->addAnimationSequence(State::Die, dieAnim);
+    animation->addAnimationSequence(State::Idle, spriteAnim);
     animation->setAnimationTime(0.2f);
 
     return enemy;

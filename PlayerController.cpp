@@ -5,13 +5,15 @@
 #include "PhysicsComponent.hpp"
 #include "PlayerController.hpp"
 #include "DreamGame.hpp"
+#include "SpriteAnimationComponent.hpp"
 
 PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) { }
 
 void PlayerController::update(float deltaTime) {
-
-    if (character->stun)
+    if (character->stun) {
+        character->changeState(State::Idle);
         return;
+    }
         
     glm::vec2 movement{ 0,0 };
 
@@ -25,8 +27,15 @@ void PlayerController::update(float deltaTime) {
         movement.x++;
     
     if (movement != glm::vec2(0)) {
+        if (movement.x < 0)
+            character->changeState(State::WalkLeft);
+        else
+            character->changeState(State::WalkRight);
         lastDirection = glm::normalize(movement);
         playerPhysics->setLinearVelocity(lastDirection * character->speed);
+    }
+    else {
+        character->changeState(State::Idle);
     }
 
     if (shooting)

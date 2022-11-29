@@ -63,13 +63,13 @@ void DreamGame::init() {
 
     //player
     PlayerSettings pSettings;
-    pSettings.position = glm::vec2(3, 3);
+    pSettings.position = glm::vec2(1,1);
     pSettings.speed = 8.0f;
     pSettings.knockback = 1.0f;
     auto player = CharacterBuilder::createPlayer(pSettings);
 
     EnemySettings eSettings;
-    eSettings.position = glm::vec2(15, 15);
+    eSettings.position = glm::vec2(10, 10);
     eSettings.player = player;
     eSettings.speed = 2.0f;
     eSettings.knockback = 1.0f;
