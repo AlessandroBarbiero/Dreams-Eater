@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "Component.hpp"
 #include <iostream>
+#include "PhysicsComponent.hpp"
 
 GameObject::~GameObject(){
     // remove reference to this in components
@@ -39,6 +40,18 @@ float GameObject::getRotation() const {
 
 void GameObject::setRotation(float rotation) {
     GameObject::rotation = rotation;
+}
+
+float GameObject::getScale() const {
+    return scale;
+}
+
+void GameObject::setScale(float scale) {
+    auto phys = getComponent<PhysicsComponent>();
+    if (phys != nullptr) {
+        phys->setScale(scale / GameObject::scale);
+    }
+    GameObject::scale = scale;
 }
 
 void GameObject::renderSprite(sre::SpriteBatch::SpriteBatchBuilder &spriteBatchBuilder) {

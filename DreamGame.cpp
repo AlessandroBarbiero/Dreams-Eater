@@ -9,6 +9,7 @@
 #include "RoomComponent.hpp"
 #include "PlayerController.hpp"
 #include "CharacterBuilder.hpp"
+#include "LevelBuilder.hpp"
 
 using namespace std;
 using namespace sre;
@@ -18,7 +19,7 @@ const glm::vec2 DreamGame::windowSize(1200, 700);
 DreamGame* DreamGame::instance = nullptr;
 
 DreamGame::DreamGame()
-    :debugDraw(physicsScale)
+    :debugDraw(physicsScale),currentScene(&startMenu)
 {
     instance = this;
     r.setWindowSize(windowSize);
@@ -26,7 +27,13 @@ DreamGame::DreamGame()
         .withSdlInitFlags(SDL_INIT_EVERYTHING)
         .withSdlWindowFlags(SDL_WINDOW_OPENGL);
 
+    spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");
+
+    time_t t;   // random seed based on time
+    srand((unsigned)time(&t));
+
     init();
+    buildMenus();
 
     // setup callback functions
     r.keyEvent = [&](SDL_Event& e) {
@@ -42,38 +49,52 @@ DreamGame::DreamGame()
     r.startEventLoop();
 }
 
+void DreamGame::buildMenus() {
+    auto start = startMenu.createGameObject();
+    start->addComponent<StartMenuComponent>();
+
+    auto end = endMenu.createGameObject();
+    end->addComponent<EndMenuComponent>();
+}
+
 void DreamGame::init() {
+
     if (world != nullptr) { // deregister call backlistener to avoid getting callbacks when recreating the world
         world->SetContactListener(nullptr);
     }
+
     camera.reset();
-    sceneObjects.clear();
+    game.cleanSceneObjects();
     camera.reset();
     physicsComponentLookup.clear();
     initPhysics();
 
-    spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");    
-    
-    auto camObj = createGameObject();
+    auto camObj = game.createGameObject();
     camObj->name = "Camera";
     camera = camObj->addComponent<SideScrollingCamera>();
     camObj->setPosition(windowSize * 0.5f);
 
-    // Initialize
+    gameState = GameState::Running;
+}
 
-    //player
+void DreamGame::play() {
+
+    currentScene = &game;
+
     PlayerSettings pSettings;
     pSettings.position = glm::vec2(1,1);
     pSettings.speed = 8.0f;
     pSettings.knockback = 1.0f;
     auto player = CharacterBuilder::createPlayer(pSettings);
 
+    /*
     EnemySettings eSettings;
     eSettings.position = glm::vec2(10, 10);
     eSettings.player = player;
     eSettings.speed = 2.0f;
     eSettings.knockback = 1.0f;
     CharacterBuilder::createEnemy(eSettings);
+    */
 
     // Test room
     /*
@@ -87,20 +108,16 @@ void DreamGame::init() {
     */
     RoomSettings rSettings;
     rSettings.name = "TestRoom";
-    rSettings.position = {0,0};
+    rSettings.position = { 0,0 };
     rSettings.size = { 7,7 };
 
 
     /*rSettings.tileSetFloor = BricksFloor;
     rSettings.tileSetWalls = BricksWalls;
-
     rSettings.tileSetFloor = ShogiFloor;
     rSettings.tileSetWalls = ShogiWalls;
-
-
     rSettings.tileSetFloor = StoneFloor;
     rSettings.tileSetWalls = StoneWalls;
-
     rSettings.tileSetFloor = LightWoodFloor;
     rSettings.tileSetWalls = LightWoodWalls;*/
 
@@ -108,32 +125,56 @@ void DreamGame::init() {
     rSettings.tileSetFloor = WoodFloor;
     rSettings.tileSetWalls = WoodWalls;
 
+    rSettings.roomType = BossRoom;
 
-    rSettings.doors.push_back(Door{ false, TopLeft });
-    rSettings.doors.push_back(Door{ false, TopRight });
+    rSettings.doors.push_back(Door{ false, Top });
     rSettings.doors.push_back(Door{ false, Bottom });
     rSettings.doors.push_back(Door{ false, Left });
     rSettings.doors.push_back(Door{ false, Right });
-    auto testRoom = RoomBuilder::createRoom(rSettings);
-    camera->setFollowObject(testRoom, glm::vec2(0, 0));
-    
+    //auto testRoom = RoomBuilder::createRoom(rSettings);
+
+    auto testLevel = Level();
+
+    testLevel.name = "test";
+    testLevel.difficulty = 1;
+    testLevel.player = player;
+    testLevel.roomSettings.push_back(rSettings);
+    testLevel.roomEntered.push_back(false);
+    testLevel.rooms = 1;
+    testLevel.startRoom = 0;
+
+    testLevel.loadRoom(0);
+
+    camera->setFollowObject(testLevel.currentRoom, glm::vec2(0, 0));
+    // Fit room width to window
+
+    camera->getCamera().setOrthographicProjection(testLevel.currentRoom->getComponent<RoomComponent>()->getRoomSizeInPixels().x / 2.0f, -1, 1);
+
 }
+
+
 
 void DreamGame::gameOver() {
     gameState = GameState::GameOver;
-    std::cout << "Game Over!\nPress SPACE to restart" << std::endl;
+    //std::cout << "Game Over!\nPress SPACE to restart" << std::endl;
+    currentScene = &endMenu;
 }
 
 void DreamGame::update(float time) {
     if (gameState == GameState::Running) {
         updatePhysics();
 
-        for (int i = 0; i < sceneObjects.size(); i++) {
-            sceneObjects[i]->update(time);
+        auto sceneObjects = currentScene->getSceneObjects();
+
+        for (int i = 0; i < sceneObjects->size(); i++) {
+            sceneObjects->at(i)->update(time);
         }
+
         // Remove elements marked for deletion
-        auto toErase = std::remove_if(sceneObjects.begin(), sceneObjects.end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
-        sceneObjects.erase(toErase, sceneObjects.end());
+        auto toErase = std::remove_if(sceneObjects->begin(), sceneObjects->end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
+        sceneObjects->erase(toErase, sceneObjects->end());
+
+        //currentScene->setSceneObjects(sceneObjects); //there must be a better way
     }
 }
 
@@ -146,12 +187,12 @@ void DreamGame::render() {
     auto pos = camera->getGameObject()->getPosition();
 
     auto spriteBatchBuilder = SpriteBatch::create();
-    for (auto& go : sceneObjects) {
+    for (auto& go : *(currentScene->getSceneObjects())) {
         go->renderSprite(spriteBatchBuilder);
     }
 
     // render gui
-    for (auto& go : sceneObjects) {
+    for (auto& go : *(currentScene->getSceneObjects())) {
         for (auto& comp : go->getComponents()) {
             comp->onGui();
         }
@@ -167,18 +208,14 @@ void DreamGame::render() {
         debugDraw.clear();
 
         
-        DreamInspector::instance->updateSceneObjectsSize(sceneObjects.size());
+        DreamInspector::instance->updateSceneObjectsSize(currentScene->getSceneObjects()->size());
     }
-
-    
-
-
     
 }
 
 void DreamGame::onKey(SDL_Event& event) {
     if (gameState == GameState::Running) {
-        for (auto& gameObject : sceneObjects) {
+        for (auto& gameObject : *(currentScene->getSceneObjects())) {
             for (auto& c : gameObject->getComponents()) {
                 bool consumed = c->onKey(event);
                 if (consumed) {
@@ -192,17 +229,18 @@ void DreamGame::onKey(SDL_Event& event) {
 
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
-        case SDLK_SPACE:
+        /*case SDLK_SPACE:
             if (gameState == GameState::GameOver) {
                 gameState = GameState::Running;
                 init();
             }
-            break;
+            break;*/
         case SDLK_r:
             init();
+            play();
             break;
         case SDLK_t:
-            for each (std::shared_ptr<GameObject> obj in sceneObjects)
+            for each (std::shared_ptr<GameObject> obj in *(currentScene->getSceneObjects()))
             {
                 if (obj->name == "testRoom") {
                     std::cout << "Marking testRoom" << std::endl;
@@ -211,6 +249,7 @@ void DreamGame::onKey(SDL_Event& event) {
                 }
             }
             break;
+
         case SDLK_y:
             // press 'd' for physics debug
             doDebugDraw = !doDebugDraw;
@@ -226,12 +265,12 @@ void DreamGame::onKey(SDL_Event& event) {
     }
 }
 
-std::shared_ptr<GameObject> DreamGame::createGameObject() {
-    auto obj = shared_ptr<GameObject>(new GameObject());
-    sceneObjects.push_back(obj);
+
+std::shared_ptr<GameObject> DreamGame::reactivateGameObject(std::shared_ptr<GameObject> obj) {
+    obj->destroyed = false;
+    currentScene->getSceneObjects()->push_back(obj);
     return obj;
 }
-
 void DreamGame::updatePhysics() {
 
     const int positionIterations = 4;

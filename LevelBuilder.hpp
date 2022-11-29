@@ -2,6 +2,7 @@
 
 #include "GameObject.hpp"
 #include "sre/SpriteAtlas.hpp"
+#include "Level.hpp"
 
 struct LevelSettings {
 	std::string name = "room";
@@ -13,7 +14,7 @@ struct LevelSettings {
 
 class LevelBuilder {
 public:
-	static std::shared_ptr<GameObject> createLevel(LevelSettings settings);
+	static Level createLevel(LevelSettings settings);
 
 private:
 };

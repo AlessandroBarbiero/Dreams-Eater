@@ -42,6 +42,10 @@ public:
 
     void setRotation(float rotation);
 
+    float getScale() const;
+
+    void setScale(float scale);
+
     const std::vector<std::shared_ptr<Component>>& getComponents();
 
     GameObject* parent;
@@ -60,9 +64,11 @@ private:
 
     glm::vec2 position;
     float rotation;
+    float scale = 1;
     bool destroyed = false;
 
     friend class DreamGame;
+    friend class Scene;
 };
 
 // definition of the template member function addComponent

@@ -7,6 +7,10 @@
 #include "GameObject.hpp"
 #include "SideScrollingCamera.hpp"
 #include "Box2DDebugDraw.hpp"
+#include "Scene.hpp"
+#include "StartMenuComponent.hpp"
+#include "EndMenuComponent.hpp"
+
 
 class PhysicsComponent;
 
@@ -20,7 +24,9 @@ class DreamGame : public b2ContactListener {
 public:
     DreamGame();
 
-    std::shared_ptr<GameObject> createGameObject();
+    //std::shared_ptr<GameObject> createGameObject();
+    std::shared_ptr<GameObject> reactivateGameObject(std::shared_ptr<GameObject> obj);
+
     static const glm::vec2 windowSize;
 
     void BeginContact(b2Contact* contact) override;
@@ -36,11 +42,14 @@ public:
 
     bool doDebugDraw = false;
 
+    Scene* currentScene;
+
 private:
     GameState gameState = GameState::Running;
     sre::SDLRenderer r;
 
     void init();
+
     void initPhysics();
 
     void update(float time);
@@ -51,11 +60,19 @@ private:
 
     void handleContact(b2Contact* contact, bool begin);
 
+    void buildMenus();
+
+    void play();
+
     std::shared_ptr<SideScrollingCamera> camera;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas_inside;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas_baseWraith;
 
-    std::vector<std::shared_ptr<GameObject>> sceneObjects;
+    Scene startMenu;
+    Scene game;
+    Scene endMenu;
+
+    //std::vector<std::shared_ptr<GameObject>> sceneObjects;
 
     void updatePhysics();
     b2World* world = nullptr;
@@ -66,9 +83,13 @@ private:
 
 
     Box2DDebugDraw debugDraw;
-    
+
     friend class PhysicsComponent;
     friend class RoomComponent;
     friend class PlayerController;
     friend class CharacterBuilder;
+
+    friend class StartMenuComponent;
+    friend class EndMenuComponent;
+
 };

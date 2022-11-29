@@ -10,7 +10,8 @@
 std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settings) {
     auto game = DreamGame::instance;
     auto physicsScale = game->physicsScale;
-    auto player = game->createGameObject();
+    
+    auto player = game->currentScene->createGameObject();
     player->name = settings.name;
     player->tag = Tag::Player;
     player->setPosition(settings.position);
@@ -122,7 +123,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     auto game = DreamGame::instance;
     auto physicsScale = DreamGame::instance->physicsScale;
 
-    auto enemy = game->createGameObject();
+    auto enemy = game->currentScene->createGameObject();
     enemy->name = settings.name;
     enemy->tag = Tag::Enemy;
     enemy->setPosition(settings.position);
