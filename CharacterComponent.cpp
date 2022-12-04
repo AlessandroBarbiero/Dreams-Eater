@@ -44,7 +44,7 @@ void CharacterComponent::fireOnKeyPress() {
             anim->displayCompleteAnimation(State::AttackLeft, 1 / rateOfFire, [direction, this]() {shot(direction); });
         else
             anim->displayCompleteAnimation(State::AttackRight, 1 / rateOfFire, [direction, this]() { shot(direction); });
-        //shot(direction);
+
         return;
     }
 }
@@ -111,7 +111,6 @@ void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
     if (myTag == Tag::Player && hisTag == Tag::Enemy) {
         auto anim = gameObject->getComponent<SpriteAnimationComponent>();
         anim->displayCompleteAnimation(State::Die, [this]() {die(); }, true);
-        //die();
     }
     if (myTag == Tag::Player && hisTag == Tag::EnemyBullet ||
         myTag == Tag::Enemy && hisTag == Tag::PlayerBullet) {

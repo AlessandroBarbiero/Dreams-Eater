@@ -53,6 +53,7 @@ void Level::loadRoom(int room) {
 			break;
 		case BossRoom:
 			eSettings.name = "Boss";
+			eSettings.type = CharacterType::FireWizard;
 			eSettings.position = glm::vec2(roomSize.x / 2, roomSize.y / 2) - roomSize/2.0f;
 			eSettings.player = player;
 			eSettings.speed = 3.0f;

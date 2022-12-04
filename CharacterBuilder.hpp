@@ -5,6 +5,16 @@
 #include "sre/SpriteAtlas.hpp"
 #include <SDL_events.h>
 #include "SpriteAnimationComponent.hpp"
+#include <map>
+
+enum class CharacterType{
+	Wizard,
+	FireWizard,
+	IceWizard,
+	Wraith,
+	BrownWraith,
+	PurpleWraith
+};
 
 struct Controls {
 	SDL_Keycode up = SDLK_w;
@@ -21,6 +31,7 @@ struct Controls {
 };
 
 struct PlayerSettings{
+	CharacterType type = CharacterType::Wraith;
 	std::string name = "player";
 	glm::vec2 position;
 	float speed = 5.0f;
@@ -37,6 +48,7 @@ struct PlayerSettings{
 };
 
 struct EnemySettings {
+	CharacterType type = CharacterType::Wizard;
 	std::string name = "enemy";
 	glm::vec2 position;
 	float speed = 2.0f;
@@ -61,15 +73,13 @@ public:
 
 private:
 
-	static void animationSetup(std::shared_ptr<SpriteAnimationComponent> animation, std::shared_ptr<sre::SpriteAtlas> spriteAtlas,
-		std::map<State, int> AnimationSizes, float baseAnimTime);
+	static std::map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> atlasMap;
 
-	static std::shared_ptr<sre::SpriteAtlas> spriteAtlas_baseWraith() {
-		static std::shared_ptr<sre::SpriteAtlas> WraithAtlas = sre::SpriteAtlas::create("Sprites/Wraith/Wraith_base_atlas.json", "Sprites/Wraith/Wraith_base_atlas.png");
-		return WraithAtlas;
-	};
-	static std::shared_ptr<sre::SpriteAtlas> spriteAtlas_baseWizard() {
-		static std::shared_ptr<sre::SpriteAtlas> WizardAtlas = sre::SpriteAtlas::create("Sprites/Wizard/Wizard_base_atlas.json", "Sprites/Wizard/Wizard_base_atlas.png");
-		return WizardAtlas;
-	};
+	static void initMap();
+
+	static std::shared_ptr<sre::SpriteAtlas> getAtlas(CharacterType);
+
+	static void animationSetup(std::shared_ptr<SpriteAnimationComponent> animation, std::shared_ptr<sre::SpriteAtlas> spriteAtlas,
+		std::map<State, int> AnimationSizes, float baseAnimTime, Depth visualDepth);
 };
+

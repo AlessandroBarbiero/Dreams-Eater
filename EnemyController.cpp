@@ -4,6 +4,7 @@
 #include "PhysicsComponent.hpp"
 #include "EnemyController.hpp"
 #include "DreamGame.hpp"
+#include "SpriteAnimationComponent.hpp"
 
 EnemyController::EnemyController(GameObject* gameObject) : Component(gameObject) {
     
@@ -19,13 +20,25 @@ void EnemyController::update(float deltaTime) {
     glm::vec2 direction = glm::normalize(movement);
 
     if (canShoot) {
+        auto anim = gameObject->getComponent<SpriteAnimationComponent>();
+       /* It is not working because the sprites have a wrong pivot
+       if (direction.x < 0)
+            anim->displayCompleteAnimation(State::AttackLeft, 1 / character->rateOfFire, [direction, this]() {character->shot(direction); });
+        else
+            anim->displayCompleteAnimation(State::AttackRight, 1 / character->rateOfFire, [direction, this]() { character->shot(direction); });*/
         character->shot(direction);
-        if (distance < idealDistance)
+        if (distance < idealDistance) {
+            character->changeState(State::Idle);
             return;     // Range enemies don't go toward the player until the end
+        }
     }
 
     movement = direction * character->speed;
     physics->setLinearVelocity(movement);
+    if(direction.x >= 0)
+        character->changeState(State::WalkRight);
+    else
+        character->changeState(State::WalkLeft);
 }
 
 void EnemyController::onGui()
