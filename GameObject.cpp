@@ -49,9 +49,9 @@ float GameObject::getScale() const {
 void GameObject::setScale(float scale) {
     auto phys = getComponent<PhysicsComponent>();
     if (phys != nullptr) {
-        phys->setScale(scale / GameObject::scale);
+        phys->setScale(scale / this->scale);
     }
-    GameObject::scale = scale;
+    this->scale = scale;
 }
 
 void GameObject::renderSprite(sre::SpriteBatch::SpriteBatchBuilder &spriteBatchBuilder) {

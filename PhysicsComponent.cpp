@@ -76,9 +76,16 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
 // Only works for circles
 void PhysicsComponent::setScale(float scale) {
     if (fixture != nullptr) {
+        std::cout << "setScale: new scale = " << scale << std::endl;
         auto shape = fixture->GetShape();
-        if (circle != nullptr) {
-            circle->m_radius *= scale;
+        if (shape->GetType() == b2Shape::e_circle) {
+            shape->m_radius *= scale;
+        }else if (shape->GetType() == b2Shape::e_polygon) {
+            auto p = dynamic_cast<b2PolygonShape*>(shape);
+            for (int i = 0; i < p->m_count; i++) {
+                auto temp = p->m_vertices[i];
+                p->m_vertices[i].Set(temp.x*scale, temp.y*scale);
+            }
         }
     }
 }

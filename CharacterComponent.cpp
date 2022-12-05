@@ -183,7 +183,7 @@ void CharacterComponent::shot(glm::vec2 direction) {
     else
         shot->tag = Tag::Bullet;
 
-    glm::vec2 position = gameObject->getPosition() / physicsScale + direction * (radius + damage/2);
+    glm::vec2 position = gameObject->getPosition() / physicsScale + direction * (radius * gameObject->getScale() + damage/2);
     shot->setPosition(position * physicsScale);
     
 
@@ -201,7 +201,7 @@ void CharacterComponent::shot(glm::vec2 direction) {
     shot->setScale({ damage });
 
     auto bullet = shot->addComponent<BulletComponent>();
-    bullet->startingPosition = gameObject->getPosition();
+    bullet->startingPosition = shot->getPosition();
     bullet->range = range;
     bullet->damage = damage;
     bullet->knockback = knockback * KNOCKBACK_SCALE;
