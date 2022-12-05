@@ -84,7 +84,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerPhysics->fixRotation();
 
     auto playerCharacter = player->addComponent<CharacterComponent>();
-    auto shotSprite = spriteAtlas->get("Spells-Effect.png");
+    auto shotSprite = getAtlas(CharacterType::Wraith)->get("Spells-Effect.png");
     playerCharacter->setShotSprite(shotSprite);
     playerCharacter->radius = radius;
     playerCharacter->hp = settings.hp;
@@ -120,6 +120,8 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     animationSizes.insert({ State::WalkRight, 12 });
     animationSizes.insert({ State::Die, 15 });*/
     animationSetup(animation, spriteAtlas, animationSizes, 0.1f, Depth::Player);
+
+    player->setScale(2.5f);
 
     return player;
 }

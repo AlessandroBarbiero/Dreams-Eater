@@ -1,164 +1,68 @@
 {
-    "BrownWraith": [
-        {
-            "Attack": 12
-        },
-        {
-            "Die": 15
-        },
-        {
-            "Hurt": 12
-        },
-        {
-            "Idle": 12
-        },
-        {
-            "IdleBlink": 12
-        },
-        {
-            "Walk": 12
-        }
-    ],
-    "FireWizard": [
-        {
-            "Attack": 5
-        },
-        {
-            "Die": 5
-        },
-        {
-            "Hurt": 5
-        },
-        {
-            "Idle": 5
-        },
-        {
-            "Run": 5
-        },
-        {
-            "Walk": 5
-        }
-    ],
-    "Guy": [
-        {
-            "Attack": 4
-        },
-        {
-            "Die": 4
-        },
-        {
-            "Idle": 2
-        },
-        {
-            "Walk": 8
-        }
-    ],
-    "IceWizard": [
-        {
-            "Attack": 5
-        },
-        {
-            "Die": 5
-        },
-        {
-            "Hurt": 5
-        },
-        {
-            "Idle": 5
-        },
-        {
-            "Run": 5
-        },
-        {
-            "Walk": 5
-        }
-    ],
-    "PurpleWraith": [
-        {
-            "Attack": 12
-        },
-        {
-            "Die": 15
-        },
-        {
-            "Hurt": 12
-        },
-        {
-            "Idle": 12
-        },
-        {
-            "IdleBlink": 12
-        },
-        {
-            "Walk": 12
-        }
-    ],
-    "Robot": [
-        {
-            "Attack": 4
-        },
-        {
-            "Die": 4
-        },
-        {
-            "Idle": 2
-        },
-        {
-            "Walk": 8
-        }
-    ],
-    "Wizard": [
-        {
-            "Attack": 5
-        },
-        {
-            "Die": 5
-        },
-        {
-            "Hurt": 5
-        },
-        {
-            "Idle": 5
-        },
-        {
-            "Run": 5
-        },
-        {
-            "Walk": 5
-        }
-    ],
-    "Wraith": [
-        {
-            "Attack": 12
-        },
-        {
-            "Die": 15
-        },
-        {
-            "Hurt": 12
-        },
-        {
-            "Idle": 12
-        },
-        {
-            "IdleBlink": 12
-        },
-        {
-            "Walk": 12
-        }
-    ],
-    "Zombie": [
-        {
-            "Attack": 4
-        },
-        {
-            "Die": 4
-        },
-        {
-            "Idle": 2
-        },
-        {
-            "Walk": 8
-        }
-    ]
+    "BrownWraith": {
+        "Attack": 12,
+        "Die": 15,
+        "Hurt": 12,
+        "Idle": 12,
+        "IdleBlink": 12,
+        "Walk": 12
+    },
+    "FireWizard": {
+        "Attack": 5,
+        "Die": 5,
+        "Hurt": 5,
+        "Idle": 5,
+        "Run": 5,
+        "Walk": 5
+    },
+    "Guy": {
+        "Attack": 4,
+        "Die": 4,
+        "Idle": 2,
+        "Walk": 8
+    },
+    "IceWizard": {
+        "Attack": 5,
+        "Die": 5,
+        "Hurt": 5,
+        "Idle": 5,
+        "Run": 5,
+        "Walk": 5
+    },
+    "PurpleWraith": {
+        "Attack": 12,
+        "Die": 15,
+        "Hurt": 12,
+        "Idle": 12,
+        "IdleBlink": 12,
+        "Walk": 12
+    },
+    "Robot": {
+        "Attack": 4,
+        "Die": 4,
+        "Idle": 2,
+        "Walk": 8
+    },
+    "Wizard": {
+        "Attack": 5,
+        "Die": 5,
+        "Hurt": 5,
+        "Idle": 5,
+        "Run": 5,
+        "Walk": 5
+    },
+    "Wraith": {
+        "Attack": 12,
+        "Die": 15,
+        "Hurt": 12,
+        "Idle": 12,
+        "IdleBlink": 12,
+        "Walk": 12
+    },
+    "Zombie": {
+        "Attack": 4,
+        "Die": 4,
+        "Idle": 2,
+        "Walk": 8
+    }
 }

@@ -15,6 +15,9 @@ enum class CharacterType{
 	Wraith,
 	BrownWraith,
 	PurpleWraith,
+	Guy,
+	Robot,
+	Zombie
 
 };
 const std::map<CharacterType, char*> CharacterTypeToString{
@@ -23,7 +26,12 @@ const std::map<CharacterType, char*> CharacterTypeToString{
 	{CharacterType::IceWizard,		"IceWizard"		},
 	{CharacterType::Wraith,			"Wraith"		},
 	{CharacterType::BrownWraith,	"BrownWraith"	},
-	{CharacterType::PurpleWraith,	"PurpleWraith"	}
+	{CharacterType::PurpleWraith,	"PurpleWraith"	},
+	{CharacterType::Guy,			"Guy"			},
+	{CharacterType::Robot,			"Robot"			},
+	{CharacterType::Zombie,			"Zombie"		}
+
+
 };
 
 //const char* CharacterTypeToString[] = {

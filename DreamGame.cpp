@@ -85,6 +85,7 @@ void DreamGame::play() {
     pSettings.position = glm::vec2(1,1);
     pSettings.speed = 8.0f;
     pSettings.knockback = 1.0f;
+    pSettings.type = CharacterType::Guy;
     auto player = CharacterBuilder::createPlayer(pSettings);
 
     /*
