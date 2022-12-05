@@ -41,9 +41,13 @@ void CharacterComponent::fireOnKeyPress() {
         auto anim = gameObject->getComponent<SpriteAnimationComponent>();
         direction = glm::normalize(direction);
         if(direction.x<0)
-            anim->displayCompleteAnimation(State::AttackLeft, 1 / rateOfFire, [direction, this]() {shot(direction); });
+            anim->displayCompleteAnimation(State::AttackLeft, 1 / rateOfFire, [direction, this]() {shoot(direction); });
         else
-            anim->displayCompleteAnimation(State::AttackRight, 1 / rateOfFire, [direction, this]() { shot(direction); });
+            anim->displayCompleteAnimation(State::AttackRight, 1 / rateOfFire, [direction, this]() { shoot(direction); });
+
+        // If the animation cannot go any faster just spawn the bullets
+        if (1 / rateOfFire < anim->getMinDuration())
+            shoot(direction);
 
         return;
     }
@@ -109,19 +113,34 @@ void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
     Tag myTag = gameObject->tag;
     Tag hisTag = comp->getGameObject()->tag;
     if (myTag == Tag::Player && hisTag == Tag::Enemy) {
-        auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-        anim->displayCompleteAnimation(State::Die, [this]() {die(); }, true);
+        auto enemy = comp->getGameObject()->getComponent<CharacterComponent>();
+        inflictDamage(enemy->damage);
     }
     if (myTag == Tag::Player && hisTag == Tag::EnemyBullet ||
         myTag == Tag::Enemy && hisTag == Tag::PlayerBullet) {
         auto bullet = comp->getGameObject()->getComponent<BulletComponent>();
-        float realDamage = bullet->getDamage() - armor;
-        if (realDamage > 0) {
-            hp -= realDamage;
-            if (hp <= 0) {
-                auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-                anim->displayCompleteAnimation(State::Die, [this]() {die(); }, true);
-            }
+        applyKnockback(bullet);
+        inflictDamage(bullet->getDamage());
+    }
+}
+
+void CharacterComponent::applyKnockback(std::shared_ptr<BulletComponent> bullet) {
+    if (bullet->knockback > 0) {
+        stunned(true);
+        glm::vec2 direction = glm::normalize(gameObject->getPosition() - bullet->getGameObject()->getPosition());
+        auto phys = gameObject->getComponent<PhysicsComponent>();
+        phys->addImpulse(direction * bullet->knockback);
+    }
+}
+
+void CharacterComponent::inflictDamage(float damage) {
+    float realDamage = damage - armor;
+    if (realDamage > 0) {
+        hp -= realDamage;
+        if (hp <= 0) {
+            state = State::Die;
+            auto anim = gameObject->getComponent<SpriteAnimationComponent>();
+            anim->displayCompleteAnimation(State::Die, [this]() {die(); }, true);
         }
     }
 }
@@ -167,7 +186,7 @@ State CharacterComponent::getState()
 // - shotSpeed
 // - range
 // - rateOfFire
-void CharacterComponent::shot(glm::vec2 direction) {
+void CharacterComponent::shoot(glm::vec2 direction) {
     if (!readyToShoot) 
         return; // cooldown is not finished
 

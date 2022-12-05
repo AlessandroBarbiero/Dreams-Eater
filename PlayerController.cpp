@@ -10,6 +10,9 @@
 PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) { }
 
 void PlayerController::update(float deltaTime) {
+    if (character->state == State::Die)
+        return;
+
     if (character->stun) {
         character->changeState(State::Idle);
         return;
@@ -39,10 +42,11 @@ void PlayerController::update(float deltaTime) {
     }
 
     if (shooting)
-        character->shot(lastDirection);
+        character->shoot(lastDirection);
 }
 
 bool PlayerController::onKey(SDL_Event& event) {
+
     auto sym = event.key.keysym.sym;
 
     if (sym == keyUp) 
@@ -61,15 +65,7 @@ bool PlayerController::onKey(SDL_Event& event) {
 }
 
 void PlayerController::onCollisionStart(PhysicsComponent* comp) {
-    if (comp->getGameObject()->tag == Tag::EnemyBullet) {
-        auto bullet = comp->getGameObject()->getComponent<BulletComponent>();
-        float knockback = bullet->getKnockback();
-        if (knockback > 0) {
-            character->stunned(true);
-            glm::vec2 direction = glm::normalize(gameObject->getPosition() - comp->getGameObject()->getPosition());
-            playerPhysics->addImpulse(direction * knockback);
-        }
-    }
+
 }
 
 void PlayerController::onCollisionEnd(PhysicsComponent* comp) {

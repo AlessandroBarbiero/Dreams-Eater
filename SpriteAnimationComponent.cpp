@@ -3,7 +3,6 @@
 #include <memory>
 #include "DreamGame.hpp"
 #include "DreamInspector.hpp"
-constexpr auto _minDuration = 0.1f;
 
 SpriteAnimationComponent::SpriteAnimationComponent(GameObject *gameObject) : Component(gameObject) {
     spriteComp = gameObject->getComponent<SpriteComponent>();
@@ -25,19 +24,22 @@ void SpriteAnimationComponent::update(float deltaTime) {
         }
         
         if (showingCompleteAnim && spriteIndex == sprites.size()) {
-            spriteIndex--;
-            showingCompleteAnim = false;
-            animationTime = baseAnimationTime;
-            if (callbackFunc != nullptr) {
-                callbackFunc();
-                callbackFunc = nullptr;
-            }
+            endCompleteAnimation();
         }
         
-
-        sre::Sprite& sprite = sprites[spriteIndex];
         spriteComp->setSprite(sprites[spriteIndex]);
     }
+}
+
+void SpriteAnimationComponent::endCompleteAnimation() {
+    spriteIndex--;
+    showingCompleteAnim = false;
+    animationTime = baseAnimationTime;
+    if (callbackFunc != nullptr) {
+        callbackFunc();
+        callbackFunc = nullptr;
+    }
+    currentAnimation = State::Idle;
 }
 
 float SpriteAnimationComponent::getAnimationTime() const {
@@ -75,7 +77,7 @@ bool SpriteAnimationComponent::displayCompleteAnimation(State anim)
     time = 0;
     spriteIndex = 0;
     sprites = animationSequences[anim];
-
+    currentAnimation = anim;
     return true;
 }
 
@@ -101,8 +103,11 @@ bool SpriteAnimationComponent::displayCompleteAnimation(State anim, const std::f
 
 // Show a complete animation sequence and at the end call the callback, it can override previous animations if urgent is set to true,
 // Return false if the animation won't be displayed
+// Return true if the animation is being already displayed
 bool SpriteAnimationComponent::displayCompleteAnimation(State anim, const std::function<void()>& callback, bool urgent)
 {
+    if (currentAnimation == anim)
+        return true;
     if (!urgent && showingCompleteAnim == true) {
         return false;
     }
@@ -110,7 +115,8 @@ bool SpriteAnimationComponent::displayCompleteAnimation(State anim, const std::f
     time = 0;
     spriteIndex = 0;
     sprites = animationSequences[anim];
-    
+    currentAnimation = anim;
+    animationTime = baseAnimationTime;
     callbackFunc = callback;
     return true;
 }
@@ -124,6 +130,11 @@ bool SpriteAnimationComponent::displayCompleteAnimation(State anim, float totalD
     float duration = totalDuration < _minDuration ? _minDuration : totalDuration;
     animationTime = duration / sprites.size();
     return true;
+}
+
+float SpriteAnimationComponent::getMinDuration()
+{
+    return _minDuration;
 }
 
 void SpriteAnimationComponent::onGui() {

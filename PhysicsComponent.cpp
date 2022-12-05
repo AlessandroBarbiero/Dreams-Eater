@@ -9,8 +9,7 @@
 #include "DreamGame.hpp"
 
 PhysicsComponent::PhysicsComponent(GameObject *gameObject)
-        : Component(gameObject)
-{
+        : Component(gameObject){
     world = DreamGame::instance->world;
 }
 
@@ -76,7 +75,6 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
 // Only works for circles
 void PhysicsComponent::setScale(float scale) {
     if (fixture != nullptr) {
-        std::cout << "setScale: new scale = " << scale << std::endl;
         auto shape = fixture->GetShape();
         if (shape->GetType() == b2Shape::e_circle) {
             shape->m_radius *= scale;

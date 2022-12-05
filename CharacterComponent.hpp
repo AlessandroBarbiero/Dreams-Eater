@@ -21,6 +21,7 @@ public:
 	explicit CharacterComponent(GameObject* gameObject);
 
 	void onCollisionStart(PhysicsComponent* comp) override;
+
 	void onCollisionEnd(PhysicsComponent* comp) override;
 
 	bool onKey(SDL_Event& event) override;
@@ -29,7 +30,7 @@ public:
 	
 	void update(float deltaTime) override;
 
-	void shot(glm::vec2 direction);
+	void shoot(glm::vec2 direction);
 	void setShotSprite(const sre::Sprite& sprite);
 
 	void stunned(float stunTimeout);
@@ -45,6 +46,8 @@ private:
 	void updateFlyingProj();
 	void fireOnKeyPress();
 
+	void inflictDamage(float damage);
+	void applyKnockback(std::shared_ptr<BulletComponent> bullet);
 
 	State state = State::Idle;
 

@@ -5,15 +5,12 @@
 #include "SpriteComponent.hpp"
 #include "CharacterComponent.hpp"
 
-enum class Animation {
-
-};
-
 class SpriteAnimationComponent: public Component {
 public:
     SpriteAnimationComponent(GameObject *gameObject);
 
     void update(float deltaTime) override;
+
     void onGui() override;
 
     float getAnimationTime() const;                         // time between animations (in seconds)
@@ -26,11 +23,16 @@ public:
     bool displayCompleteAnimation(State anim, const std::function<void()>& callback);
     bool displayCompleteAnimation(State anim, const std::function<void()>& callback, bool urgent);
     bool displayCompleteAnimation(State anim, float totalDuration);
-
+    float getMinDuration();
 private:
 
+    void endCompleteAnimation();
     std::map<State, std::vector<sre::Sprite>> animationSequences;
     std::vector<sre::Sprite> sprites;
+    float _minDuration = 0.2f;
+
+    // The animation currently displayed -> it is set to Idle if there are no complete animations being diplayed at the moment
+    State currentAnimation = State::Idle;
 
     std::shared_ptr<SpriteComponent> spriteComp;
 
