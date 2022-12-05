@@ -13,7 +13,8 @@ public:
 
     void onGui() override;
 
-    float getAnimationTime() const;                         // time between animations (in seconds)
+    // time between images in animations (in seconds)
+    float getAnimationTime() const;                         
     void setAnimationTime(float animationTime);
     void setBaseAnimationTime(float animationTime);
     void addAnimationSequence(State state, std::vector<sre::Sprite> animation);

@@ -6,15 +6,34 @@
 #include <SDL_events.h>
 #include "SpriteAnimationComponent.hpp"
 #include <map>
+using std::map;
 
 enum class CharacterType{
-	Wizard,
+	Wizard = 0,
 	FireWizard,
 	IceWizard,
 	Wraith,
 	BrownWraith,
-	PurpleWraith
+	PurpleWraith,
+
 };
+const std::map<CharacterType, char*> CharacterTypeToString{
+	{CharacterType::Wizard,			"Wizard"		},
+	{CharacterType::FireWizard,		"FireWizard"	},
+	{CharacterType::IceWizard,		"IceWizard"		},
+	{CharacterType::Wraith,			"Wraith"		},
+	{CharacterType::BrownWraith,	"BrownWraith"	},
+	{CharacterType::PurpleWraith,	"PurpleWraith"	}
+};
+
+//const char* CharacterTypeToString[] = {
+//	"Wizard",
+//	"FireWizard",
+//	"IceWizard",
+//	"Wraith",
+//	"BrownWraith",
+//	"PurpleWraith"
+//};
 
 struct Controls {
 	SDL_Keycode up = SDLK_w;
@@ -63,7 +82,6 @@ struct EnemySettings {
 	float knockback = 0;
 
 	std::shared_ptr<GameObject> player;
-
 };
 
 class CharacterBuilder {
@@ -73,11 +91,14 @@ public:
 
 private:
 
-	static std::map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> atlasMap;
+	static map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> atlasMap;
+	static map<CharacterType, map<State, int>> animationSizesMap;
 
-	static void initMap();
+	static void initAtlasMap();
+	static void initSizesMap(CharacterType type);
 
-	static std::shared_ptr<sre::SpriteAtlas> getAtlas(CharacterType);
+	static map<State, int> getAnimationSizes(CharacterType type);
+	static std::shared_ptr<sre::SpriteAtlas> getAtlas(CharacterType type);
 
 	static void animationSetup(std::shared_ptr<SpriteAnimationComponent> animation, std::shared_ptr<sre::SpriteAtlas> spriteAtlas,
 		std::map<State, int> AnimationSizes, float baseAnimTime, Depth visualDepth);
