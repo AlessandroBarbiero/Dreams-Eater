@@ -21,7 +21,6 @@ public:
 	explicit CharacterComponent(GameObject* gameObject);
 
 	void onCollisionStart(PhysicsComponent* comp) override;
-
 	void onCollisionEnd(PhysicsComponent* comp) override;
 
 	bool onKey(SDL_Event& event) override;
@@ -39,6 +38,16 @@ public:
 	State getState();
 	void changeState(State newState);
 
+	float getHp()			{ return hp; };
+	float getArmor()		{ return armor ; };
+	float getSpeed()		{ return speed ; };
+	float getDamage()		{ return damage; };
+	float getRange()		{ return range ; };
+	float getRateOfFire()	{ return rateOfFire; };
+	float getShotSpeed()	{ return shotSpeed ; };
+	float getKnockback()	{ return knockback ; };
+
+
 private:
 
 	void updateStunTimeout(float deltaTime);
@@ -55,11 +64,11 @@ private:
 	bool stun = false;
 	float stunTimeout = 0;
 
-	float hp = 5.0f;
-	float armor = 0;
-	float speed = 5.0f;
-	float damage = 1.5f;
-	float range = 10.0f;
+	float hp		= 5.0f;
+	float armor		= 0;
+	float speed		= 5.0f;
+	float damage	= 1.5f;
+	float range		= 10.0f;
 	// shots per second
 	float rateOfFire = 3.0f;    
 	float shotSpeed = 10.0f;
@@ -104,5 +113,5 @@ private:
 
 	friend class CharacterBuilder;
 	friend class PlayerController;
-	friend class EnemyController;
+	friend class IEnemyController;
 };

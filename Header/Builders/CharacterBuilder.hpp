@@ -17,9 +17,10 @@ enum class CharacterType{
 	PurpleWraith,
 	Guy,
 	Robot,
-	Zombie
-
+	Zombie,
+//	BigTroll
 };
+
 const std::map<CharacterType, char*> CharacterTypeToString{
 	{CharacterType::Wizard,			"Wizard"		},
 	{CharacterType::FireWizard,		"FireWizard"	},
@@ -29,19 +30,10 @@ const std::map<CharacterType, char*> CharacterTypeToString{
 	{CharacterType::PurpleWraith,	"PurpleWraith"	},
 	{CharacterType::Guy,			"Guy"			},
 	{CharacterType::Robot,			"Robot"			},
-	{CharacterType::Zombie,			"Zombie"		}
-
+	{CharacterType::Zombie,			"Zombie"		},
+//	{CharacterType::BigTroll,		"BigTroll"		}
 
 };
-
-//const char* CharacterTypeToString[] = {
-//	"Wizard",
-//	"FireWizard",
-//	"IceWizard",
-//	"Wraith",
-//	"BrownWraith",
-//	"PurpleWraith"
-//};
 
 struct Controls {
 	SDL_Keycode up = SDLK_w;

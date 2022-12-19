@@ -1,17 +1,16 @@
-
-#include "Wizard.hpp"
+#include "BigTroll.hpp"
 #include "SpriteAnimationComponent.hpp"
 #include "GameObject.hpp"
 #include "PhysicsComponent.hpp"
 
-Wizard::Wizard(GameObject* gameObject) : IEnemyController(gameObject)
+BigTroll::BigTroll(GameObject* gameObject) : IEnemyController(gameObject)
 {
 }
 
-void Wizard::attack()
+void BigTroll::attack()
 {
 
-	glm::vec2 direction = glm::normalize(towardPlayer);
+    glm::vec2 direction = glm::normalize(towardPlayer);
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
     /* It is not working because the sprites have a wrong pivot
@@ -24,16 +23,16 @@ void Wizard::attack()
 
 }
 
-void Wizard::movement()
+void BigTroll::movement()
 {
     float distance = glm::length(towardPlayer);
 
 
     // Range enemies don't go toward the player until the end
-    if (distance < idealDistance) {
-        character->changeState(State::Idle);
-        return;
-    }
+    //if (distance < idealDistance) {
+    //    character->changeState(State::Idle);
+    //    return;
+    //}
 
     glm::vec2 direction = glm::normalize(towardPlayer);
 

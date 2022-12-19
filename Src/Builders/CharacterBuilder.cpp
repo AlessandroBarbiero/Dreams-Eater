@@ -2,7 +2,7 @@
 #include "DreamGame.hpp"
 #include "PlayerController.hpp"
 #include "PhysicsComponent.hpp"
-#include "EnemyController.hpp"
+#include "IEnemyController.hpp"
 #include "CharacterComponent.hpp"
 #include "SpriteAnimationComponent.hpp"
 #include <rapidjson.h>
@@ -10,6 +10,7 @@
 #include <istreamwrapper.h>
 #include <fstream>
 #include <iostream>
+#include <EnemyBehaviours/Wizard.hpp>
 constexpr auto SIZES_PATH = "Sprites/animationSizes.json";
 
 map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> CharacterBuilder::atlasMap;
@@ -27,6 +28,7 @@ map<State, int> CharacterBuilder::getAnimationSizes(CharacterType type) {
     return animationSizesMap[type];
 }
 
+// Read the number of images for each animation from a json file and populate the animationSizesMap for the specific type of character
 void CharacterBuilder::initSizesMap(CharacterType type) {
     auto& sizes = animationSizesMap[type];
 
@@ -45,21 +47,14 @@ void CharacterBuilder::initSizesMap(CharacterType type) {
 
 }
 
-
+// Create the atlases for all the types and save them in the atlasMap structure
 void CharacterBuilder::initAtlasMap() {
     for (const auto& charStringPair : CharacterTypeToString)
     {
         std::string typeName = charStringPair.second;
         atlasMap.insert({ charStringPair.first,
             sre::SpriteAtlas::create("Sprites/Characters/" + typeName + "/" + typeName + "_atlas.json", "Sprites/Characters/" + typeName + "/" + typeName + "_atlas.png") });
-
     }
-    /*atlasMap.insert({ CharacterType::Wraith, sre::SpriteAtlas::create("Sprites/Wraith/Wraith_base_atlas.json", "Sprites/Wraith/Wraith_base_atlas.png") });
-    atlasMap.insert({ CharacterType::BrownWraith, sre::SpriteAtlas::create("Sprites/Wraith/Wraith_brown_atlas.json", "Sprites/Wraith/Wraith_brown_atlas.png") });
-    atlasMap.insert({ CharacterType::PurpleWraith, sre::SpriteAtlas::create("Sprites/Wraith/Wraith_purple_atlas.json", "Sprites/Wraith/Wraith_purple_atlas.png") });
-    atlasMap.insert({ CharacterType::Wizard, sre::SpriteAtlas::create("Sprites/Wizard/Wizard_base_atlas.json", "Sprites/Wizard/Wizard_base_atlas.png") });
-    atlasMap.insert({ CharacterType::FireWizard, sre::SpriteAtlas::create("Sprites/Wizard/Wizard_fire_atlas.json", "Sprites/Wizard/Wizard_fire_atlas.png") });
-    atlasMap.insert({ CharacterType::IceWizard, sre::SpriteAtlas::create("Sprites/Wizard/Wizard_ice_atlas.json", "Sprites/Wizard/Wizard_ice_atlas.png") });*/
 }
 
 std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settings) {
@@ -115,10 +110,6 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
      
     auto animation = player->addComponent<SpriteAnimationComponent>();
     std::map<State, int> animationSizes = getAnimationSizes(settings.type);
-    /*animationSizes.insert({ State::Idle, 12 });
-    animationSizes.insert({ State::AttackRight, 12 });
-    animationSizes.insert({ State::WalkRight, 12 });
-    animationSizes.insert({ State::Die, 15 });*/
     animationSetup(animation, spriteAtlas, animationSizes, 0.1f, Depth::Player);
 
     player->setScale(2.5f);
@@ -126,6 +117,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     return player;
 }
 
+// Fill up the animation component with all the animations
 void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> animation,
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas, std::map<State, int> animationSizes, float baseAnimTime, Depth visualDepth) {
 
@@ -176,6 +168,8 @@ void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> 
     animation->setBaseAnimationTime(baseAnimTime);
 }
 
+
+
 std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings) {
     auto game = DreamGame::instance;
     auto physicsScale = DreamGame::instance->physicsScale;
@@ -211,19 +205,16 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemyCharacter->shotSpeed = settings.shotSpeed;
     enemyCharacter->knockback = settings.knockback;
 
-    auto enemyController = enemy->addComponent<EnemyController>();
+    auto enemyController = enemy->addComponent<Wizard>();
     enemyController->character = enemyCharacter;
     enemyController->physics = physics;
     enemyController->player = settings.player;
-    enemyController->idealDistance = settings.idealDistance * physicsScale;
+    // enemyController->idealDistance = settings.idealDistance * physicsScale;
 
     auto animation = enemy->addComponent<SpriteAnimationComponent>();
 
     std::map<State, int> animationSizes = getAnimationSizes(settings.type);
-    /*animationSizes.insert({ State::Idle, 5 });
-    animationSizes.insert({ State::AttackRight, 5 });
-    animationSizes.insert({ State::WalkRight, 5 });
-    animationSizes.insert({ State::Die, 5 });*/
+
     animationSetup(animation, spriteAtlas, animationSizes, 0.2f, Depth::Enemy);
 
 

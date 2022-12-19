@@ -4,10 +4,10 @@
 #include "CharacterComponent.hpp"
 #include "Component.hpp"
 
-//Ranged enemy, continuously attack and move toward player until a certain distance
-class Wizard : public IEnemyController {
+//Boss enemy, act within states alternating between melee attacks and circle spawning static rocks
+class BigTroll : public IEnemyController {
 public:
-    explicit Wizard(GameObject* gameObject);
+    explicit BigTroll(GameObject* gameObject);
 
     //   void onCollisionStart(PhysicsComponent* comp) override;
     //   void onCollisionEnd(PhysicsComponent* comp) override;
@@ -19,5 +19,4 @@ public:
 
 private:
 
-    float idealDistance = 600.0f;
 };
