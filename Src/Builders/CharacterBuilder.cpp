@@ -5,9 +5,9 @@
 #include "EnemyController.hpp"
 #include "CharacterComponent.hpp"
 #include "SpriteAnimationComponent.hpp"
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/document.h"
-#include "rapidjson/istreamwrapper.h"
+#include <rapidjson.h>
+#include <document.h>
+#include <istreamwrapper.h>
 #include <fstream>
 #include <iostream>
 constexpr auto SIZES_PATH = "Sprites/animationSizes.json";
