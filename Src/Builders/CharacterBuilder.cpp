@@ -28,6 +28,20 @@ map<State, int> CharacterBuilder::getAnimationSizes(CharacterType type) {
     return animationSizesMap[type];
 }
 
+// Searching for the CharacterType it will return a function that links the right behaviour to the gameObject passed and return an EnemyController shared pointer
+// If there is no Controller associated with the specified type a default value is chosen
+std::function<std::shared_ptr<IEnemyController>(GameObject*)> findRightController(CharacterType type) {
+
+    auto default_value = [](GameObject* obj) {	return obj->addComponent<DEFAULT_BEHAVIOUR>();	};
+
+    auto it = CharacterTypeToBehaviour.find(type);
+    if (it == CharacterTypeToBehaviour.end())
+        return default_value;
+
+    return it->second;
+}
+
+
 // Read the number of images for each animation from a json file and populate the animationSizesMap for the specific type of character
 void CharacterBuilder::initSizesMap(CharacterType type) {
     auto& sizes = animationSizesMap[type];
@@ -84,7 +98,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerCharacter->radius = radius;
     playerCharacter->hp = settings.hp;
     playerCharacter->speed = settings.speed;
-    playerCharacter->armor = settings.armor;
+    playerCharacter->armor = 5.0f; // TODO: put back --   settings.armor;
     playerCharacter->damage = settings.damage;
     playerCharacter->range = settings.range;
     playerCharacter->rateOfFire = settings.rateOfFire;
@@ -112,7 +126,8 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     std::map<State, int> animationSizes = getAnimationSizes(settings.type);
     animationSetup(animation, spriteAtlas, animationSizes, 0.1f, Depth::Player);
 
-    player->setScale(2.5f);
+    // Use for Guy
+    // player->setScale(2.5f);
 
     return player;
 }
@@ -172,6 +187,8 @@ void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> 
 
 std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings) {
 
+    CharacterType type = CharacterType::SamuraiHeavy;       //TODO: put back --  settings.type;
+
     auto game = DreamGame::instance;
     auto physicsScale = DreamGame::instance->physicsScale;
 
@@ -181,7 +198,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemy->setPosition(settings.position);
 
     auto spriteComp = enemy->addComponent<SpriteComponent>();
-    auto spriteAtlas = getAtlas(settings.type);
+    auto spriteAtlas = getAtlas(type);
     auto sprite = spriteAtlas->get("Idle/0.png");
     //Set the Enemy sprite to be on top of the background but behind the player
     sprite.setOrderInBatch(Depth::Enemy);
@@ -202,19 +219,20 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemyCharacter->speed = settings.speed;
     enemyCharacter->damage = settings.damage;
     enemyCharacter->range = settings.range;
-    enemyCharacter->rateOfFire = settings.rateOfFire;
+    enemyCharacter->rateOfFire = 1.0f; // TODO: put back --  settings.rateOfFire;
     enemyCharacter->shotSpeed = settings.shotSpeed;
-    enemyCharacter->knockback = settings.knockback;
+    enemyCharacter->knockback = 0; // TODO: put back --  settings.knockback;
 
-    auto enemyController = enemy->addComponent<Wizard>();
+    // Add a IEnemyController based on the type of enemy
+    auto& addControllerFunction = findRightController(type);
+    auto enemyController = addControllerFunction(enemy.get());
     enemyController->character = enemyCharacter;
     enemyController->physics = physics;
     enemyController->player = settings.player;
-    // enemyController->idealDistance = settings.idealDistance * physicsScale;
 
     auto animation = enemy->addComponent<SpriteAnimationComponent>();
 
-    std::map<State, int> animationSizes = getAnimationSizes(settings.type);
+    std::map<State, int> animationSizes = getAnimationSizes(type);
 
     animationSetup(animation, spriteAtlas, animationSizes, 0.2f, Depth::Enemy);
 
@@ -222,3 +240,5 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemy->setScale(0.9f);
     return enemy;
 }
+
+

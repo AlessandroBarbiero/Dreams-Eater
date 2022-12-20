@@ -14,10 +14,10 @@ void Wizard::attack()
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
     // It is still not working even if the sprite pivot is right
-    /*if (direction.x < 0)
+    if (direction.x < 0)
          anim->displayCompleteAnimation(State::AttackLeft, 1 / character->getRateOfFire(), [direction, this]() {character->shoot(direction); });
      else
-         anim->displayCompleteAnimation(State::AttackRight, 1 / character->getRateOfFire(), [direction, this]() { character->shoot(direction); });*/
+         anim->displayCompleteAnimation(State::AttackRight, 1 / character->getRateOfFire(), [direction, this]() { character->shoot(direction); });
     character->shoot(direction);
 
 }
