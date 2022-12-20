@@ -1,9 +1,6 @@
 import json
 import os
 
-
-
-
 d = {}
 
 for _,_,filenames in os.walk("Characters"):

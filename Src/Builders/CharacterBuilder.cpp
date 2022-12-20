@@ -171,6 +171,7 @@ void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> 
 
 
 std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings) {
+
     auto game = DreamGame::instance;
     auto physicsScale = DreamGame::instance->physicsScale;
 

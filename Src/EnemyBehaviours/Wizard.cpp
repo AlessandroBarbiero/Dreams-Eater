@@ -10,17 +10,15 @@ Wizard::Wizard(GameObject* gameObject) : IEnemyController(gameObject)
 
 void Wizard::attack()
 {
-
 	glm::vec2 direction = glm::normalize(towardPlayer);
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-    /* It is not working because the sprites have a wrong pivot
-    if (direction.x < 0)
-         anim->displayCompleteAnimation(State::AttackLeft, 1 / character->rateOfFire, [direction, this]() {character->shoot(direction); });
+    // It is still not working even if the sprite pivot is right
+    /*if (direction.x < 0)
+         anim->displayCompleteAnimation(State::AttackLeft, 1 / character->getRateOfFire(), [direction, this]() {character->shoot(direction); });
      else
-         anim->displayCompleteAnimation(State::AttackRight, 1 / character->rateOfFire, [direction, this]() { character->shoot(direction); });*/
+         anim->displayCompleteAnimation(State::AttackRight, 1 / character->getRateOfFire(), [direction, this]() { character->shoot(direction); });*/
     character->shoot(direction);
-
 
 }
 

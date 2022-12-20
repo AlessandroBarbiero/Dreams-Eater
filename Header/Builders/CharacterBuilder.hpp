@@ -18,6 +18,7 @@ enum class CharacterType{
 	Guy,
 	Robot,
 	Zombie,
+	Slime,
 //	BigTroll
 };
 
@@ -31,6 +32,7 @@ const std::map<CharacterType, char*> CharacterTypeToString{
 	{CharacterType::Guy,			"Guy"			},
 	{CharacterType::Robot,			"Robot"			},
 	{CharacterType::Zombie,			"Zombie"		},
+	{CharacterType::Slime,			"Slime"			},
 //	{CharacterType::BigTroll,		"BigTroll"		}
 
 };
