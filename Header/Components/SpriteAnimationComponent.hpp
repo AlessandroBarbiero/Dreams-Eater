@@ -3,7 +3,8 @@
 #include "Component.hpp"
 #include "sre/Sprite.hpp"
 #include "SpriteComponent.hpp"
-#include "CharacterComponent.hpp"
+#include "CharacterComponent.hpp" // Contain definition of state
+
 
 class SpriteAnimationComponent: public Component {
 public:
@@ -24,8 +25,15 @@ public:
     bool displayCompleteAnimation(State anim, const std::function<void()>& callback);
     bool displayCompleteAnimation(State anim, const std::function<void()>& callback, bool urgent);
     bool displayCompleteAnimation(State anim, float totalDuration);
+    bool displayOnce(State anim, bool urgent = true);
     float getMinDuration();
+
+    // Stop the animation -> useful for objects to be displayed only in particular conditions
+    void deactivate();
+    void activate();
 private:
+
+    bool active = true;
 
     void endCompleteAnimation();
     std::map<State, std::vector<sre::Sprite>> animationSequences;

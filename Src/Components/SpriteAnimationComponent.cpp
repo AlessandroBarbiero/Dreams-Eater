@@ -3,6 +3,7 @@
 #include <memory>
 #include "DreamGame.hpp"
 #include "DreamInspector.hpp"
+#include <Components/CharacterComponent.hpp>
 
 SpriteAnimationComponent::SpriteAnimationComponent(GameObject *gameObject) : Component(gameObject) {
     spriteComp = gameObject->getComponent<SpriteComponent>();
@@ -10,7 +11,9 @@ SpriteAnimationComponent::SpriteAnimationComponent(GameObject *gameObject) : Com
 }
 
 void SpriteAnimationComponent::update(float deltaTime) {
-    
+    if (!active)
+        return;
+
     time += deltaTime;
     
     if (time > animationTime){
@@ -102,8 +105,9 @@ bool SpriteAnimationComponent::displayCompleteAnimation(State anim, const std::f
 }
 
 // Show a complete animation sequence and at the end call the callback, it can override previous animations if urgent is set to true,
+// it cannot override animations of the same type
 // Return false if the animation won't be displayed
-// Return true if the animation is being already displayed
+// Return true if the animation is being already displayed or if the animation will start
 bool SpriteAnimationComponent::displayCompleteAnimation(State anim, const std::function<void()>& callback, bool urgent)
 {
     if (currentAnimation == anim)
@@ -118,6 +122,7 @@ bool SpriteAnimationComponent::displayCompleteAnimation(State anim, const std::f
     currentAnimation = anim;
     animationTime = baseAnimationTime;
     callbackFunc = callback;
+    spriteComp->setSprite(sprites[0]);
     return true;
 }
 
@@ -132,9 +137,42 @@ bool SpriteAnimationComponent::displayCompleteAnimation(State anim, float totalD
     return true;
 }
 
+// Display one time the animation and then disable the sprite, the object will not be displayed after the animation.
+// If urgent is set the animation can override himself or other animations
+// Return true if the animation is being displayed
+bool SpriteAnimationComponent::displayOnce(State anim, bool urgent)
+{
+    if (!urgent && showingCompleteAnim == true) {
+        return false;
+    }
+    showingCompleteAnim = true;
+    time = 0;
+    spriteIndex = 0;
+    sprites = animationSequences[anim];
+    currentAnimation = anim;
+    animationTime = baseAnimationTime;
+    // Deactivate everything at the end of the animation
+    callbackFunc = [this]() { spriteComp->deactivate(); deactivate(); };
+    spriteComp->setSprite(sprites[0]);
+
+    spriteComp->activate();
+    activate();
+    return true;
+}
+
 float SpriteAnimationComponent::getMinDuration()
 {
     return _minDuration;
+}
+
+void SpriteAnimationComponent::deactivate()
+{
+    active = false;
+}
+
+void SpriteAnimationComponent::activate()
+{
+    active = true;
 }
 
 void SpriteAnimationComponent::onGui() {

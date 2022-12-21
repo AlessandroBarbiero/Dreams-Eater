@@ -4,7 +4,11 @@
 #include "BulletComponent.hpp"
 #include <queue>
 #include "SDL.h"
+
 constexpr auto KNOCKBACK_TIME = 0.2;
+
+// Forward declaration
+class SpriteAnimationComponent;
 
 enum class State {
 	Idle,
@@ -13,7 +17,9 @@ enum class State {
 	WalkRight,
 	AttackLeft,
 	AttackRight,
-	Die
+	Die,
+	Hit,
+	Victory
 };
 
 class CharacterComponent : public Component {
@@ -21,7 +27,7 @@ public:
 	explicit CharacterComponent(GameObject* gameObject);
 
 	void onCollisionStart(PhysicsComponent* comp) override;
-	void onCollisionEnd(PhysicsComponent* comp) override;
+	// void onCollisionEnd(PhysicsComponent* comp) override;
 
 	bool onKey(SDL_Event& event) override;
 
@@ -37,6 +43,7 @@ public:
 
 	State getState();
 	void changeState(State newState);
+	void showEffect(State effect);
 
 	float getHp()			{ return hp; };
 	float getArmor()		{ return armor ; };
@@ -50,10 +57,15 @@ public:
 
 private:
 
+	static std::shared_ptr<sre::SpriteAtlas> effectAtlas;
+
 	void updateStunTimeout(float deltaTime);
 	void checkRateOfFire(float deltaTime);
 	void updateFlyingProj();
 	void fireOnKeyPress();
+
+	void initSpecialEffectObject();
+	std::shared_ptr<SpriteAnimationComponent> specialEffects;
 
 	void inflictDamage(float damage);
 	void applyKnockback(std::shared_ptr<BulletComponent> bullet);
@@ -115,3 +127,6 @@ private:
 	friend class PlayerController;
 	friend class IEnemyController;
 };
+
+// Cannot include it at the beginning of the file because they are mutually referenciate each other
+#include <SpriteAnimationComponent.hpp>

@@ -9,7 +9,7 @@ class Wizard : public IEnemyController {
 public:
     explicit Wizard(GameObject* gameObject);
 
-    //   void onCollisionStart(PhysicsComponent* comp) override;
+     void onCollisionStart(PhysicsComponent* comp) override;
     //   void onCollisionEnd(PhysicsComponent* comp) override;
     //   void update(float deltaTime) override;
     //   void onGui() override;

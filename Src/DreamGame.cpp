@@ -252,7 +252,7 @@ void DreamGame::onKey(SDL_Event& event) {
             break;
 
         case SDLK_y:
-            // press 'd' for physics debug
+            // press 'y' for physics debug
             doDebugDraw = !doDebugDraw;
             if (doDebugDraw) {
                 world->SetDebugDraw(&debugDraw);
@@ -272,6 +272,7 @@ std::shared_ptr<GameObject> DreamGame::reactivateGameObject(std::shared_ptr<Game
     currentScene->getSceneObjects()->push_back(obj);
     return obj;
 }
+
 void DreamGame::updatePhysics() {
 
     const int positionIterations = 4;

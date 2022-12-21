@@ -10,7 +10,8 @@ enum Depth : uint16_t {
     Wall,
     Bullet,
     Enemy,
-    Player
+    Player,
+    Effect
 };
 
 class SpriteComponent : public Component {
@@ -21,7 +22,11 @@ public:
 
     void setSprite(const sre::Sprite& sprite);
     sre::Sprite getSprite();
+
+    void activate();
+    void deactivate();
 private:
     sre::Sprite sprite;
+    bool noRender = false;
 };
 

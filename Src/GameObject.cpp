@@ -27,6 +27,8 @@ bool GameObject::removeComponent(std::shared_ptr<Component> component) {
 }
 
 const glm::vec2 &GameObject::getPosition() const {
+    if (parent != nullptr)
+        return parent->getPosition() + position;
     return position;
 }
 

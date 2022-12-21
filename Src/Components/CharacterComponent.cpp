@@ -10,7 +10,46 @@
 #include "SpriteAnimationComponent.hpp"
 #define KNOCKBACK_SCALE 10
 
-CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameObject) {}
+std::shared_ptr<sre::SpriteAtlas> CharacterComponent::effectAtlas;
+
+CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameObject) {
+    if (CharacterComponent::effectAtlas == nullptr) {
+        CharacterComponent::effectAtlas = sre::SpriteAtlas::create("Sprites/SpecialEffects/SpecialEffects_atlas.json", "Sprites/SpecialEffects/SpecialEffects_atlas.png");
+    }
+
+    initSpecialEffectObject();
+}
+
+void CharacterComponent::initSpecialEffectObject() {
+    auto specialEffectsObj = DreamGame::instance->currentScene->createGameObject();
+
+    auto sprComp = specialEffectsObj->addComponent<SpriteComponent>();
+    sprComp->deactivate();
+    specialEffects = specialEffectsObj->addComponent<SpriteAnimationComponent>();
+    // The special effect should be visible only when necessary
+    specialEffects->deactivate();
+
+    // Load the hit animation from memory
+    std::vector<sre::Sprite> hitAnim(11);
+    std::string spriteName = "Hit/";
+    for (int i = 0; i < hitAnim.size(); i++) {
+        hitAnim[i] = CharacterComponent::effectAtlas->get(spriteName + std::to_string(i) + ".png");
+        hitAnim[i].setOrderInBatch(Depth::Effect);
+    }
+
+    std::vector<sre::Sprite> victoryAnim(16);
+    spriteName = "Victory/";
+    for (int i = 0; i < victoryAnim.size(); i++) {
+        victoryAnim[i] = CharacterComponent::effectAtlas->get(spriteName + std::to_string(i) + ".png");
+        victoryAnim[i].setOrderInBatch(Depth::Effect);
+    }
+
+    specialEffects->addAnimationSequence(State::Victory, victoryAnim);
+    specialEffects->addAnimationSequence(State::Hit, hitAnim);
+    specialEffects->setBaseAnimationTime(0.1f);
+
+    gameObject->addChild(specialEffectsObj.get());
+}
 
 void CharacterComponent::update(float deltaTime) {
     if(stun)
@@ -142,11 +181,10 @@ void CharacterComponent::inflictDamage(float damage) {
             auto anim = gameObject->getComponent<SpriteAnimationComponent>();
             anim->displayCompleteAnimation(State::Die, [this]() {die(); }, true);
         }
+        else {
+            showEffect(State::Hit);
+        }
     }
-}
-
-void CharacterComponent::onCollisionEnd(PhysicsComponent* comp) {
-
 }
 
 void CharacterComponent::die() {
@@ -237,6 +275,10 @@ void CharacterComponent::setShotSprite(const sre::Sprite& sprite) {
 void CharacterComponent::startShotCooldown() {
     readyToShoot = false;
     shotCooldownTimer = 0;
+}
+
+void CharacterComponent::showEffect(State effect) {
+    specialEffects->displayOnce(effect);
 }
 
 

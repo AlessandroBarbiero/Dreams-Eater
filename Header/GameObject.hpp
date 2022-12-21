@@ -83,10 +83,10 @@ inline std::shared_ptr<T> GameObject::addComponent(){
     return obj;
 }
 
-// definition of the template member function addComponent
+// definition of the template member function getComponent
 // Usage:
 // GameObject* go = something;
-// shared_ptr<SpriteComponent> sc = go->addComponent<SpriteComponent>();
+// shared_ptr<SpriteComponent> sc = go->getComponent<SpriteComponent>();
 template <class T>
 inline std::shared_ptr<T> GameObject::getComponent(){
     for (auto c : components){

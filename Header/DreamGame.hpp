@@ -24,7 +24,7 @@ class DreamGame : public b2ContactListener {
 public:
     DreamGame();
 
-    //std::shared_ptr<GameObject> createGameObject();
+    //std::shared_ptr<GameObject> createGameObject(); -> Objects are created inside the scene, not here
     std::shared_ptr<GameObject> reactivateGameObject(std::shared_ptr<GameObject> obj);
 
     static const glm::vec2 windowSize;

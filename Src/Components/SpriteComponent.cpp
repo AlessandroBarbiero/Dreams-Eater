@@ -9,6 +9,8 @@
 SpriteComponent::SpriteComponent(GameObject *gameObject) : Component(gameObject) {}
 
 void SpriteComponent::renderSprite(sre::SpriteBatch::SpriteBatchBuilder &spriteBatchBuilder) {
+    if (noRender)
+        return;
     glm::vec2 position = gameObject->getPosition();
     
     // This was my attempt to fix the animation but it is not working 
@@ -28,4 +30,14 @@ void SpriteComponent::setSprite(const sre::Sprite &sprite) {
 
 sre::Sprite SpriteComponent::getSprite() {
     return sprite;
+}
+
+void SpriteComponent::activate()
+{
+    noRender = false;
+}
+
+void SpriteComponent::deactivate()
+{
+    noRender = true;
 }

@@ -8,6 +8,13 @@ Wizard::Wizard(GameObject* gameObject) : IEnemyController(gameObject)
 {
 }
 
+void Wizard::onCollisionStart(PhysicsComponent* comp)
+{
+    if (character->getState() == State::Die)
+        player->getComponent<CharacterComponent>()->showEffect(State::Victory);
+
+}
+
 void Wizard::attack()
 {
 	glm::vec2 direction = glm::normalize(towardPlayer);
