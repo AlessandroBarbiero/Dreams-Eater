@@ -11,6 +11,7 @@
 #include <fstream>
 #include <iostream>
 #include <EnemyBehaviours/Wizard.hpp>
+#include <Components/PowerupComponent.hpp>
 constexpr auto SIZES_PATH = "Sprites/animationSizes.json";
 
 map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> CharacterBuilder::atlasMap;
@@ -74,14 +75,15 @@ void CharacterBuilder::initAtlasMap() {
 std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settings) {
     auto game = DreamGame::instance;
     auto physicsScale = game->physicsScale;
-    
+    auto type = settings.type;
+
     auto player = game->currentScene->createGameObject();
     player->name = settings.name;
     player->tag = Tag::Player;
     player->setPosition(settings.position);
 
     auto spriteComp = player->addComponent<SpriteComponent>();
-    auto spriteAtlas = getAtlas(settings.type);
+    auto spriteAtlas = getAtlas(type);
     auto sprite = spriteAtlas->get("Idle/0.png");
     sprite.setOrderInBatch(Depth::Player);
     spriteComp->setSprite(sprite);
@@ -95,6 +97,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     auto playerCharacter = player->addComponent<CharacterComponent>();
     auto shotSprite = getAtlas(CharacterType::Wraith)->get("Spells-Effect.png");
     playerCharacter->setShotSprite(shotSprite);
+    playerCharacter->type = type;
     playerCharacter->radius = radius;
     playerCharacter->hp = settings.hp;
     playerCharacter->speed = settings.speed;
@@ -123,8 +126,10 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerController->keyShot = settings.keybinds.shot;
      
     auto animation = player->addComponent<SpriteAnimationComponent>();
-    std::map<State, int> animationSizes = getAnimationSizes(settings.type);
+    std::map<State, int> animationSizes = getAnimationSizes(type);
     animationSetup(animation, spriteAtlas, animationSizes, 0.1f, Depth::Player);
+
+    auto powerupComp = player->addComponent<PowerupComponent>();
 
     // Use for Guy
     // player->setScale(2.5f);
@@ -213,6 +218,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     auto enemyCharacter = enemy->addComponent<CharacterComponent>();
     auto shotSprite = getAtlas(CharacterType::PurpleWraith)->get("Spells-Effect.png");
     enemyCharacter->setShotSprite(shotSprite);
+    enemyCharacter->type = type;
     enemyCharacter->radius = radius;
     enemyCharacter->hp = settings.hp;
     enemyCharacter->armor = settings.armor;
@@ -239,6 +245,22 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
 
     enemy->setScale(0.9f);
     return enemy;
+}
+
+void CharacterBuilder::transform(GameObject* character, CharacterType newType)
+{
+    auto playerCharacter = character->getComponent<CharacterComponent>();
+    auto spriteAtlas = getAtlas(newType);
+    auto shotSprite = spriteAtlas->get("Spells-Effect.png");
+    playerCharacter->setShotSprite(shotSprite);
+    playerCharacter->type = newType;
+
+    Depth depth = static_cast<Depth>(character->getComponent<SpriteComponent>()->getSprite().getOrderInBatch());
+
+    auto animation = character->getComponent<SpriteAnimationComponent>();
+    std::map<State, int> animationSizes = getAnimationSizes(newType);
+    animationSetup(animation, spriteAtlas, animationSizes, animation->getBaseAnimationTime(), depth);
+
 }
 
 

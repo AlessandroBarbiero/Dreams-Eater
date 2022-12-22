@@ -1,7 +1,8 @@
 #pragma once
 
 #include "Component.hpp"
-#include "CharacterComponent.hpp"
+
+class CharacterComponent; //Forward declaration
 
 // Interface that generalize an Enemy behaviour, to implement a basic behaviour implement at least the attack and movement function,
 // if you want to implement more complex behaviours you can override update function.
@@ -30,3 +31,4 @@ protected:
     friend class CharacterBuilder;
     friend class EnemyBehaviour;
 };
+

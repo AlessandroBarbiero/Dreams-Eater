@@ -2,6 +2,7 @@
 #include <iostream>
 #include "GameObject.hpp"
 #include "IEnemyController.hpp"
+#include "CharacterComponent.hpp"
 
 IEnemyController::IEnemyController(GameObject* gameObject) : Component(gameObject) { }
 

@@ -49,6 +49,10 @@ float SpriteAnimationComponent::getAnimationTime() const {
     return animationTime;
 }
 
+float SpriteAnimationComponent::getBaseAnimationTime() const {
+    return baseAnimationTime;
+}
+
 void SpriteAnimationComponent::setAnimationTime(float animationTime) {
     SpriteAnimationComponent::animationTime = animationTime;
 }
@@ -59,9 +63,11 @@ void SpriteAnimationComponent::setBaseAnimationTime(float animationTime)
     SpriteAnimationComponent::animationTime = animationTime;
 }
 
+// Add a new animation sequence to be displayed in the state passed, if the state is already linked to an animation, discard the old one and swap it with the new one
 void SpriteAnimationComponent::addAnimationSequence(State state, std::vector<sre::Sprite> animation)
 {
-    animationSequences.insert({ state, animation });
+    //animationSequences.insert({ state, animation });
+    animationSequences[state] = animation;
 }
 
 void SpriteAnimationComponent::resetTime()

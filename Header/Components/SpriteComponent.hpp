@@ -8,6 +8,7 @@
 enum Depth : uint16_t {
     Floor,
     Wall,
+    Object,
     Bullet,
     Enemy,
     Player,

@@ -4,6 +4,7 @@
 #include "BulletComponent.hpp"
 #include <queue>
 #include "SDL.h"
+#include <CharacterType.hpp>
 
 constexpr auto KNOCKBACK_TIME = 0.2;
 
@@ -72,6 +73,8 @@ private:
 
 	State state = State::Idle;
 
+	CharacterType type;
+
 	// If set to true the character cannot move
 	bool stun = false;
 	float stunTimeout = 0;
@@ -126,6 +129,8 @@ private:
 	friend class CharacterBuilder;
 	friend class PlayerController;
 	friend class IEnemyController;
+	friend class Powerup;
+	friend class PowerupBuilder;
 };
 
 // Cannot include it at the beginning of the file because they are mutually referenciate each other

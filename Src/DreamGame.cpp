@@ -10,6 +10,8 @@
 #include "PlayerController.hpp"
 #include "CharacterBuilder.hpp"
 #include "LevelBuilder.hpp"
+#include <Builders/PowerupBuilder.hpp>
+
 
 using namespace std;
 using namespace sre;
@@ -87,6 +89,13 @@ void DreamGame::play() {
     pSettings.knockback = 1.0f;
     pSettings.type = CharacterType::Wraith;
     auto player = CharacterBuilder::createPlayer(pSettings);
+
+    // TODO: Remove me from here
+    PowerupBuilder* pBuilder = PowerupBuilder::getInstance();
+    pBuilder->createSinglePowerupObject(PowerupType::Fire,  { 5,5 });
+    pBuilder->createSinglePowerupObject(PowerupType::Water, { 0,5 });
+    pBuilder->createSinglePowerupObject(PowerupType::Earth, { 5,0 });
+    pBuilder->createSinglePowerupObject(PowerupType::Ice,   { 8,8 });
 
     /*
     EnemySettings eSettings;
@@ -347,3 +356,4 @@ void DreamGame::handleContact(b2Contact* contact, bool begin) {
         }
     }
 }
+

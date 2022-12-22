@@ -10,6 +10,7 @@ class Component;
 
 enum class Tag {
     Empty,
+    Powerup,
     Bullet,
     EnemyBullet,
     PlayerBullet,
