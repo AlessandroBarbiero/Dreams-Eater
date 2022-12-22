@@ -1,0 +1,183 @@
+{"frames": [
+
+{
+	"filename": "Attack/0.png",
+	"frame": {"x":142,"y":321,"w":88,"h":102},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":26,"w":88,"h":102},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.541667,"y":0.710938}
+},
+{
+	"filename": "Attack/1.png",
+	"frame": {"x":1,"y":110,"w":83,"h":104},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":24,"w":83,"h":104},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.541667,"y":0.710938}
+},
+{
+	"filename": "Attack/2.png",
+	"frame": {"x":222,"y":207,"w":95,"h":98},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":30,"w":95,"h":98},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.541667,"y":0.710938}
+},
+{
+	"filename": "Attack/3.png",
+	"frame": {"x":308,"y":103,"w":88,"h":96},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":30,"w":88,"h":96},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.541667,"y":0.710938}
+},
+{
+	"filename": "Die/0.png",
+	"frame": {"x":70,"y":322,"w":70,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":13,"y":25,"w":70,"h":103},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.510417,"y":0.71875}
+},
+{
+	"filename": "Die/1.png",
+	"frame": {"x":1,"y":1,"w":81,"h":107},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":19,"w":81,"h":107},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.510417,"y":0.71875}
+},
+{
+	"filename": "Die/2.png",
+	"frame": {"x":210,"y":105,"w":96,"h":100},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":27,"w":96,"h":100},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.510417,"y":0.71875}
+},
+{
+	"filename": "Die/3.png",
+	"frame": {"x":1,"y":428,"w":89,"h":79},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":49,"w":89,"h":79},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.510417,"y":0.71875}
+},
+{
+	"filename": "fire.png",
+	"frame": {"x":92,"y":427,"w":80,"h":71},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":90,"y":109,"w":80,"h":71},
+	"sourceSize": {"w":256,"h":256},
+	"pivot": {"x":0.5,"y":0.59375}
+},
+{
+	"filename": "Idle/0.png",
+	"frame": {"x":71,"y":216,"w":70,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":13,"y":25,"w":70,"h":103},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.5,"y":0.703125}
+},
+{
+	"filename": "Idle/1.png",
+	"frame": {"x":86,"y":107,"w":58,"h":103},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":20,"y":25,"w":58,"h":103},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.5,"y":0.703125}
+},
+{
+	"filename": "Walk/0.png",
+	"frame": {"x":84,"y":1,"w":77,"h":104},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":24,"w":77,"h":104},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.489583,"y":0.6875}
+},
+{
+	"filename": "Walk/1.png",
+	"frame": {"x":299,"y":1,"w":69,"h":100},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":11,"y":28,"w":69,"h":100},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.489583,"y":0.6875}
+},
+{
+	"filename": "Walk/2.png",
+	"frame": {"x":146,"y":107,"w":62,"h":102},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":16,"y":26,"w":62,"h":102},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.489583,"y":0.6875}
+},
+{
+	"filename": "Walk/3.png",
+	"frame": {"x":1,"y":322,"w":67,"h":104},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":24,"w":67,"h":104},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.489583,"y":0.6875}
+},
+{
+	"filename": "Walk/4.png",
+	"frame": {"x":143,"y":212,"w":77,"h":102},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":26,"w":77,"h":102},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.489583,"y":0.6875}
+},
+{
+	"filename": "Walk/5.png",
+	"frame": {"x":227,"y":1,"w":70,"h":100},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":28,"w":70,"h":100},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.489583,"y":0.6875}
+},
+{
+	"filename": "Walk/6.png",
+	"frame": {"x":163,"y":1,"w":62,"h":102},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":16,"y":26,"w":62,"h":102},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.489583,"y":0.6875}
+},
+{
+	"filename": "Walk/7.png",
+	"frame": {"x":1,"y":216,"w":68,"h":104},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":10,"y":24,"w":68,"h":104},
+	"sourceSize": {"w":96,"h":128},
+	"pivot": {"x":0.489583,"y":0.6875}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Zombie_atlas.png",
+	"format": "RGBA8888",
+	"size": {"w":512,"h":512},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:491fd784b45347b40c7287711f01c84d:7ff482696316bfa5542aea7d6b176e6d:7c2b718cbb970a8a1aa49b9ae9539d29$"
+}
+}
