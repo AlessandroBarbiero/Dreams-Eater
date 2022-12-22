@@ -10,6 +10,7 @@
 #include "Scene.hpp"
 #include "StartMenuComponent.hpp"
 #include "EndMenuComponent.hpp"
+#include "Level.hpp"
 
 
 class PhysicsComponent;
@@ -43,6 +44,7 @@ public:
     bool doDebugDraw = false;
 
     Scene* currentScene;
+    std::shared_ptr<Level> level;
 
 private:
     GameState gameState = GameState::Running;
@@ -72,6 +74,7 @@ private:
     Scene game;
     Scene endMenu;
 
+
     //std::vector<std::shared_ptr<GameObject>> sceneObjects;
 
     void updatePhysics();
@@ -88,6 +91,7 @@ private:
     friend class RoomComponent;
     friend class PlayerController;
     friend class CharacterBuilder;
+    friend class Level;
 
     friend class StartMenuComponent;
     friend class EndMenuComponent;

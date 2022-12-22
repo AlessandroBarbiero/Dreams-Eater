@@ -14,10 +14,15 @@ PhysicsComponent::PhysicsComponent(GameObject *gameObject)
 }
 
 PhysicsComponent::~PhysicsComponent() {
-    DreamGame::instance->deregisterPhysicsComponent(this);
 
     delete polygon;
     delete circle;
+    if (paused) {
+        fixture = nullptr;
+        body = nullptr;
+        return;
+    }
+    DreamGame::instance->deregisterPhysicsComponent(this);
     if (body != nullptr && fixture!= nullptr ) {
         body->DestroyFixture(fixture);
         fixture = nullptr;
@@ -68,6 +73,10 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
     fxD.shape = circle;
     fxD.density = density;
     fixture = body->CreateFixture(&fxD);
+    
+    lastShape = circle;
+    lastBodyDef = bd;
+    lastFixtureDef = fxD;
 
     DreamGame::instance->registerPhysicsComponent(this);
 }
@@ -119,6 +128,10 @@ void PhysicsComponent::initBox(b2BodyType type, glm::vec2 size, glm::vec2 center
     fxD.density = density;
     fixture = body->CreateFixture(&fxD);
 
+    lastShape = polygon;
+    lastBodyDef = bd;
+    lastFixtureDef = fxD;
+
     DreamGame::instance->registerPhysicsComponent(this);
 }
 
@@ -141,6 +154,9 @@ void PhysicsComponent::initChain(b2BodyType type, b2Vec2* points, int32 count, g
     fxD.shape = chain;
     fxD.density = density;
     fixture = body->CreateFixture(&fxD);
+
+    lastBodyDef = bd;
+    lastFixtureDef = fxD;
 
     DreamGame::instance->registerPhysicsComponent(this);
 }
@@ -173,6 +189,79 @@ bool PhysicsComponent::isAutoUpdate() const {
 
 void PhysicsComponent::setAutoUpdate(bool autoUpdate) {
     PhysicsComponent::autoUpdate = autoUpdate;
+}
+
+void PhysicsComponent::pause() {
+    paused = true;
+    DreamGame::instance->deregisterPhysicsComponent(this);
+
+    // Save body data
+    std::cout << "Copying body" << std::endl;
+    lastBodyDef.position = {getPosition().x, getPosition().y};
+    lastBodyDef.linearVelocity = body->GetLinearVelocity();
+    lastBodyDef.linearDamping = body->GetLinearDamping();
+    lastBodyDef.angle = body->GetAngle();
+    lastBodyDef.angularVelocity = body->GetAngularVelocity();
+    lastBodyDef.angularDamping = body->GetAngularDamping();
+    lastBodyDef.fixedRotation = body->IsFixedRotation();
+    lastBodyDef.awake = body->IsAwake();
+    lastBodyDef.bullet = body->IsBullet();
+    lastBodyDef.gravityScale = body->GetGravityScale();
+    lastBodyDef.userData = body->GetUserData();
+    lastBodyDef.type = body->GetType();
+    lastBodyDef.active = body->IsActive();
+    lastBodyDef.allowSleep = body->IsSleepingAllowed();
+
+    // Save fixture data
+    std::cout << "Copying fixture" << std::endl;
+    lastFixtureDef.density = fixture->GetDensity();
+    lastFixtureDef.filter = fixture->GetFilterData();
+    lastFixtureDef.friction = fixture->GetFriction();
+    lastFixtureDef.isSensor = fixture->IsSensor();
+    lastFixtureDef.restitution = fixture->GetRestitution();
+    lastFixtureDef.userData = fixture->GetUserData();
+
+    // Save shape data
+    auto currShape = fixture->GetShape();
+    lastShape->m_type = currShape->GetType();
+    lastShape->m_radius = currShape->m_radius;
+    if (currShape->GetType() == b2Shape::e_polygon) {
+        auto lastPolygon = dynamic_cast<b2PolygonShape*>(lastShape);
+        auto currPolygon = dynamic_cast<b2PolygonShape*>(currShape);
+        lastPolygon->m_count = currPolygon->m_count;
+        for (int i = 0; i < lastPolygon->m_count; i++) {
+            auto curr = currPolygon->m_vertices[i];
+            lastPolygon->m_vertices[i].Set(curr.x, curr.y);
+        }
+    }
+    lastFixtureDef.shape = lastShape;
+
+    if (body != nullptr && fixture != nullptr) {
+        body->DestroyFixture(fixture);
+    }
+    if (world != nullptr && body != nullptr) {
+        world->DestroyBody(body);
+    }
+}
+
+void PhysicsComponent::unpause() {
+    paused = false;
+
+    auto bd = lastBodyDef;
+    auto fxD = lastFixtureDef;
+    body = world->CreateBody(&bd);
+    /*
+    if (phys->shapeType == b2Shape::e_circle) {
+        fxD.shape = phys->circle;
+    }
+    else if (phys->shapeType == b2Shape::e_polygon) {
+        fxD.shape = phys->polygon;
+    }
+    */
+
+    fixture = body->CreateFixture(&fxD);
+    
+    DreamGame::instance->registerPhysicsComponent(this);
 }
 
 b2Body *PhysicsComponent::getBody() {

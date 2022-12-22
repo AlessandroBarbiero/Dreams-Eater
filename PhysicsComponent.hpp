@@ -4,6 +4,7 @@
 #include "Box2D/Collision/Shapes/b2PolygonShape.h"
 #include "Box2D/Collision/Shapes/b2CircleShape.h"
 #include "Box2D/Dynamics/b2Body.h"
+#include <Box2D/Dynamics/b2Fixture.h>
 #include "Component.hpp"
 
 class PhysicsComponent : public Component {
@@ -50,6 +51,9 @@ public:
 
     void setScale(float scale);
 
+    void pause();
+    void unpause();
+
     b2Body * getBody ();
 
     b2Fixture* getFixture();
@@ -65,6 +69,12 @@ private:
     std::vector<PhysicsComponent *> collidingBodies;
     b2World * world = nullptr;
 
+    bool paused = false;
+    b2BodyDef lastBodyDef;
+    b2FixtureDef lastFixtureDef;
+    b2Shape* lastShape;
 
+    friend class Level;
+    friend class DreamGame;
 };
 

@@ -9,6 +9,7 @@
 #include "SpriteComponent.hpp"
 #include "PhysicsComponent.hpp"
 #include "DreamInspector.hpp"
+#include "DoorComponent.hpp"
 
 RoomComponent::RoomComponent(GameObject *gameObject) : Component(gameObject) {}
 
@@ -196,6 +197,8 @@ void RoomComponent::buildWalls() {
 	auto spriteWallTopRight = game->spriteAtlas_inside->get(wallString + "TopRight.png");
 	auto spriteWallBottomLeft = game->spriteAtlas_inside->get(wallString + "BottomLeft.png");
 	auto spriteWallBottomRight = game->spriteAtlas_inside->get(wallString + "BottomRight.png");
+
+	auto spriteDoor = game->spriteAtlas_baseWraith->get("Spells-Effect.png");
 	
 	// Offsets are used for positioning
 	int wallWidth = spriteWallHorizontalBottom.getSpriteSize().y;
@@ -275,6 +278,37 @@ void RoomComponent::buildWalls() {
 			position = bottomRight + glm::vec2(-offsetWidth, y * wallLength + offsetLength);
 			go->addChild(spawnWall(spriteWallVerticalRight, position).get());
 		}
+	}
+
+	int tblr[4] = { 0,0,0,0 };
+	for (Door d : doors) {
+		switch (d.position) {
+			case Top:
+			case TopLeft:
+			case TopRight:
+				position = topLeft + glm::vec2(skipTop[tblr[0]] * wallLength + offsetLength, -offsetWidth);
+				tblr[0]++;
+				break;
+			case Bottom:
+			case BottomLeft:
+			case BottomRight:
+				position = bottomLeft + glm::vec2(skipBottom[tblr[1]] * wallLength + offsetLength, offsetWidth);
+				tblr[1]++;
+				break;
+			case Left:
+			case LeftTop:
+			case LeftBottom:
+				position = bottomLeft + glm::vec2(offsetWidth, skipLeft[tblr[2]] * wallLength + offsetLength);
+				tblr[2]++;
+				break;
+			case Right:
+			case RightTop:
+			case RightBottom:
+				position = bottomRight + glm::vec2(-offsetWidth, skipRight[tblr[3]] * wallLength + offsetLength);
+				tblr[3]++;
+				break;
+		}
+		go->addChild(spawnDoor(spriteDoor, position, d).get());
 	}
 
 	//getGameObject()->setPosition(glm::vec2( (roomSize.x-1)* spriteWallHorizontalBottom.getSpriteSize().x / 2, (roomSize.y-1)* spriteWallVerticalLeft.getSpriteSize().y / 2));
@@ -363,6 +397,36 @@ std::shared_ptr<GameObject> RoomComponent::spawnWall(sre::Sprite spriteWall, glm
 	//phys->initBox(b2_staticBody, s / game->physicsScale, { wall->getPosition().x / game->physicsScale, wall->getPosition().y / game->physicsScale }, 1);
 	
 	return wall;
+}
+
+std::shared_ptr<GameObject> RoomComponent::spawnDoor(sre::Sprite spriteDoor, glm::vec2 pos, Door door) {
+	auto game = DreamGame::instance;
+
+	auto go = game->currentScene->createGameObject();
+
+	go->name = "Door";
+	auto sprite = go->addComponent<SpriteComponent>();
+	
+	go->setPosition(pos);
+	sprite->setSprite(spriteDoor);
+	
+	glm::vec2 s{ spriteDoor.getSpriteSize().x * spriteDoor.getScale().x / 2, spriteDoor.getSpriteSize().y * spriteDoor.getScale().y / 2 };
+
+	auto phys = go->addComponent<PhysicsComponent>();
+
+	phys->initBox(b2_staticBody, s / game->physicsScale, { go->getPosition().x / game->physicsScale, go->getPosition().y / game->physicsScale }, 1);
+
+	go->setScale(5);
+	auto doorComponent = go->addComponent<DoorComponent>();
+	doorComponent->door = door;
+	doorComponent->level = level;
+	doorComponent->locked = door.locked;
+	doorComponent->destinationRoomId = door.destinationRoom;
+
+	if (!door.locked) {
+		phys->setSensor(true);
+	}
+	return go;
 }
 
 

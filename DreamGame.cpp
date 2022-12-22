@@ -28,6 +28,7 @@ DreamGame::DreamGame()
         .withSdlWindowFlags(SDL_WINDOW_OPENGL);
 
     spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");
+    spriteAtlas_baseWraith = SpriteAtlas::create("Sprites/Wraith/Wraith_purple_atlas.json", "Sprites/Wraith/Wraith_purple_atlas.png");
 
     time_t t;   // random seed based on time
     srand((unsigned)time(&t));
@@ -62,7 +63,7 @@ void DreamGame::init() {
     if (world != nullptr) { // deregister call backlistener to avoid getting callbacks when recreating the world
         world->SetContactListener(nullptr);
     }
-
+    this->level.reset();
     camera.reset();
     game.cleanSceneObjects();
     camera.reset();
@@ -107,7 +108,7 @@ void DreamGame::play() {
     room->buildWalls();
     */
     RoomSettings rSettings;
-    rSettings.name = "TestRoom";
+    rSettings.name = "Room0";
     rSettings.position = { 0,0 };
     rSettings.size = { 7,7 };
 
@@ -125,30 +126,39 @@ void DreamGame::play() {
     rSettings.tileSetFloor = WoodFloor;
     rSettings.tileSetWalls = WoodWalls;
 
-    rSettings.roomType = BossRoom;
+    rSettings.roomType = EnemyRoom;
 
-    rSettings.doors.push_back(Door{ false, Top });
-    rSettings.doors.push_back(Door{ false, Bottom });
-    rSettings.doors.push_back(Door{ false, Left });
-    rSettings.doors.push_back(Door{ false, Right });
+    rSettings.doors.push_back(Door{ false, Left, 1 });
     //auto testRoom = RoomBuilder::createRoom(rSettings);
 
-    auto testLevel = Level();
+    this->level = make_shared<Level>();
 
-    testLevel.name = "test";
-    testLevel.difficulty = 1;
-    testLevel.player = player;
-    testLevel.roomSettings.push_back(rSettings);
-    testLevel.roomEntered.push_back(false);
-    testLevel.rooms = 1;
-    testLevel.startRoom = 0;
+    level->name = "test";
+    level->difficulty = 1;
+    level->player = player;
 
-    testLevel.loadRoom(0);
+    level->roomSettings.push_back(rSettings);
+    level->roomEntered.push_back(false);
+    level->roomObjects.push_back({});
 
-    camera->setFollowObject(testLevel.currentRoom, glm::vec2(0, 0));
+    rSettings.name = "Room1";
+    rSettings.roomType = BossRoom;
+    rSettings.doors.clear();
+    rSettings.doors.push_back(Door{ false, Right, 0 });
+    level->roomSettings.push_back(rSettings);
+    level->roomEntered.push_back(false);
+    level->roomObjects.push_back({});
+
+    level->rooms = 2;
+    level->startRoom = 0;
+
+    level->loadRoom(0);
+    //level->loadRoom(1);
+
+    camera->setFollowObject(level->currentRoom, glm::vec2(0, 0));
     // Fit room width to window
 
-    camera->getCamera().setOrthographicProjection(testLevel.currentRoom->getComponent<RoomComponent>()->getRoomSizeInPixels().x / 2.0f, -1, 1);
+    camera->getCamera().setOrthographicProjection(level->currentRoom->getComponent<RoomComponent>()->getRoomSizeInPixels().x / 2.0f, -1, 1);
 
 }
 
@@ -269,6 +279,10 @@ void DreamGame::onKey(SDL_Event& event) {
 std::shared_ptr<GameObject> DreamGame::reactivateGameObject(std::shared_ptr<GameObject> obj) {
     obj->destroyed = false;
     currentScene->getSceneObjects()->push_back(obj);
+    auto phys = obj->getComponent<PhysicsComponent>();
+    if (phys != nullptr) {
+        phys->unpause();
+    }
     return obj;
 }
 void DreamGame::updatePhysics() {
@@ -311,6 +325,7 @@ void DreamGame::deregisterPhysicsComponent(PhysicsComponent* r) {
         physicsComponentLookup.erase(iter);
     }
     else {
+        //std::cout << "PhysicsComponent does not exist in scene" << std::endl;
         assert(false); // cannot find physics object
     }
 }

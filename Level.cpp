@@ -4,7 +4,7 @@
 #include "DreamGame.hpp"
 #include "CharacterBuilder.hpp"
 #include "PhysicsComponent.hpp"
-#include <iostream>
+
 
 void Level::loadLevel() {
 }
@@ -12,7 +12,35 @@ void Level::loadLevel() {
 void Level::loadRoom(int room) {
 	if (currentRoom != nullptr) {
 		// Save currentRoom
+		std::cout << "Saving room" << std::endl;
+		/*
+		*/
 		roomObjects[currentRoomIndex] = currentRoom->getComponent<RoomComponent>()->roomObjects;
+		for (auto go : currentRoom->getComponent<RoomComponent>()->roomObjects) {
+			std::cout << "Destroying " << go->name << std::endl;
+			go->destroy();
+			auto phys = go->getComponent<PhysicsComponent>();
+			if (phys != nullptr) {
+				auto shape = phys->fixture->GetShape();
+				//phys->lastShape = shape->c
+				/*
+				if (phys->shapeType == b2Shape::e_circle) {
+					phys->circle = dynamic_cast<b2CircleShape*>(shape);
+				}
+				else if (phys->shapeType == b2Shape::e_polygon) {
+					phys->polygon = dynamic_cast<b2PolygonShape*>(shape);
+				}
+				*/
+				//DreamGame::instance->deregisterPhysicsComponent(phys.get());
+				//DreamGame::instance->world->DestroyBody(phys->getBody());
+				//phys->~PhysicsComponent();
+				phys->pause();
+				if (phys->getBody() != nullptr) {
+					std::cout << "Body still exists" << std::endl;
+				}
+			}
+		}
+		currentRoom->destroy();
 	}
 
 	// Create room
@@ -20,6 +48,7 @@ void Level::loadRoom(int room) {
 	auto newRoom = obj->getComponent<RoomComponent>();
 	currentRoom = obj;
 	currentRoomIndex = room;
+	//newRoom->level = this;
 
 	if (roomEntered[room]) {
 		// Reactivate saved objects
@@ -46,7 +75,8 @@ void Level::loadRoom(int room) {
 				eSettings.player = player;
 				eSettings.speed = 2.0f;
 				eSettings.knockback = 1.0f;
-				CharacterBuilder::createEnemy(eSettings);
+				auto enemy = CharacterBuilder::createEnemy(eSettings);
+				newRoom->roomObjects.push_back(enemy);
 			}
 			break;
 		case PowerUpRoom:
@@ -63,12 +93,13 @@ void Level::loadRoom(int room) {
 			eSettings.rateOfFire = 9.0f;
 			eSettings.range = 100;
 			eSettings.shotSpeed = 10;
-			CharacterBuilder::createEnemy(eSettings);
+			auto enemy = CharacterBuilder::createEnemy(eSettings);
+			newRoom->roomObjects.push_back(enemy);
 			break;
 		}
 
 	}
-
+	roomEntered[room] = true;
 	// TODO: Calculate player door entry
 	auto phys = player->getComponent<PhysicsComponent>();
 	auto roomSize = newRoom->getRoomSizeInPixels() / DreamGame::instance->physicsScale;

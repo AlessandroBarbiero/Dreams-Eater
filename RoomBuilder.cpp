@@ -20,6 +20,7 @@ std::shared_ptr<GameObject> RoomBuilder::createRoom(RoomSettings settings) {
     room->tileSetFloor = settings.tileSetFloor;
 
     room->doors = settings.doors;
+    room->level = game->level.get();
 
     room->buildFloor();
     room->buildWalls();

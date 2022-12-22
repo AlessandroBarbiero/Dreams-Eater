@@ -5,7 +5,6 @@
 
 class Level {
 public:
-
 	std::string name;
 	int rooms;
 	int difficulty;
