@@ -55,8 +55,8 @@ float SpriteAnimationComponent::getBaseAnimationTime() const {
     return baseAnimationTime;
 }
 
-std::map<State, std::vector<sre::Sprite>> SpriteAnimationComponent::getAnimationSequences(Direction direction) {
-    if (facingDirection == Direction::RIGHT)
+std::map<State, std::vector<sre::Sprite>>& SpriteAnimationComponent::getAnimationSequences(Direction direction) {
+    if (direction == Direction::RIGHT)
         return rightAnimationSequences;
     return leftAnimationSequences;
 }
@@ -74,7 +74,8 @@ void SpriteAnimationComponent::setBaseAnimationTime(float animationTime)
 // Add a new animation sequence to be displayed in the state passed, if the state is already linked to an animation, discard the old one and swap it with the new one
 void SpriteAnimationComponent::addAnimationSequence(State state, Direction direction, std::vector<sre::Sprite> animation)
 {
-    getAnimationSequences(direction)[state] = animation;
+    auto& animationSequence = getAnimationSequences(direction);
+    animationSequence[state] = animation;
 }
 
 void SpriteAnimationComponent::resetTime()

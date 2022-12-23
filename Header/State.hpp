@@ -29,7 +29,7 @@ enum class Direction {
 	LEFT
 };
 
-Direction vectorToDirection(glm::vec2 direction) {
+inline Direction vectorToDirection(glm::vec2 direction) {
 	if (direction.x > 0)
 		return Direction::RIGHT;
 	return Direction::LEFT;

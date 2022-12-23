@@ -40,7 +40,7 @@ private:
     bool active = true;
 
     void endCompleteAnimation();
-    std::map<State, std::vector<sre::Sprite>> getAnimationSequences(Direction direction);
+    std::map<State, std::vector<sre::Sprite>>& getAnimationSequences(Direction direction);
     std::map<State, std::vector<sre::Sprite>> rightAnimationSequences;
     std::map<State, std::vector<sre::Sprite>> leftAnimationSequences;
     std::vector<sre::Sprite> sprites;
