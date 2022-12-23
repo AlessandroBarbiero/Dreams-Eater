@@ -175,73 +175,8 @@ void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> 
     insertAnimationSequence(animation, State::Attack, spriteAtlas, animationSizes, visualDepth);
     insertAnimationSequence(animation, State::Die, spriteAtlas, animationSizes, visualDepth);
 
- /*   std::vector<sre::Sprite> idleRightAnim(animationSizes[State::Idle]);
-    std::string spriteName = "Right/Idle/";
-    for (int i = 0; i < idleRightAnim.size(); i++) {
-        idleRightAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
-        idleRightAnim[i].setOrderInBatch(visualDepth);
-    }
-
-    std::vector<sre::Sprite> idleLeftAnim(animationSizes[State::Idle]);
-    spriteName = "Left/Idle/";
-    for (int i = 0; i < idleLeftAnim.size(); i++) {
-        idleLeftAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
-        idleLeftAnim[i].setOrderInBatch(visualDepth);
-    }
-
-
-    std::vector<sre::Sprite> attackRAnim(animationSizes[State::Attack]);
-    spriteName = "Right/Attack/";
-    for (int i = 0; i < attackRAnim.size(); i++) {
-        attackRAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
-        attackRAnim[i].setOrderInBatch(visualDepth);
-    }
-
-    spriteName = "Left/Attack/";
-    std::vector<sre::Sprite> attackLAnim(animationSizes[State::Attack]);
-    for (int i = 0; i < attackLAnim.size(); i++) {
-        attackLAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
-        attackLAnim[i].setOrderInBatch(visualDepth);
-    }
-
-    std::vector<sre::Sprite> walkRAnim(animationSizes[State::Walk]);
-    spriteName = "Right/Walk/";
-    for (int i = 0; i < walkRAnim.size(); i++) {
-        walkRAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
-        walkRAnim[i].setOrderInBatch(visualDepth);
-    }
-    std::vector<sre::Sprite> walkLAnim(animationSizes[State::Walk]);
-    spriteName = "Left/Walk/";
-    for (int i = 0; i < walkLAnim.size(); i++) {
-        walkLAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
-        walkLAnim[i].setOrderInBatch(visualDepth);
-    }
-
-    std::vector<sre::Sprite> dieRightAnim(animationSizes[State::Die]);
-    spriteName = "Right/Die/";
-    for (int i = 0; i < dieRightAnim.size(); i++) {
-        dieRightAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
-        dieRightAnim[i].setOrderInBatch(visualDepth);
-    }
-
-    std::vector<sre::Sprite> dieLeftAnim(animationSizes[State::Die]);
-    spriteName = "Left/Die/";
-    for (int i = 0; i < dieLeftAnim.size(); i++) {
-        dieLeftAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
-        dieLeftAnim[i].setOrderInBatch(visualDepth);
-    }
-
-    animation->addAnimationSequence(State::Idle, Direction::RIGHT, idleRightAnim);
-    animation->addAnimationSequence(State::IdleLeft, idleLeftAnim);
-    animation->addAnimationSequence(State::Walk, walkRAnim);
-    animation->addAnimationSequence(State::WalkLeft, walkLAnim);
-    animation->addAnimationSequence(State::Attack, attackRAnim);
-    animation->addAnimationSequence(State::AttackLeft, attackLAnim);
-    animation->addAnimationSequence(State::Die, dieRightAnim);
-    animation->addAnimationSequence(State::DieLeft, dieLeftAnim);*/
     animation->setBaseAnimationTime(baseAnimTime);
 }
-
 
 
 std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings) {
