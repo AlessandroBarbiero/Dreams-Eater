@@ -4,13 +4,14 @@
 #include "GameObject.hpp"
 #include "PhysicsComponent.hpp"
 
+
 Wizard::Wizard(GameObject* gameObject) : IEnemyController(gameObject)
 {
 }
 
 void Wizard::onCollisionStart(PhysicsComponent* comp)
 {
-    if (character->getState() == State::Die)
+    if (character->getState() == State::DieRight || character->getState() == State::DieLeft)
         player->getComponent<CharacterComponent>()->showEffect(State::Victory);
 
 }
@@ -33,14 +34,19 @@ void Wizard::movement()
 {
     float distance = glm::length(towardPlayer);
 
+    glm::vec2 direction = glm::normalize(towardPlayer);
+
 
     // Range enemies don't go toward the player until the end
     if (distance < idealDistance) {
-        character->changeState(State::Idle);
+        if(direction.x > 0)
+            character->changeState(State::IdleRight);
+        else
+            character->changeState(State::IdleLeft);
         return;
     }
 
-    glm::vec2 direction = glm::normalize(towardPlayer);
+    
 
     glm::vec2 movement = direction * character->getSpeed();
     physics->setLinearVelocity(movement);

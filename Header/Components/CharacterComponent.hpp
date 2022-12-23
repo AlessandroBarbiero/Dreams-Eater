@@ -12,13 +12,15 @@ constexpr auto KNOCKBACK_TIME = 0.2;
 class SpriteAnimationComponent;
 
 enum class State {
-	Idle,
+	IdleRight,
+	IdleLeft,
 	Run,
 	WalkLeft,
 	WalkRight,
 	AttackLeft,
 	AttackRight,
-	Die,
+	DieRight,
+	DieLeft,
 	Hit,
 	Victory
 };
@@ -71,7 +73,7 @@ private:
 	void inflictDamage(float damage);
 	void applyKnockback(std::shared_ptr<BulletComponent> bullet);
 
-	State state = State::Idle;
+	State state = State::IdleRight;
 
 	CharacterType type;
 

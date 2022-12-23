@@ -33,11 +33,12 @@ map<State, int> CharacterBuilder::getAnimationSizes(CharacterType type) {
 // If there is no Controller associated with the specified type a default value is chosen
 std::function<std::shared_ptr<IEnemyController>(GameObject*)> findRightController(CharacterType type) {
 
-    auto default_value = [](GameObject* obj) {	return obj->addComponent<DEFAULT_BEHAVIOUR>();	};
-
     auto it = CharacterTypeToBehaviour.find(type);
-    if (it == CharacterTypeToBehaviour.end())
+
+    if (it == CharacterTypeToBehaviour.end()){
+        auto default_value = [](GameObject* obj) {	return obj->addComponent<DEFAULT_BEHAVIOUR>();	};
         return default_value;
+    }
 
     return it->second;
 }
@@ -55,10 +56,10 @@ void CharacterBuilder::initSizesMap(CharacterType type) {
     const char* typeString = CharacterTypeToString.at(type);
 
     Value& sizesMap = d[typeString];
-    sizes.insert({ State::Idle,         sizesMap["Idle"].GetInt()});
-    sizes.insert({ State::AttackRight,  sizesMap["Attack"].GetInt() });
-    sizes.insert({ State::WalkRight,    sizesMap["Walk"].GetInt() });
-    sizes.insert({ State::Die,          sizesMap["Die"].GetInt() });
+    sizes.insert({ State::IdleRight,         sizesMap["Idle"].GetInt()});
+    sizes.insert({ State::AttackRight,       sizesMap["Attack"].GetInt() });
+    sizes.insert({ State::WalkRight,         sizesMap["Walk"].GetInt() });
+    sizes.insert({ State::DieRight,          sizesMap["Die"].GetInt() });
 
 }
 
@@ -75,7 +76,7 @@ void CharacterBuilder::initAtlasMap() {
 std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settings) {
     auto game = DreamGame::instance;
     auto physicsScale = game->physicsScale;
-    auto type = settings.type;
+    auto type = CharacterType::BrownWraith; //todo reset to settings.type
 
     auto player = game->currentScene->createGameObject();
     player->name = settings.name;
@@ -84,7 +85,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
 
     auto spriteComp = player->addComponent<SpriteComponent>();
     auto spriteAtlas = getAtlas(type);
-    auto sprite = spriteAtlas->get("Idle/0.png");
+    auto sprite = spriteAtlas->get("Right/Idle/0.png");
     sprite.setOrderInBatch(Depth::Player);
     spriteComp->setSprite(sprite);
 
@@ -95,7 +96,8 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerPhysics->fixRotation();
 
     auto playerCharacter = player->addComponent<CharacterComponent>();
-    auto shotSprite = getAtlas(CharacterType::Wraith)->get("Spells-Effect.png");
+    //auto shotSprite = getAtlas(CharacterType::Wraith)->get("Spells-Effect.png");
+    auto shotSprite = spriteAtlas->get("Bullet.png");//TODO get from behaviour
     playerCharacter->setShotSprite(shotSprite);
     playerCharacter->type = type;
     playerCharacter->radius = radius;
@@ -141,50 +143,70 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
 void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> animation,
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas, std::map<State, int> animationSizes, float baseAnimTime, Depth visualDepth) {
 
-    std::vector<sre::Sprite> idleAnim(animationSizes[State::Idle]);
-    std::string spriteName = "Idle/";
-    for (int i = 0; i < idleAnim.size(); i++) {
-        idleAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
-        idleAnim[i].setOrderInBatch(visualDepth);
+    std::vector<sre::Sprite> idleRightAnim(animationSizes[State::IdleRight]);
+    std::string spriteName = "Right/Idle/";
+    for (int i = 0; i < idleRightAnim.size(); i++) {
+        idleRightAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        idleRightAnim[i].setOrderInBatch(visualDepth);
     }
 
+    std::vector<sre::Sprite> idleLeftAnim(animationSizes[State::IdleRight]);
+    spriteName = "Left/Idle/";
+    for (int i = 0; i < idleLeftAnim.size(); i++) {
+        idleLeftAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        idleLeftAnim[i].setOrderInBatch(visualDepth);
+    }
+
+
     std::vector<sre::Sprite> attackRAnim(animationSizes[State::AttackRight]);
-    spriteName = "Attack/";
+    spriteName = "Right/Attack/";
     for (int i = 0; i < attackRAnim.size(); i++) {
         attackRAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
         attackRAnim[i].setOrderInBatch(visualDepth);
     }
-    std::vector<sre::Sprite> attackLAnim(attackRAnim.size());
+
+    spriteName = "Left/Attack/";
+    std::vector<sre::Sprite> attackLAnim(animationSizes[State::AttackRight]);
     for (int i = 0; i < attackLAnim.size(); i++) {
-        attackLAnim[i] = attackRAnim[i];
-        attackLAnim[i].setFlip({ true, false });
+        attackLAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        attackLAnim[i].setOrderInBatch(visualDepth);
     }
 
-    std::vector<sre::Sprite> walkRAnim(animationSizes[State::AttackRight]);
-    spriteName = "Walk/";
+    std::vector<sre::Sprite> walkRAnim(animationSizes[State::WalkRight]);
+    spriteName = "Right/Walk/";
     for (int i = 0; i < walkRAnim.size(); i++) {
         walkRAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
         walkRAnim[i].setOrderInBatch(visualDepth);
     }
-    std::vector<sre::Sprite> walkLAnim(walkRAnim.size());
+    std::vector<sre::Sprite> walkLAnim(animationSizes[State::WalkRight]);
+    spriteName = "Left/Walk/";
     for (int i = 0; i < walkLAnim.size(); i++) {
-        walkLAnim[i] = walkRAnim[i];
-        walkLAnim[i].setFlip({ true, false });
+        walkLAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        walkLAnim[i].setOrderInBatch(visualDepth);
     }
 
-    std::vector<sre::Sprite> dieAnim(animationSizes[State::Die]);
-    spriteName = "Die/";
-    for (int i = 0; i < dieAnim.size(); i++) {
-        dieAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
-        dieAnim[i].setOrderInBatch(visualDepth);
+    std::vector<sre::Sprite> dieRightAnim(animationSizes[State::DieRight]);
+    spriteName = "Right/Die/";
+    for (int i = 0; i < dieRightAnim.size(); i++) {
+        dieRightAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        dieRightAnim[i].setOrderInBatch(visualDepth);
     }
 
-    animation->addAnimationSequence(State::Idle, idleAnim);
+    std::vector<sre::Sprite> dieLeftAnim(animationSizes[State::DieRight]);
+    spriteName = "Left/Die/";
+    for (int i = 0; i < dieLeftAnim.size(); i++) {
+        dieLeftAnim[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        dieLeftAnim[i].setOrderInBatch(visualDepth);
+    }
+
+    animation->addAnimationSequence(State::IdleRight, idleRightAnim);
+    animation->addAnimationSequence(State::IdleLeft, idleLeftAnim);
     animation->addAnimationSequence(State::WalkRight, walkRAnim);
     animation->addAnimationSequence(State::WalkLeft, walkLAnim);
     animation->addAnimationSequence(State::AttackRight, attackRAnim);
     animation->addAnimationSequence(State::AttackLeft, attackLAnim);
-    animation->addAnimationSequence(State::Die, dieAnim);
+    animation->addAnimationSequence(State::DieRight, dieRightAnim);
+    animation->addAnimationSequence(State::DieLeft, dieLeftAnim);
     animation->setBaseAnimationTime(baseAnimTime);
 }
 
@@ -192,7 +214,7 @@ void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> 
 
 std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings) {
 
-    CharacterType type = CharacterType::SamuraiHeavy;       //TODO: put back --  settings.type;
+    CharacterType type = CharacterType::Wizard;       //TODO: put back --  settings.type;
 
     auto game = DreamGame::instance;
     auto physicsScale = DreamGame::instance->physicsScale;
@@ -204,7 +226,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
 
     auto spriteComp = enemy->addComponent<SpriteComponent>();
     auto spriteAtlas = getAtlas(type);
-    auto sprite = spriteAtlas->get("Idle/0.png");
+    auto sprite = spriteAtlas->get("Right/Idle/0.png");
     //Set the Enemy sprite to be on top of the background but behind the player
     sprite.setOrderInBatch(Depth::Enemy);
     spriteComp->setSprite(sprite);
@@ -216,7 +238,8 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     physics->fixRotation();
 
     auto enemyCharacter = enemy->addComponent<CharacterComponent>();
-    auto shotSprite = getAtlas(CharacterType::PurpleWraith)->get("Spells-Effect.png");
+    //auto shotSprite = getAtlas(CharacterType::PurpleWraith) -> get("Spells-Effect.png");
+    auto shotSprite = spriteAtlas->get("Bullet.png");
     enemyCharacter->setShotSprite(shotSprite);
     enemyCharacter->type = type;
     enemyCharacter->radius = radius;
@@ -231,6 +254,9 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
 
     // Add a IEnemyController based on the type of enemy
     auto& addControllerFunction = findRightController(type);
+
+
+
     auto enemyController = addControllerFunction(enemy.get());
     enemyController->character = enemyCharacter;
     enemyController->physics = physics;
@@ -251,7 +277,7 @@ void CharacterBuilder::transform(GameObject* character, CharacterType newType)
 {
     auto playerCharacter = character->getComponent<CharacterComponent>();
     auto spriteAtlas = getAtlas(newType);
-    auto shotSprite = spriteAtlas->get("Spells-Effect.png");
+    auto shotSprite = spriteAtlas->get("Bullet.png");
     playerCharacter->setShotSprite(shotSprite);
     playerCharacter->type = newType;
 

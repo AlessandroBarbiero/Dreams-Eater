@@ -43,7 +43,7 @@ private:
     float _minDuration = 0.2f;
 
     // The animation currently displayed -> it is set to Idle if there are no complete animations being diplayed at the moment
-    State currentAnimation = State::Idle;
+    State currentAnimation = State::IdleRight;
 
     std::shared_ptr<SpriteComponent> spriteComp;
 

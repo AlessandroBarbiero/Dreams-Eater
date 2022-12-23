@@ -10,11 +10,11 @@
 PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) { }
 
 void PlayerController::update(float deltaTime) {
-    if (character->state == State::Die)
+    if (character->state == State::DieRight || character->state == State::DieLeft)
         return;
 
     if (character->stun) {
-        character->changeState(State::Idle);
+        character->changeState(State::IdleRight); //TODO set right direction
         return;
     }
         
@@ -30,6 +30,7 @@ void PlayerController::update(float deltaTime) {
         movement.x++;
     
     if (movement != glm::vec2(0)) {
+
         if (movement.x < 0)
             character->changeState(State::WalkLeft);
         else
@@ -38,7 +39,10 @@ void PlayerController::update(float deltaTime) {
         playerPhysics->setLinearVelocity(lastDirection * character->speed);
     }
     else {
-        character->changeState(State::Idle);
+        if (lastDirection.x >= 0)
+            character->changeState(State::IdleRight);
+        else
+            character->changeState(State::IdleLeft);
     }
 
     if (shooting)

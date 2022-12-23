@@ -20,7 +20,7 @@ void SpriteAnimationComponent::update(float deltaTime) {
         time = fmod(time, animationTime);
         spriteIndex++;
         if (!showingCompleteAnim) {
-            // Retreive state to show from the character
+            // Retrieve state to show from the character
             auto charComponent = gameObject->getComponent<CharacterComponent>();
             sprites = animationSequences[charComponent->getState()];
             spriteIndex = spriteIndex % sprites.size();
@@ -42,7 +42,7 @@ void SpriteAnimationComponent::endCompleteAnimation() {
         callbackFunc();
         callbackFunc = nullptr;
     }
-    currentAnimation = State::Idle;
+    currentAnimation = State::IdleRight;
 }
 
 float SpriteAnimationComponent::getAnimationTime() const {
@@ -183,7 +183,7 @@ void SpriteAnimationComponent::activate()
 
 void SpriteAnimationComponent::onGui() {
     std::string name = gameObject->name;
-    if (DreamGame::instance->doDebugDraw) {
+    if (DreamGame::instance->doDebugDraw && active) {
         DreamInspector::instance->updateAnimationGui(gameObject->name, &animationTime);
     }
 }

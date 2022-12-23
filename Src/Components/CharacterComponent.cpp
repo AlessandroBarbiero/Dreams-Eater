@@ -22,6 +22,7 @@ CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameO
 
 void CharacterComponent::initSpecialEffectObject() {
     auto specialEffectsObj = DreamGame::instance->currentScene->createGameObject();
+    specialEffectsObj->name = "SpecialEffectsOf" + gameObject->name;
 
     auto sprComp = specialEffectsObj->addComponent<SpriteComponent>();
     sprComp->deactivate();
@@ -177,9 +178,9 @@ void CharacterComponent::inflictDamage(float damage) {
     if (realDamage > 0) {
         hp -= realDamage;
         if (hp <= 0) {
-            state = State::Die;
+            state = State::DieLeft; //TODO set right direction
             auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-            anim->displayCompleteAnimation(State::Die, [this]() {die(); }, true);
+            anim->displayCompleteAnimation(state, [this]() {die(); }, true);
         }
         else {
             showEffect(State::Hit);
@@ -292,7 +293,7 @@ void CharacterComponent::onGui() {
         setEnemyGui();
 
     if (DreamGame::instance->doDebugDraw) {
-        DreamInspector::instance->updateCharacterGui(gameObject->name, &hp, &armor, &damage, &rateOfFire, &shotSpeed, &knockback, gameObject);
+        DreamInspector::instance->updateCharacterGui(&hp, &armor, &damage, &rateOfFire, &shotSpeed, &knockback, gameObject);
     }
 }
 

@@ -25,7 +25,7 @@ void BulletComponent::update(float deltaTime) {
 // Destroy the bullet if it collides with something that is not another bullet
 void BulletComponent::onCollisionStart(PhysicsComponent* comp) {
     Tag tag = comp->getGameObject()->tag;
-    if (tag == Tag::EnemyBullet || tag == Tag::PlayerBullet)
+    if (tag == Tag::EnemyBullet || tag == Tag::PlayerBullet || tag == Tag::Powerup)
         return;
     destroyBullet();
 }
