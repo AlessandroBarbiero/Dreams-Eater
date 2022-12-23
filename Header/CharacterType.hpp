@@ -22,7 +22,7 @@ enum class CharacterType {
 	Slime,
 	Ninja,
 	SamuraiHeavy,
-	//	SamurayLight,		fix atlas, it is not pot2
+	SamurayLight,
 	// TODO: Need to implement multiple attacks animations before add
 	//	BigTroll
 	//  Witch
@@ -41,7 +41,7 @@ const std::map<CharacterType, char*> CharacterTypeToString{
 	{CharacterType::Slime,			"Slime"			},
 	{CharacterType::Ninja,			"Ninja"			},
 	{CharacterType::SamuraiHeavy,	"SamuraiHeavy"	},
-	//	{CharacterType::SamurayLight,	"SamurayLight"	},
+	{CharacterType::SamurayLight,	"SamurayLight"	},
 	// Need to implement multiple attacks animations before add
 	//	{CharacterType::BigTroll,		"BigTroll"		},
 	//	{CharacterType::Witch,			"Witch"			}
