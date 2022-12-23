@@ -7,7 +7,7 @@
 IEnemyController::IEnemyController(GameObject* gameObject) : Component(gameObject) { }
 
 void IEnemyController::update(float deltaTime) {
-    if (character->state == State::DieRight || character->state == State::DieLeft)
+    if (character->state == State::Die)
         return;
 
     towardPlayer = player->getPosition() - gameObject->getPosition();

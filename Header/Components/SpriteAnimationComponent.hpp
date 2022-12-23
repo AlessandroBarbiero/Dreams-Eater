@@ -3,9 +3,9 @@
 #include "Component.hpp"
 #include "sre/Sprite.hpp"
 #include "SpriteComponent.hpp"
-#include "CharacterComponent.hpp" // Contain definition of state
+#include "State.hpp"
 
-
+// Remember to add this component always after the SpriteComponent
 class SpriteAnimationComponent: public Component {
 public:
     SpriteAnimationComponent(GameObject *gameObject);
@@ -20,7 +20,7 @@ public:
     void setAnimationTime(float animationTime);
     void setBaseAnimationTime(float animationTime);
 
-    void addAnimationSequence(State state, std::vector<sre::Sprite> animation);
+    void addAnimationSequence(State state, Direction direction, std::vector<sre::Sprite> animation);
     void resetTime();
     bool displayCompleteAnimation(State anim);
     bool displayCompleteAnimation(State anim, float totalDuration, const std::function<void()> &callback);
@@ -30,6 +30,8 @@ public:
     bool displayOnce(State anim, bool urgent = true);
     float getMinDuration();
 
+    void setFacingDirection(Direction newDirection, bool reload = false);
+
     // Stop the animation -> useful for objects to be displayed only in particular conditions
     void deactivate();
     void activate();
@@ -38,12 +40,15 @@ private:
     bool active = true;
 
     void endCompleteAnimation();
-    std::map<State, std::vector<sre::Sprite>> animationSequences;
+    std::map<State, std::vector<sre::Sprite>> getAnimationSequences(Direction direction);
+    std::map<State, std::vector<sre::Sprite>> rightAnimationSequences;
+    std::map<State, std::vector<sre::Sprite>> leftAnimationSequences;
     std::vector<sre::Sprite> sprites;
     float _minDuration = 0.2f;
 
     // The animation currently displayed -> it is set to Idle if there are no complete animations being diplayed at the moment
-    State currentAnimation = State::IdleRight;
+    State currentAnimation = State::Idle;
+    Direction facingDirection = Direction::RIGHT;
 
     std::shared_ptr<SpriteComponent> spriteComp;
 

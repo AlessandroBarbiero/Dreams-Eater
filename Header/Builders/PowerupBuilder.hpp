@@ -4,7 +4,6 @@
 #include "sre/SpriteAtlas.hpp"
 #include <map>
 #include <Powerup.hpp>
-#include <CharacterComponent.hpp>
 using std::map;
 
 // Each Powerup Type has his own implementation passed in the powerupMap

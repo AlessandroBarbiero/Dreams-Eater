@@ -20,8 +20,10 @@ void SpriteAnimationComponent::update(float deltaTime) {
         time = fmod(time, animationTime);
         spriteIndex++;
         if (!showingCompleteAnim) {
-            // Retrieve state to show from the character
+            // Retrieve state/direction to show from the character
             auto charComponent = gameObject->getComponent<CharacterComponent>();
+            facingDirection = charComponent->getDirection();
+            auto& animationSequences = getAnimationSequences(facingDirection);
             sprites = animationSequences[charComponent->getState()];
             spriteIndex = spriteIndex % sprites.size();
         }
@@ -42,7 +44,7 @@ void SpriteAnimationComponent::endCompleteAnimation() {
         callbackFunc();
         callbackFunc = nullptr;
     }
-    currentAnimation = State::IdleRight;
+    currentAnimation = State::Idle;
 }
 
 float SpriteAnimationComponent::getAnimationTime() const {
@@ -51,6 +53,12 @@ float SpriteAnimationComponent::getAnimationTime() const {
 
 float SpriteAnimationComponent::getBaseAnimationTime() const {
     return baseAnimationTime;
+}
+
+std::map<State, std::vector<sre::Sprite>> SpriteAnimationComponent::getAnimationSequences(Direction direction) {
+    if (facingDirection == Direction::RIGHT)
+        return rightAnimationSequences;
+    return leftAnimationSequences;
 }
 
 void SpriteAnimationComponent::setAnimationTime(float animationTime) {
@@ -64,10 +72,9 @@ void SpriteAnimationComponent::setBaseAnimationTime(float animationTime)
 }
 
 // Add a new animation sequence to be displayed in the state passed, if the state is already linked to an animation, discard the old one and swap it with the new one
-void SpriteAnimationComponent::addAnimationSequence(State state, std::vector<sre::Sprite> animation)
+void SpriteAnimationComponent::addAnimationSequence(State state, Direction direction, std::vector<sre::Sprite> animation)
 {
-    //animationSequences.insert({ state, animation });
-    animationSequences[state] = animation;
+    getAnimationSequences(direction)[state] = animation;
 }
 
 void SpriteAnimationComponent::resetTime()
@@ -85,7 +92,8 @@ bool SpriteAnimationComponent::displayCompleteAnimation(State anim)
     showingCompleteAnim = true;
     time = 0;
     spriteIndex = 0;
-    sprites = animationSequences[anim];
+    
+    sprites = getAnimationSequences(facingDirection)[anim];
     currentAnimation = anim;
     return true;
 }
@@ -124,7 +132,7 @@ bool SpriteAnimationComponent::displayCompleteAnimation(State anim, const std::f
     showingCompleteAnim = true;
     time = 0;
     spriteIndex = 0;
-    sprites = animationSequences[anim];
+    sprites = getAnimationSequences(facingDirection)[anim];
     currentAnimation = anim;
     animationTime = baseAnimationTime;
     callbackFunc = callback;
@@ -154,7 +162,7 @@ bool SpriteAnimationComponent::displayOnce(State anim, bool urgent)
     showingCompleteAnim = true;
     time = 0;
     spriteIndex = 0;
-    sprites = animationSequences[anim];
+    sprites = getAnimationSequences(facingDirection)[anim];
     currentAnimation = anim;
     animationTime = baseAnimationTime;
     // Deactivate everything at the end of the animation
@@ -169,6 +177,15 @@ bool SpriteAnimationComponent::displayOnce(State anim, bool urgent)
 float SpriteAnimationComponent::getMinDuration()
 {
     return _minDuration;
+}
+
+// Change the direction the object is facing to in order to display the correct animation, set reload to true if you want to turn the current animation,
+// otherwise the effects are visible only from the next one
+void SpriteAnimationComponent::setFacingDirection(Direction newDirection, bool reload)
+{
+    facingDirection = newDirection;
+    if (reload)
+        sprites = getAnimationSequences(facingDirection)[currentAnimation];
 }
 
 void SpriteAnimationComponent::deactivate()

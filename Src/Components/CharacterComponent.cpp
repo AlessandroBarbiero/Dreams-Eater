@@ -45,8 +45,10 @@ void CharacterComponent::initSpecialEffectObject() {
         victoryAnim[i].setOrderInBatch(Depth::Effect);
     }
 
-    specialEffects->addAnimationSequence(State::Victory, victoryAnim);
-    specialEffects->addAnimationSequence(State::Hit, hitAnim);
+    specialEffects->addAnimationSequence(State::Victory,    Direction::RIGHT,       victoryAnim);
+    specialEffects->addAnimationSequence(State::Victory,    Direction::LEFT,        victoryAnim);
+    specialEffects->addAnimationSequence(State::Hit,        Direction::RIGHT,       hitAnim);
+    specialEffects->addAnimationSequence(State::Hit,        Direction::LEFT,        hitAnim);
     specialEffects->setBaseAnimationTime(0.1f);
 
     gameObject->addChild(specialEffectsObj.get());
@@ -80,10 +82,8 @@ void CharacterComponent::fireOnKeyPress() {
     if (direction != glm::vec2(0)) {
         auto anim = gameObject->getComponent<SpriteAnimationComponent>();
         direction = glm::normalize(direction);
-        if(direction.x<0)
-            anim->displayCompleteAnimation(State::AttackLeft, 1 / rateOfFire, [direction, this]() {shoot(direction); });
-        else
-            anim->displayCompleteAnimation(State::AttackRight, 1 / rateOfFire, [direction, this]() { shoot(direction); });
+        anim->displayCompleteAnimation(State::Attack, 1 / rateOfFire, [direction, this]() {shoot(direction); });
+        anim->setFacingDirection(vectorToDirection(direction));
 
         // If the animation cannot go any faster just spawn the bullets
         if (1 / rateOfFire < anim->getMinDuration())
@@ -96,6 +96,16 @@ void CharacterComponent::fireOnKeyPress() {
 void CharacterComponent::changeState(State newState)
 {
     state = newState;
+}
+
+Direction CharacterComponent::getDirection()
+{
+    return facingDirection;
+}
+
+void CharacterComponent::setDirection(Direction newFacingDirection)
+{
+    facingDirection = newFacingDirection;
 }
 
 // Update readyToShoot variable based on rateOfFire and cooldownTimer
@@ -178,13 +188,12 @@ void CharacterComponent::inflictDamage(float damage) {
     if (realDamage > 0) {
         hp -= realDamage;
         if (hp <= 0) {
-            state = State::DieLeft; //TODO set right direction
+            state = State::Die;
             auto anim = gameObject->getComponent<SpriteAnimationComponent>();
             anim->displayCompleteAnimation(state, [this]() {die(); }, true);
         }
-        else {
+        else
             showEffect(State::Hit);
-        }
     }
 }
 

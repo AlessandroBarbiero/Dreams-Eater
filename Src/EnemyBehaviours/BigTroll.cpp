@@ -13,7 +13,7 @@ void BigTroll::attack()
     glm::vec2 direction = glm::normalize(towardPlayer);
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-    /* It is not working because the sprites have a wrong pivot
+    /* see Wizard
     if (direction.x < 0)
          anim->displayCompleteAnimation(State::AttackLeft, 1 / character->rateOfFire, [direction, this]() {character->shoot(direction); });
      else
@@ -35,11 +35,9 @@ void BigTroll::movement()
     //}
 
     glm::vec2 direction = glm::normalize(towardPlayer);
+    character->setDirection(vectorToDirection(direction));
 
     glm::vec2 movement = direction * character->getSpeed();
     physics->setLinearVelocity(movement);
-    if (direction.x >= 0)
-        character->changeState(State::WalkRight);
-    else
-        character->changeState(State::WalkLeft);
+    character->changeState(State::Walk);
 }
