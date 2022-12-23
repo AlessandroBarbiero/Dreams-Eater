@@ -76,7 +76,7 @@ void CharacterBuilder::initAtlasMap() {
 std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settings) {
     auto game = DreamGame::instance;
     auto physicsScale = game->physicsScale;
-    auto type = CharacterType::BrownWraith; //todo reset to settings.type
+    auto type = settings.type; //todo reset to settings.type
 
     auto player = game->currentScene->createGameObject();
     player->name = settings.name;
