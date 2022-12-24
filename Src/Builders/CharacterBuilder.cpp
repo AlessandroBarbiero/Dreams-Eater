@@ -186,7 +186,7 @@ void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> 
 
 std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings) {
 
-    CharacterType type = CharacterType::Witch;       //TODO: put back --  settings.type;
+    CharacterType type = CharacterType::Wizard;       //TODO: put back --  settings.type;
 
     auto game = DreamGame::instance;
     auto physicsScale = DreamGame::instance->physicsScale;
@@ -211,7 +211,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
 
     auto enemyCharacter = enemy->addComponent<CharacterComponent>();
 
-    auto shotSprite = getAtlas(CharacterType::Wizard)->get("Bullet.png");     //spriteAtlas->get("Bullet.png"); // TODO: Add from enemy behaviour
+    auto shotSprite = spriteAtlas->get("Bullet.png"); // TODO: Add from enemy behaviour
     enemyCharacter->setShotSprite(shotSprite);
     enemyCharacter->type = type;
     enemyCharacter->radius = radius;

@@ -22,9 +22,7 @@ enum class CharacterType {
 	Ninja,
 	SamuraiHeavy,
 	SamuraiLight,
-	//BigTroll,
-	// TODO: Need to implement multiple attacks animations before add
-
+	BigTroll,
 	Witch
 };
 
@@ -39,8 +37,7 @@ const std::unordered_map<CharacterType, char*> CharacterTypeToString{
 	{CharacterType::Ninja,			"Ninja"			},
 	{CharacterType::SamuraiHeavy,	"SamuraiHeavy"	},
 	{CharacterType::SamuraiLight,	"SamuraiLight"	},
-	// Need to implement multiple attacks animations before add
-	//{CharacterType::BigTroll,		"BigTroll"		},
+	{CharacterType::BigTroll,		"BigTroll"		},
 	{CharacterType::Witch,			"Witch"			}
 
 };
@@ -53,7 +50,7 @@ const std::unordered_map<CharacterType, std::function<std::shared_ptr<IEnemyCont
 	{CharacterType::FireWizard,		[](GameObject* obj) {	return obj->addComponent<Wizard>();	}	},
 	{CharacterType::IceWizard,		[](GameObject* obj) {	return obj->addComponent<Wizard>();	}	},
 	{CharacterType::Witch,			[](GameObject* obj) {	return obj->addComponent<Witch>();	}	},
-	//{CharacterType::BigTroll,		[](GameObject* obj) {	return obj->addComponent<BigTroll>();	}	},
+	{CharacterType::BigTroll,		[](GameObject* obj) {	return obj->addComponent<BigTroll>();	}	},
 
 };
 
