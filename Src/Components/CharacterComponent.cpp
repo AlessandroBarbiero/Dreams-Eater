@@ -83,7 +83,7 @@ void CharacterComponent::fireOnKeyPress() {
         auto anim = gameObject->getComponent<SpriteAnimationComponent>();
         direction = glm::normalize(direction);
         anim->displayCompleteAnimation(State::Attack, 1 / rateOfFire, [direction, this]() {shoot(direction); });
-        anim->setFacingDirection(vectorToDirection(direction));
+        anim->setFacingDirection(vectorToDirection(direction), true);
 
         // If the animation cannot go any faster just spawn the bullets
         if (1 / rateOfFire < anim->getMinDuration())

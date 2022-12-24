@@ -22,9 +22,12 @@ void SpriteAnimationComponent::update(float deltaTime) {
         if (!showingCompleteAnim) {
             // Retrieve state/direction to show from the character
             auto charComponent = gameObject->getComponent<CharacterComponent>();
-            facingDirection = charComponent->getDirection();
+            State c_state = charComponent->getState();
+            // If the state is a movement state update the direction
+            if(c_state == State::Walk)
+                facingDirection = charComponent->getDirection();
             auto& animationSequences = getAnimationSequences(facingDirection);
-            sprites = animationSequences[charComponent->getState()];
+            sprites = animationSequences[c_state];
             spriteIndex = spriteIndex % sprites.size();
         }
         
