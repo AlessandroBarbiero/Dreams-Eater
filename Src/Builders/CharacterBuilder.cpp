@@ -14,8 +14,8 @@
 #include <Components/PowerupComponent.hpp>
 constexpr auto SIZES_PATH = "Sprites/animationSizes.json";
 
-map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> CharacterBuilder::atlasMap;
-map<CharacterType, map<State, int>> CharacterBuilder::animationSizesMap;
+unordered_map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> CharacterBuilder::atlasMap;
+unordered_map<CharacterType, unordered_map<State, int>> CharacterBuilder::animationSizesMap;
 
 std::shared_ptr<sre::SpriteAtlas> CharacterBuilder::getAtlas(CharacterType type) {
     if (atlasMap.size() == 0)
@@ -23,7 +23,7 @@ std::shared_ptr<sre::SpriteAtlas> CharacterBuilder::getAtlas(CharacterType type)
     return atlasMap[type];
 }
 
-map<State, int> CharacterBuilder::getAnimationSizes(CharacterType type) {
+unordered_map<State, int> CharacterBuilder::getAnimationSizes(CharacterType type) {
     if (animationSizesMap[type].size() == 0)
         initSizesMap(type);
     return animationSizesMap[type];
@@ -135,7 +135,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerController->keyShot = settings.keybinds.shot;
      
     auto animation = player->addComponent<SpriteAnimationComponent>();
-    std::map<State, int> animationSizes = getAnimationSizes(type);
+    std::unordered_map<State, int> animationSizes = getAnimationSizes(type);
     animationSetup(animation, spriteAtlas, animationSizes, 0.1f, Depth::Player);
 
     auto powerupComp = player->addComponent<PowerupComponent>();
@@ -148,7 +148,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
 
 // Insert both right and left animations related to the State
 void insertAnimationSequence(std::shared_ptr<SpriteAnimationComponent> animation, State state,
-    std::shared_ptr<sre::SpriteAtlas> spriteAtlas, std::map<State, int> animationSizes, Depth visualDepth) {
+    std::shared_ptr<sre::SpriteAtlas> spriteAtlas, std::unordered_map<State, int> animationSizes, Depth visualDepth) {
 
     //RIGHT
     std::vector<sre::Sprite> rightAnimationVector(animationSizes[state]);
@@ -175,7 +175,7 @@ void insertAnimationSequence(std::shared_ptr<SpriteAnimationComponent> animation
 
 // Fill up the animation component with all the animations
 void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> animation,
-    std::shared_ptr<sre::SpriteAtlas> spriteAtlas, std::map<State, int> animationSizes, float baseAnimTime, Depth visualDepth) {
+    std::shared_ptr<sre::SpriteAtlas> spriteAtlas, std::unordered_map<State, int> animationSizes, float baseAnimTime, Depth visualDepth) {
 
     insertAnimationSequence(animation, State::Idle, spriteAtlas, animationSizes, visualDepth);
     insertAnimationSequence(animation, State::Walk, spriteAtlas, animationSizes, visualDepth);
@@ -235,7 +235,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
 
     auto animation = enemy->addComponent<SpriteAnimationComponent>();
 
-    std::map<State, int> animationSizes = getAnimationSizes(type);
+    std::unordered_map<State, int> animationSizes = getAnimationSizes(type);
 
     animationSetup(animation, spriteAtlas, animationSizes, 0.2f, Depth::Enemy);
 
@@ -255,7 +255,7 @@ void CharacterBuilder::transform(GameObject* character, CharacterType newType)
     Depth depth = static_cast<Depth>(character->getComponent<SpriteComponent>()->getSprite().getOrderInBatch());
 
     auto animation = character->getComponent<SpriteAnimationComponent>();
-    std::map<State, int> animationSizes = getAnimationSizes(newType);
+    std::unordered_map<State, int> animationSizes = getAnimationSizes(newType);
     animationSetup(animation, spriteAtlas, animationSizes, animation->getBaseAnimationTime(), depth);
 
 }
