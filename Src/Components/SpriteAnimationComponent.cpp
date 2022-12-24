@@ -58,7 +58,7 @@ float SpriteAnimationComponent::getBaseAnimationTime() const {
     return baseAnimationTime;
 }
 
-std::map<State, std::vector<sre::Sprite>>& SpriteAnimationComponent::getAnimationSequences(Direction direction) {
+std::unordered_map<State, std::vector<sre::Sprite>>& SpriteAnimationComponent::getAnimationSequences(Direction direction) {
     if (direction == Direction::RIGHT)
         return rightAnimationSequences;
     return leftAnimationSequences;

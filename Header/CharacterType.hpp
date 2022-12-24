@@ -1,5 +1,5 @@
 #pragma once 
-#include <map>
+#include <unordered_map>
 
 #include <GameObject.hpp>
 #include <string>
@@ -28,7 +28,7 @@ enum class CharacterType {
 	//  Witch
 };
 
-const std::map<CharacterType, char*> CharacterTypeToString{
+const std::unordered_map<CharacterType, char*> CharacterTypeToString{
 	{CharacterType::Wizard,			"Wizard"		},
 	{CharacterType::FireWizard,		"FireWizard"	},
 	{CharacterType::IceWizard,		"IceWizard"		},
@@ -51,7 +51,7 @@ const std::map<CharacterType, char*> CharacterTypeToString{
 #define DEFAULT_BEHAVIOUR Wizard
 
 // Searching for the CharacterType it will return a function that links the right behaviour to the gameObject passed and return an EnemyController shared pointer
-const std::map<CharacterType, std::function<std::shared_ptr<IEnemyController>(GameObject*)>> CharacterTypeToBehaviour{
+const std::unordered_map<CharacterType, std::function<std::shared_ptr<IEnemyController>(GameObject*)>> CharacterTypeToBehaviour{
 	{CharacterType::Wizard,			[](GameObject* obj) {	return obj->addComponent<Wizard>();	}	},
 	{CharacterType::FireWizard,		[](GameObject* obj) {	return obj->addComponent<Wizard>();	}	},
 	{CharacterType::IceWizard,		[](GameObject* obj) {	return obj->addComponent<Wizard>();	}	},

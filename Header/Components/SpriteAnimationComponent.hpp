@@ -4,6 +4,7 @@
 #include "sre/Sprite.hpp"
 #include "SpriteComponent.hpp"
 #include "State.hpp"
+#include <unordered_map>
 
 // Remember to add this component always after the SpriteComponent
 class SpriteAnimationComponent: public Component {
@@ -40,9 +41,9 @@ private:
     bool active = true;
 
     void endCompleteAnimation();
-    std::map<State, std::vector<sre::Sprite>>& getAnimationSequences(Direction direction);
-    std::map<State, std::vector<sre::Sprite>> rightAnimationSequences;
-    std::map<State, std::vector<sre::Sprite>> leftAnimationSequences;
+    std::unordered_map<State, std::vector<sre::Sprite>>& getAnimationSequences(Direction direction);
+    std::unordered_map<State, std::vector<sre::Sprite>> rightAnimationSequences;
+    std::unordered_map<State, std::vector<sre::Sprite>> leftAnimationSequences;
     std::vector<sre::Sprite> sprites;
     float _minDuration = 0.2f;
 

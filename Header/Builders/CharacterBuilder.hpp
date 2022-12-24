@@ -6,7 +6,8 @@
 #include <SDL_events.h>
 #include "SpriteAnimationComponent.hpp"
 #include <CharacterType.hpp>
-
+#include <unordered_map>
+using std::unordered_map;
 
 struct Controls {
 	SDL_Keycode up = SDLK_w;
@@ -65,16 +66,16 @@ public:
 
 private:
 
-	static map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> atlasMap;
-	static map<CharacterType, map<State, int>> animationSizesMap;
+	static unordered_map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> atlasMap;
+	static unordered_map<CharacterType, unordered_map<State, int>> animationSizesMap;
 
 	static void initAtlasMap();
 	static void initSizesMap(CharacterType type);
 
-	static map<State, int> getAnimationSizes(CharacterType type);
+	static unordered_map<State, int> getAnimationSizes(CharacterType type);
 	static std::shared_ptr<sre::SpriteAtlas> getAtlas(CharacterType type);
 
 	static void animationSetup(std::shared_ptr<SpriteAnimationComponent> animation, std::shared_ptr<sre::SpriteAtlas> spriteAtlas,
-		std::map<State, int> AnimationSizes, float baseAnimTime, Depth visualDepth);
+		std::unordered_map<State, int> AnimationSizes, float baseAnimTime, Depth visualDepth);
 };
 

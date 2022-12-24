@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 #include <glm/glm.hpp>
 
 
@@ -19,7 +19,7 @@ enum class State {
 	Victory
 };
 
-const std::map<State, const char*> StateToString{
+const std::unordered_map<State, const char*> StateToString{
 	{State::Idle,			"Idle"		},
 	{State::IdleBlink,		"IdleBlink"	},
 	{State::Run,			"Run"		},
@@ -34,7 +34,7 @@ const std::map<State, const char*> StateToString{
 	{State::Victory,		"Victory"	},
 };
 
-const std::map<std::string, State> StringToState{
+const std::unordered_map<std::string, State> StringToState{
 	{"Idle"		,		State::Idle				},
 	{"IdleBlink",		State::IdleBlink		},
 	{"Run"		,		State::Run				},
