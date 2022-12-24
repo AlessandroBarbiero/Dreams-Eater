@@ -2,6 +2,7 @@
 #include "SpriteAnimationComponent.hpp"
 #include "GameObject.hpp"
 #include "PhysicsComponent.hpp"
+#include "CharacterComponent.hpp"
 
 BigTroll::BigTroll(GameObject* gameObject) : IEnemyController(gameObject)
 {

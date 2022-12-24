@@ -3,12 +3,12 @@
 #include "IEnemyController.hpp"
 #include "Component.hpp"
 
-//Boss enemy, act within states alternating between melee attacks and circle spawning static rocks
-class BigTroll : public IEnemyController {
+//Ranged enemy, continuously attack and move toward player until a certain distance
+class Witch : public IEnemyController {
 public:
-    explicit BigTroll(GameObject* gameObject);
+    explicit Witch(GameObject* gameObject);
 
-    //   void onCollisionStart(PhysicsComponent* comp) override;
+     void onCollisionStart(PhysicsComponent* comp) override;
     //   void onCollisionEnd(PhysicsComponent* comp) override;
     //   void update(float deltaTime) override;
     //   void onGui() override;
@@ -18,4 +18,5 @@ public:
 
 private:
 
+    float idealDistance = 600.0f;
 };
