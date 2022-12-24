@@ -6,22 +6,47 @@
 
 enum class State {
 	Idle,
+	IdleBlink,
 	Run,
 	Walk,
 	Attack,
+	Attack1,
+	Attack2,
+	Attack3,
+	Hurt,
 	Die,
 	Hit,
 	Victory
 };
 
-const std::map<State, char*> StateToString{
+const std::map<State, const char*> StateToString{
 	{State::Idle,			"Idle"		},
+	{State::IdleBlink,		"IdleBlink"	},
 	{State::Run,			"Run"		},
 	{State::Walk,			"Walk"		},
 	{State::Attack,			"Attack"	},
+	{State::Attack1,		"Attack1"	},
+	{State::Attack2,		"Attack2"	},
+	{State::Attack3,		"Attack3"	},
+	{State::Hurt,			"Hurt"		},
 	{State::Die,			"Die"		},
 	{State::Hit,			"Hit"		},
 	{State::Victory,		"Victory"	},
+};
+
+const std::map<std::string, State> StringToState{
+	{"Idle"		,		State::Idle				},
+	{"IdleBlink",		State::IdleBlink		},
+	{"Run"		,		State::Run				},
+	{"Walk"		,		State::Walk				},
+	{"Attack"	,		State::Attack			},
+	{"Attack1"	,		State::Attack1			},
+	{"Attack2"	,		State::Attack2			},
+	{"Attack3"	,		State::Attack3			},
+	{"Hurt"		,		State::Hurt				},
+	{"Die"		,		State::Die				},
+	{"Hit"		,		State::Hit				},
+	{"Victory"	,		State::Victory			},
 };
 
 enum class Direction {

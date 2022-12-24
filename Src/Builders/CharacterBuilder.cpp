@@ -56,10 +56,17 @@ void CharacterBuilder::initSizesMap(CharacterType type) {
     const char* typeString = CharacterTypeToString.at(type);
 
     Value& sizesMap = d[typeString];
-    sizes.insert({ State::Idle,         sizesMap["Idle"].GetInt()});
-    sizes.insert({ State::Attack,       sizesMap["Attack"].GetInt() });
-    sizes.insert({ State::Walk,         sizesMap["Walk"].GetInt() });
-    sizes.insert({ State::Die,          sizesMap["Die"].GetInt() });
+    std::string name;
+    int value;
+    State state;
+    for (auto& m : sizesMap.GetObject()) {
+        name = m.name.GetString();
+        value = m.value.GetInt();
+        auto it = StringToState.find(name);
+        state = it->second;
+ 
+        sizes.insert({ state, value});
+    }
 
 }
 
