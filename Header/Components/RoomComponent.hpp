@@ -43,5 +43,6 @@ private:
 
     friend class RoomBuilder;
     friend class Level;
+    friend class DreamGame;
 };
 

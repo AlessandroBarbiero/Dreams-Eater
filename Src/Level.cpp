@@ -17,7 +17,7 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 		/*
 		*/
 		roomObjects[currentRoomIndex] = currentRoom->getComponent<RoomComponent>()->roomObjects;
-		for (auto go : currentRoom->getComponent<RoomComponent>()->roomObjects) {
+		for (auto go : roomObjects[currentRoomIndex]) {
 			//std::cout << "Destroying " << go->name << std::endl;
 			go->destroy();
 			auto phys = go->getComponent<PhysicsComponent>();
@@ -41,6 +41,9 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 				}
 			}
 		}
+		auto sceneObjects = DreamGame::instance->currentScene->getSceneObjects();
+		std::for_each(sceneObjects->begin(), sceneObjects->end(), [](std::shared_ptr<GameObject> go) {if (go->tag == Tag::EnemyBullet || go->tag == Tag::PlayerBullet) go->destroy();});
+
 		currentRoom->destroy();
 	}
 
