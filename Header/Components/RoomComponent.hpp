@@ -18,6 +18,8 @@ public:
 
     RoomType roomType;
 
+    std::map<DoorPosition, glm::vec2> doorEntrances;
+
     void onGui() override;
 
 private:

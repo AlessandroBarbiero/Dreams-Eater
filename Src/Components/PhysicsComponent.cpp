@@ -196,7 +196,7 @@ void PhysicsComponent::pause() {
     DreamGame::instance->deregisterPhysicsComponent(this);
 
     // Save body data
-    std::cout << "Copying body" << std::endl;
+    //std::cout << "Copying body" << std::endl;
     lastBodyDef.position = {getPosition().x, getPosition().y};
     lastBodyDef.linearVelocity = body->GetLinearVelocity();
     lastBodyDef.linearDamping = body->GetLinearDamping();
@@ -213,7 +213,7 @@ void PhysicsComponent::pause() {
     lastBodyDef.allowSleep = body->IsSleepingAllowed();
 
     // Save fixture data
-    std::cout << "Copying fixture" << std::endl;
+    //std::cout << "Copying fixture" << std::endl;
     lastFixtureDef.density = fixture->GetDensity();
     lastFixtureDef.filter = fixture->GetFilterData();
     lastFixtureDef.friction = fixture->GetFriction();

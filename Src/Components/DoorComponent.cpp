@@ -11,7 +11,7 @@ DoorComponent::DoorComponent(GameObject *gameObject) : Component(gameObject) {}
 
 void DoorComponent::update(float deltaTime) {
 	if (load) {
-		level->loadRoom(destinationRoomId);
+		level->loadRoom(destinationRoomId, door.destinationPosition);
 	}
 }
 

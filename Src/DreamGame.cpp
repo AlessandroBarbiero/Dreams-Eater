@@ -117,10 +117,10 @@ void DreamGame::play() {
     room->buildFloor();
     room->buildWalls();
     */
-    RoomSettings rSettings;
-    rSettings.name = "Room0";
-    rSettings.position = { 0,0 };
-    rSettings.size = { 7,7 };
+    std::shared_ptr<RoomSettings> rSettings = make_shared<RoomSettings>();
+    rSettings->name = "TestRoom";
+    rSettings->position = { 0,0 };
+    rSettings->size = { 7,7 };
 
 
     /*rSettings.tileSetFloor = BricksFloor;
@@ -133,12 +133,12 @@ void DreamGame::play() {
     rSettings.tileSetWalls = LightWoodWalls;*/
 
 
-    rSettings.tileSetFloor = WoodFloor;
-    rSettings.tileSetWalls = WoodWalls;
+    rSettings->tileSetFloor = WoodFloor;
+    rSettings->tileSetWalls = WoodWalls;
 
-    rSettings.roomType = EnemyRoom;
+    rSettings->roomType = EnemyRoom;
 
-    rSettings.doors.push_back(Door{ false, Left, 1 });
+    rSettings->doors.push_back(Door{ false, Left, 1 });
     //auto testRoom = RoomBuilder::createRoom(rSettings);
 
     this->level = make_shared<Level>();
@@ -151,10 +151,10 @@ void DreamGame::play() {
     level->roomEntered.push_back(false);
     level->roomObjects.push_back({});
 
-    rSettings.name = "Room1";
-    rSettings.roomType = BossRoom;
-    rSettings.doors.clear();
-    rSettings.doors.push_back(Door{ false, Right, 0 });
+    rSettings->name = "Room1";
+    rSettings->roomType = BossRoom;
+    rSettings->doors.clear();
+    rSettings->doors.push_back(Door{ false, Right, 0 });
     level->roomSettings.push_back(rSettings);
     level->roomEntered.push_back(false);
     level->roomObjects.push_back({});
@@ -162,10 +162,19 @@ void DreamGame::play() {
     level->rooms = 2;
     level->startRoom = 0;
 
-    level->loadRoom(0);
+    //level->loadRoom(0);
     //level->loadRoom(1);
 
-    camera->setFollowObject(level->currentRoom, glm::vec2(0, 0));
+    LevelSettings testLevelSettings;
+    testLevelSettings.difficulty = 1;
+    testLevelSettings.name = "TestLevel";
+    testLevelSettings.rooms = 10;
+    this->level = LevelBuilder::createLevel(testLevelSettings);
+
+    this->level->player = player;
+    level->loadRoom(0, level->roomSettings[0]->doors[0].position);
+
+    camera->setFollowObject(player, glm::vec2(0, 0));
     // Fit room width to window
 
     camera->getCamera().setOrthographicProjection(level->currentRoom->getComponent<RoomComponent>()->getRoomSizeInPixels().x / 2.0f, -1, 1);

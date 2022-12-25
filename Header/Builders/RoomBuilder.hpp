@@ -53,11 +53,19 @@ struct Door {
 	bool locked = false;
 	DoorPosition position;
 	int destinationRoom;
+	DoorPosition destinationPosition;
 };
 
 struct RoomSettings {
 	std::string name = "room";
+	int id;
 	glm::vec2 position;
+	/*
+	* If size = Wide -> Positions[0] = Left and Positions[1] = Right
+	* If size = Long -> Positions[0] = Top and Positions[1] = Bottom
+	* If size = Large -> Positions[0] = TopLeft, Positions[1] = TopRight, Positions[2] = BottomLeft, Positions[3] = BottomRight
+	*/
+	glm::vec2 positions[4];
 	glm::vec2 size;
 
 	TileSetWalls tileSetWalls;

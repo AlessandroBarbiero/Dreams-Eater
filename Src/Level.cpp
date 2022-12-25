@@ -9,7 +9,7 @@
 void Level::loadLevel() {
 }
 
-void Level::loadRoom(int room) {
+void Level::loadRoom(int room, DoorPosition enteredAt) {
 	if (currentRoom != nullptr) {
 		// Save currentRoom
 		std::cout << "Saving room" << std::endl;
@@ -17,7 +17,7 @@ void Level::loadRoom(int room) {
 		*/
 		roomObjects[currentRoomIndex] = currentRoom->getComponent<RoomComponent>()->roomObjects;
 		for (auto go : currentRoom->getComponent<RoomComponent>()->roomObjects) {
-			std::cout << "Destroying " << go->name << std::endl;
+			//std::cout << "Destroying " << go->name << std::endl;
 			go->destroy();
 			auto phys = go->getComponent<PhysicsComponent>();
 			if (phys != nullptr) {
@@ -36,7 +36,7 @@ void Level::loadRoom(int room) {
 				//phys->~PhysicsComponent();
 				phys->pause();
 				if (phys->getBody() != nullptr) {
-					std::cout << "Body still exists" << std::endl;
+					//std::cout << "Body still exists" << std::endl;
 				}
 			}
 		}
@@ -44,7 +44,7 @@ void Level::loadRoom(int room) {
 	}
 
 	// Create room
-	auto obj = RoomBuilder::createRoom(roomSettings[room]);
+	auto obj = RoomBuilder::createRoom(*roomSettings[room]);
 	auto newRoom = obj->getComponent<RoomComponent>();
 	currentRoom = obj;
 	currentRoomIndex = room;
@@ -64,7 +64,7 @@ void Level::loadRoom(int room) {
 		std::cout << "roomSize: (" << roomSize.x << ", " << roomSize.y << ")" << std::endl;
 		int enemies = 0;
 		EnemySettings eSettings;
-		switch (roomSettings[room].roomType) {
+		switch (roomSettings[room]->roomType) {
 		case SpawnRoom:
 			break;
 		case EnemyRoom:
@@ -100,9 +100,13 @@ void Level::loadRoom(int room) {
 
 	}
 	roomEntered[room] = true;
+
 	// TODO: Calculate player door entry
 	auto phys = player->getComponent<PhysicsComponent>();
-	auto roomSize = newRoom->getRoomSizeInPixels() / DreamGame::instance->physicsScale;
-	phys->getBody()->SetTransform({ roomSize.x / 4 - roomSize.x / 2.0f, roomSize.y / 4 - roomSize.y / 2.0f }, 0) ;
+	auto enterPos = newRoom->doorEntrances[enteredAt];
+	enterPos = enterPos / DreamGame::instance->physicsScale;
+	phys->getBody()->SetTransform({enterPos.x, enterPos.y} , 0);
+	//auto roomSize = newRoom->getRoomSizeInPixels() / DreamGame::instance->physicsScale;
+	//phys->getBody()->SetTransform({ roomSize.x / 4 - roomSize.x / 2.0f, roomSize.y / 4 - roomSize.y / 2.0f }, 0) ;
 
 }

@@ -10,7 +10,7 @@ public:
 	int difficulty;
 	int startRoom;
 
-	std::vector<RoomSettings> roomSettings;
+	std::vector<std::shared_ptr<RoomSettings>> roomSettings;
 	std::vector<std::vector<std::shared_ptr<GameObject>>> roomObjects; // roomObjects[i] = list of objects in room i
 	std::shared_ptr<GameObject> currentRoom;
 	int currentRoomIndex;
@@ -20,7 +20,7 @@ public:
 
 	void loadLevel();
 
-	void loadRoom(int room);
+	void loadRoom(int room, DoorPosition enteredAt);
 
 private:
 

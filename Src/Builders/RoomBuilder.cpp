@@ -9,7 +9,8 @@ std::shared_ptr<GameObject> RoomBuilder::createRoom(RoomSettings settings) {
 
     auto roomObject = game->currentScene->createGameObject();
     roomObject->name = settings.name;
-    roomObject->setPosition(settings.position);
+    //roomObject->setPosition(settings.position);
+    roomObject->setPosition({0,0});
     auto roomPhys = roomObject->addComponent<PhysicsComponent>();
     auto room = roomObject->addComponent<RoomComponent>();
     room->setRoomSize(settings.size);
