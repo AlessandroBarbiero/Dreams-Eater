@@ -22,10 +22,16 @@ def changeAllFileNamesInSubSubFolders(rootDir = './StillNoAtlas'):
                 os.rename(old_fname, new_fname)
 
 
-def changeNames(folder = "Characters/Robot", subfolder = "Walk"):
-    os.chdir(f"{folder}//{subfolder}")
-
-    filenames = [x[2] for x in os.walk(".")][0]
+def changeNames(folder, subfolder):
+    
+    path = f"{folder}/{subfolder}"
+    filenames = [x[2] for x in os.walk(path)][0]
 
     for i in range(len(filenames)):
-        os.rename(filenames[i], str(i)+".png")
+        os.rename(f"{path}//{filenames[i]}", f"{path}//{str(i)}.png")
+
+
+folder = "Characters/Penguin"
+for sub in os.listdir(folder):
+    if sub != "Attack":
+        changeNames(folder = folder,subfolder=sub)

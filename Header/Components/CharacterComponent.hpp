@@ -5,23 +5,12 @@
 #include <queue>
 #include "SDL.h"
 #include <CharacterType.hpp>
+#include <State.hpp>
 
 constexpr auto KNOCKBACK_TIME = 0.2;
 
 // Forward declaration
 class SpriteAnimationComponent;
-
-enum class State {
-	Idle,
-	Run,
-	WalkLeft,
-	WalkRight,
-	AttackLeft,
-	AttackRight,
-	Die,
-	Hit,
-	Victory
-};
 
 class CharacterComponent : public Component {
 public:
@@ -44,6 +33,9 @@ public:
 
 	State getState();
 	void changeState(State newState);
+	Direction getDirection();
+	void setDirection(Direction newFacingDirection);
+
 	void showEffect(State effect);
 
 	float getHp()			{ return hp; };
@@ -71,9 +63,10 @@ private:
 	void inflictDamage(float damage);
 	void applyKnockback(std::shared_ptr<BulletComponent> bullet);
 
-	State state = State::Idle;
-
 	CharacterType type;
+	State state = State::Idle;
+	Direction facingDirection = Direction::RIGHT;
+
 
 	// If set to true the character cannot move
 	bool stun = false;

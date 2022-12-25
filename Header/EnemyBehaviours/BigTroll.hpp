@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IEnemyController.hpp"
-#include "CharacterComponent.hpp"
 #include "Component.hpp"
 
 //Boss enemy, act within states alternating between melee attacks and circle spawning static rocks

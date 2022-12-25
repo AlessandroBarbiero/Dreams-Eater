@@ -2,9 +2,8 @@
 
 #include "GameObject.hpp"
 #include "sre/SpriteAtlas.hpp"
-#include <map>
+#include <unordered_map>
 #include <Powerup.hpp>
-#include <CharacterComponent.hpp>
 using std::map;
 
 // Each Powerup Type has his own implementation passed in the powerupMap
@@ -25,7 +24,7 @@ public:
 	std::shared_ptr<GameObject> createSinglePowerupObject(PowerupType type, glm::vec2 position);
 	
 
-	const std::map<PowerupType, std::shared_ptr<Powerup>> PowerupMap {
+	const std::unordered_map<PowerupType, std::shared_ptr<Powerup>> PowerupMap {
 
 		//Other version using lambda function, but I think it's cleaner to use it with static functions written somewhere else
 		// {PowerupType::Fire,	 

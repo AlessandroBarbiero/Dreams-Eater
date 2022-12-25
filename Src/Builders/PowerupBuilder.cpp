@@ -3,7 +3,8 @@
 #include <PhysicsComponent.hpp>
 #include <DreamGame.hpp>
 #include <CharacterType.hpp>
-#include <CharacterBuilder.hpp>
+#include <CharacterComponent.hpp>
+#include <CharacterBuilder.hpp> //Used for transform function
 
 
 PowerupBuilder::PowerupBuilder(){}

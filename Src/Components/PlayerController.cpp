@@ -30,10 +30,9 @@ void PlayerController::update(float deltaTime) {
         movement.x++;
     
     if (movement != glm::vec2(0)) {
-        if (movement.x < 0)
-            character->changeState(State::WalkLeft);
-        else
-            character->changeState(State::WalkRight);
+
+        character->changeState(State::Walk);
+        character->setDirection(vectorToDirection(movement));
         lastDirection = glm::normalize(movement);
         playerPhysics->setLinearVelocity(lastDirection * character->speed);
     }

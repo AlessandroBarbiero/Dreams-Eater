@@ -2,6 +2,7 @@
 #include "SpriteAnimationComponent.hpp"
 #include "GameObject.hpp"
 #include "PhysicsComponent.hpp"
+#include "CharacterComponent.hpp"
 
 BigTroll::BigTroll(GameObject* gameObject) : IEnemyController(gameObject)
 {
@@ -13,11 +14,10 @@ void BigTroll::attack()
     glm::vec2 direction = glm::normalize(towardPlayer);
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-    /* It is not working because the sprites have a wrong pivot
-    if (direction.x < 0)
-         anim->displayCompleteAnimation(State::AttackLeft, 1 / character->rateOfFire, [direction, this]() {character->shoot(direction); });
-     else
-         anim->displayCompleteAnimation(State::AttackRight, 1 / character->rateOfFire, [direction, this]() { character->shoot(direction); });*/
+    anim->displayCompleteAnimation(State::Attack1, 1 / character->getRateOfFire(), [direction, this]() { character->shoot(direction); });
+
+    anim->setFacingDirection(vectorToDirection(direction));
+
     character->shoot(direction);
 
 
@@ -27,19 +27,10 @@ void BigTroll::movement()
 {
     float distance = glm::length(towardPlayer);
 
-
-    // Range enemies don't go toward the player until the end
-    //if (distance < idealDistance) {
-    //    character->changeState(State::Idle);
-    //    return;
-    //}
-
     glm::vec2 direction = glm::normalize(towardPlayer);
+    character->setDirection(vectorToDirection(direction));
 
     glm::vec2 movement = direction * character->getSpeed();
     physics->setLinearVelocity(movement);
-    if (direction.x >= 0)
-        character->changeState(State::WalkRight);
-    else
-        character->changeState(State::WalkLeft);
+    character->changeState(State::Walk);
 }
