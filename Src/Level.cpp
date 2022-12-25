@@ -4,6 +4,7 @@
 #include "DreamGame.hpp"
 #include "CharacterBuilder.hpp"
 #include "PhysicsComponent.hpp"
+#include <Builders/PowerupBuilder.hpp>
 
 
 void Level::loadLevel() {
@@ -62,14 +63,15 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 		// Create room contents
 		auto roomSize = newRoom->getRoomSizeInPixels() / DreamGame::instance->physicsScale;
 		std::cout << "roomSize: (" << roomSize.x << ", " << roomSize.y << ")" << std::endl;
-		int enemies = 0;
+		int random = 0;
+		PowerupBuilder* pBuilder = PowerupBuilder::getInstance();
 		EnemySettings eSettings;
 		switch (roomSettings[room]->roomType) {
 		case SpawnRoom:
 			break;
 		case EnemyRoom:
-			enemies = (rand() % 3) + 1;
-			for (int i = 0; i < enemies; i++) {
+			random = (rand() % 3) + 1;
+			for (int i = 0; i < random; i++) {
 				eSettings.name = "Enemy" + std::to_string(i);
 				eSettings.position = glm::vec2(rand() % (int)(roomSize.x - 2), rand() % (int)(roomSize.y - 2)) - glm::vec2(roomSize.x-2, roomSize.y-2)/2.0f;
 				eSettings.player = player;
@@ -80,6 +82,8 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 			}
 			break;
 		case PowerUpRoom:
+			random = rand() % 4;
+			newRoom->roomObjects.push_back(pBuilder->createSinglePowerupObject(static_cast<PowerupType>(random), { 5,5 }));
 			break;
 		case BossRoom:
 			eSettings.name = "Boss";

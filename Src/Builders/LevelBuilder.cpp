@@ -249,6 +249,9 @@ void LevelBuilder::generateLayout(std::shared_ptr<Level> level) {
     std::cout << "fixDoors" << std::endl;
     fixDoors(level);
 
+    // Last room generated is the boss room
+    level->roomSettings[level->rooms - 1]->roomType = BossRoom;
+
     std::cout << "Rooms generated: " << level->roomSettings.size() << std::endl;
     std::cout << "Rooms not generated: " << level->rooms - level->roomSettings.size() << std::endl;
 }

@@ -92,11 +92,11 @@ void DreamGame::play() {
     auto player = CharacterBuilder::createPlayer(pSettings);
 
     // TODO: Remove me from here
-    PowerupBuilder* pBuilder = PowerupBuilder::getInstance();
-    pBuilder->createSinglePowerupObject(PowerupType::Fire,  { 5,5 });
-    pBuilder->createSinglePowerupObject(PowerupType::Water, { 0,5 });
-    pBuilder->createSinglePowerupObject(PowerupType::Earth, { 5,0 });
-    pBuilder->createSinglePowerupObject(PowerupType::Ice,   { 8,8 });
+    //PowerupBuilder* pBuilder = PowerupBuilder::getInstance();
+    //pBuilder->createSinglePowerupObject(PowerupType::Fire,  { 5,5 });
+    //pBuilder->createSinglePowerupObject(PowerupType::Water, { 0,5 });
+    //pBuilder->createSinglePowerupObject(PowerupType::Earth, { 5,0 });
+    //pBuilder->createSinglePowerupObject(PowerupType::Ice,   { 8,8 });
 
     /*
     EnemySettings eSettings;
