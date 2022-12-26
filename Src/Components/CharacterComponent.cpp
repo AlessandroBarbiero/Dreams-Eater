@@ -8,6 +8,7 @@
 #include "BulletComponent.hpp"
 #include "DreamInspector.hpp"
 #include "SpriteAnimationComponent.hpp"
+#include "GuiHelper.hpp"
 #define KNOCKBACK_SCALE 10
 
 std::shared_ptr<sre::SpriteAtlas> CharacterComponent::effectAtlas;
@@ -18,6 +19,10 @@ CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameO
     }
 
     initSpecialEffectObject();
+
+    heartFullTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "HeartFull.png").withFilterSampling(false).build();
+    heartEmptyTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "HeartEmpty.png").withFilterSampling(false).build();
+
 }
 
 void CharacterComponent::initSpecialEffectObject() {
@@ -64,6 +69,13 @@ void CharacterComponent::update(float deltaTime) {
         fireOnKeyPress();
    
     updateFlyingProj();
+}
+
+void CharacterComponent::resetKeys(){
+    up = false;
+    down = false;
+    left = false; 
+    right = false;
 }
 
 // If the keys for fire are pressed generate a bullet in the right direction
@@ -298,13 +310,34 @@ void CharacterComponent::showEffect(State effect) {
 void CharacterComponent::onGui() {
     if (gameObject->tag == Tag::Player)
         setPlayerGui();
-    else
-        setEnemyGui();
 
     if (DreamGame::instance->doDebugDraw) {
-        DreamInspector::instance->updateCharacterGui(&hp, &armor, &damage, &rateOfFire, &shotSpeed, &knockback, gameObject);
+
+        auto title = "Character Component - " + gameObject->name;
+
+        bool* open = nullptr;
+        ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
+        if (ImGui::CollapsingHeader(title.c_str())) {
+            ImGui::DragFloat(std::string("HP ##").append(gameObject->name).c_str(),          &hp, 0.1f, 0, 5);
+            ImGui::DragFloat(std::string("Armor##").append(gameObject->name).c_str(),        &armor, 0.1f, 0, 5);
+            ImGui::DragFloat(std::string("Damage##").append(gameObject->name).c_str(),       &damage, 0.1f, 0, 5);
+            ImGui::DragFloat(std::string("Rate Of Fire##").append(gameObject->name).c_str(), &rateOfFire, 0.1f, 0.5f, 10);
+            ImGui::DragFloat(std::string("Shoot Speed##").append(gameObject->name).c_str(),  &shotSpeed, 0.1f, 0, 10);
+            ImGui::DragFloat(std::string("Knockback##").append(gameObject->name).c_str(),    &knockback, 0.1f, 0, 10);
+            ImGui::Text("Scale % .2f", gameObject->getScale());
+
+            if (ImGui::Button(std::string("Scale+##").append(gameObject->name).c_str(), { 100,25 })) {
+                gameObject->setScale(gameObject->getScale() + 0.1f);
+            }
+            if (ImGui::Button(std::string("Scale-##").append(gameObject->name).c_str(), { 100,25 })) {
+                gameObject->setScale(gameObject->getScale() - 0.1f);
+            }
+        }
+        ImGui::End();
     }
 }
+
+
 
 void CharacterComponent::setPlayerGui() {
     auto r = sre::Renderer::instance;
@@ -314,36 +347,49 @@ void CharacterComponent::setPlayerGui() {
 
     ImGui::SetNextWindowPos(pos, ImGuiCond_Always, guiPivot);
 
+    auto guiSize = ImVec2(sre::Renderer::instance->getDrawableSize().x / 4.0f,sre::Renderer::instance->getDrawableSize().y);
     ImGui::SetNextWindowSize(guiSize, ImGuiCond_Always);
 
     bool* open = nullptr;
 
+    ImGui::PushFont(GuiHelper::getInstance()->font);
     ImGui::Begin("#player", open, flags);
-
-    ImGui::Text("PLAYER");
+    
+    ImGui::Text(gameObject->name.c_str());
     ImGui::Text("Health: %.2f", hp);
 
-    ImGui::End();
+    int hpInt = (int)hp;
+    float decimal = hp - hpInt;
 
+    auto heartSize = ImVec2{ 30,30 };
 
-}
+    for (int i = 0; i < hpInt; i++) {
+        ImGui::Image(heartFullTexture->getNativeTexturePtr(), heartSize, GuiHelper::getInstance()->uv0, GuiHelper::getInstance()->uv1);
+        ImGui::SameLine();
+    }
 
-void CharacterComponent::setEnemyGui() {
-    auto r = sre::Renderer::instance;
-    auto winsize = r->getWindowSize();
-
-    ImVec2 pos = { winsize.x - guiSize.x, 0 };
-
-    ImGui::SetNextWindowPos(pos, ImGuiCond_Always, guiPivot);
-
-    ImGui::SetNextWindowSize(guiSize, ImGuiCond_Always);
-
-    bool* open = nullptr;
-
-    ImGui::Begin("#enemy", open, flags);
-
-    ImGui::Text("ENEMY");
-    ImGui::Text("Health: %.2f", hp);
+    ImGui::Image(heartEmptyTexture->getNativeTexturePtr(), heartSize, GuiHelper::getInstance()->uv0, GuiHelper::getInstance()->uv1);
 
     ImGui::End();
+    ImGui::PopFont();
 }
+
+//void CharacterComponent::setEnemyGui() {
+//    auto r = sre::Renderer::instance;
+//    auto winsize = r->getWindowSize();
+//
+//    ImVec2 pos = { winsize.x - guiSize.x, 0 };
+//
+//    ImGui::SetNextWindowPos(pos, ImGuiCond_Always, guiPivot);
+//
+//    ImGui::SetNextWindowSize(guiSize, ImGuiCond_Always);
+//
+//    bool* open = nullptr;
+//
+//    ImGui::Begin("#enemy", open, flags);
+//
+//    ImGui::Text("ENEMY");
+//    ImGui::Text("Health: %.2f", hp);
+//
+//    ImGui::End();
+//}

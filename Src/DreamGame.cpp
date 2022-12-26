@@ -11,12 +11,16 @@
 #include "CharacterBuilder.hpp"
 #include "LevelBuilder.hpp"
 #include <Builders/PowerupBuilder.hpp>
+#include "StartMenuComponent.hpp"
+#include "EndMenuComponent.hpp"
+#include "PauseMenuComponent.hpp"
+#include "GuiHelper.hpp"
 
 
 using namespace std;
 using namespace sre;
 
-const glm::vec2 DreamGame::windowSize(1200, 700);
+const glm::vec2 DreamGame::windowSize(850, 550);
 
 DreamGame* DreamGame::instance = nullptr;
 
@@ -38,6 +42,9 @@ DreamGame::DreamGame()
     init();
     buildMenus();
 
+    GuiHelper::getInstance()->setupImGuiStyle(GuiStyle::Light);
+    GuiHelper::getInstance()->setupFont();
+
     // setup callback functions
     r.keyEvent = [&](SDL_Event& e) {
         onKey(e);
@@ -50,11 +57,25 @@ DreamGame::DreamGame()
     };
     // start game loop
     r.startEventLoop();
+
+
 }
 
 void DreamGame::buildMenus() {
     auto start = startMenu.createGameObject();
     start->addComponent<StartMenuComponent>();
+
+    auto background = Texture::create()
+        .withFile(GuiHelper::getInstance()->GUI_PATH + "BackgroundTitle.png")
+        .withFilterSampling(false)
+        .build();
+
+    guiAtlas = SpriteAtlas::createSingleSprite(background, "background");
+
+    auto backgroundSprite = guiAtlas->get("background");
+
+    auto spriteComponent = start->addComponent<SpriteComponent>();
+    spriteComponent->setSprite(backgroundSprite);
 
     auto end = endMenu.createGameObject();
     end->addComponent<EndMenuComponent>();
@@ -204,11 +225,35 @@ void DreamGame::render() {
         .withCamera(camera->getCamera())
         .build();
 
+    
+
     auto pos = camera->getGameObject()->getPosition();
 
     auto spriteBatchBuilder = SpriteBatch::create();
     for (auto& go : *(currentScene->getSceneObjects())) {
         go->renderSprite(spriteBatchBuilder);
+    }
+
+    
+
+    auto sb = spriteBatchBuilder.build();
+    rp.draw(sb);
+
+    if (doDebugDraw) {
+
+        world->DrawDebugData();
+        rp.drawLines(debugDraw.getLines());
+        debugDraw.clear();
+
+        GuiHelper::getInstance()->setupDebugGui();
+
+        //DreamInspector::instance->updateSceneObjectsSize(currentScene->getSceneObjects()->size());
+
+        bool* open = nullptr;
+        ImGui::Begin("#debug", open);
+        ImGui::Text("TOTAL GAME OBJECTS: %i", currentScene->getSceneObjects()->size());
+        ImGui::End();
+
     }
 
     // render gui
@@ -218,19 +263,36 @@ void DreamGame::render() {
         }
     }
 
-    auto sb = spriteBatchBuilder.build();
-    rp.draw(sb);
-
-    if (doDebugDraw) {
-        
-        world->DrawDebugData();
-        rp.drawLines(debugDraw.getLines());
-        debugDraw.clear();
-
-        
-        DreamInspector::instance->updateSceneObjectsSize(currentScene->getSceneObjects()->size());
-    }
     
+    
+}
+
+void DreamGame::pause() {
+
+    auto pause = pauseMenu.createGameObject();
+    pause->addComponent<PauseMenuComponent>();
+
+    gameState = GameState::Pause;
+    pauseMenu.appendSceneObjects(*currentScene->getSceneObjects());
+    currentScene = &pauseMenu;
+
+    //SDL_FlushEvent(SDL_KEYDOWN); //doesn't work
+
+    
+}
+
+void DreamGame::resume(){
+    currentScene = &game;
+    pauseMenu.cleanSceneObjects();
+    gameState = GameState::Running;
+
+    for (auto& go : *(currentScene->getSceneObjects())) {
+        for (auto& comp : go->getComponents()) {
+            comp->resetKeys();
+        }
+    }
+
+
 }
 
 void DreamGame::onKey(SDL_Event& event) {
@@ -275,10 +337,15 @@ void DreamGame::onKey(SDL_Event& event) {
             doDebugDraw = !doDebugDraw;
             if (doDebugDraw) {
                 world->SetDebugDraw(&debugDraw);
+                
             }
             else {
                 world->SetDebugDraw(nullptr);
             }
+            break;
+
+        case SDLK_p:
+            pause();
             break;
         }
 

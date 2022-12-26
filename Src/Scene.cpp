@@ -17,6 +17,10 @@ void Scene::setSceneObjects(std::vector<std::shared_ptr<GameObject>> sceneObject
     this->sceneObjects = sceneObjects;
 }
 
+void Scene::appendSceneObjects(std::vector<std::shared_ptr<GameObject>> newSceneObjects){
+    sceneObjects.insert(sceneObjects.end(), newSceneObjects.begin(), newSceneObjects.end());
+}
+
 void Scene::cleanSceneObjects(){
     sceneObjects.clear();
 }

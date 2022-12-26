@@ -15,6 +15,8 @@ public:
     
     void update(float deltaTime) override;
 
+    void resetKeys() override;
+
 private:
 
     std::shared_ptr<PhysicsComponent> playerPhysics;

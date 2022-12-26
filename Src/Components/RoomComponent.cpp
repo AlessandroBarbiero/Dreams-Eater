@@ -10,6 +10,7 @@
 #include "PhysicsComponent.hpp"
 #include "DreamInspector.hpp"
 #include "DoorComponent.hpp"
+#include "GuiHelper.hpp";
 
 RoomComponent::RoomComponent(GameObject *gameObject) : Component(gameObject) {}
 
@@ -435,8 +436,14 @@ void RoomComponent::onGui() {
 
 	if (DreamGame::instance->doDebugDraw) {
 		auto wallType = TileSetWallsToString.at(tileSetWalls); //get name
-		wallType.pop_back(); //remove last character(/) and then get string after "Walls/"ww 
-		DreamInspector::instance->updateRoomGui(gameObject->name, getRoomSize(), wallType.substr(6, -1)); 
+		wallType.pop_back(); //remove last character(/)
+		bool* open = nullptr;
+		ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
+		if (ImGui::CollapsingHeader(gameObject->name.c_str())) {
+			ImGui::Text("Room size: %.3f, %.3f", roomSize.x, roomSize.y);
+			ImGui::Text(wallType.substr(6, -1).insert(0, "Wall type: ").c_str());
+		}
+		ImGui::End();
 	}
 
 }

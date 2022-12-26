@@ -28,6 +28,7 @@ void PlayerController::update(float deltaTime) {
         movement.x--;    
     if (right) 
         movement.x++;
+
     
     if (movement != glm::vec2(0)) {
 
@@ -42,6 +43,14 @@ void PlayerController::update(float deltaTime) {
 
     if (shooting)
         character->shoot(lastDirection);
+}
+
+void PlayerController::resetKeys(){
+    up  = false;
+    down = false;
+    left  = false;
+    right = false;
+    shooting = false;
 }
 
 bool PlayerController::onKey(SDL_Event& event) {

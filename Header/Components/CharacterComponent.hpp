@@ -24,6 +24,7 @@ public:
 	void onGui() override;
 	
 	void update(float deltaTime) override;
+	void resetKeys() override;
 
 	void shoot(glm::vec2 direction);
 	void setShotSprite(const sre::Sprite& sprite);
@@ -95,18 +96,6 @@ private:
 	void startShotCooldown();
 	void die();
 
-	void setPlayerGui();
-	void setEnemyGui();
-
-	ImVec2 guiSize = { 180, 50 };
-	ImVec2 guiPivot = { 0,0 };
-
-	bool flags =
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoScrollbar;
-
 	// If this variable is set to true you can control the shooting of this character using passed keybind
 	bool useShootingKeys = false;   
 	bool up = false;
@@ -118,6 +107,29 @@ private:
 	SDL_Keycode keyShootDown;
 	SDL_Keycode keyShootLeft;
 	SDL_Keycode keyShootRight;
+
+
+
+	//==============GUI==============
+
+	std::shared_ptr<sre::Texture> heartFullTexture;
+	std::shared_ptr<sre::Texture> heartEmptyTexture;
+
+	void setPlayerGui();
+	//void setEnemyGui();
+
+	//ImVec2 guiSize = { 180, 50 };
+	ImVec2 guiPivot = { 0,0 };
+	ImFont* font;
+
+	int flags =
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoScrollbar;
+
+
+	//==============================
 
 	friend class CharacterBuilder;
 	friend class PlayerController;

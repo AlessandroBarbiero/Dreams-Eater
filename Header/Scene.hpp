@@ -9,6 +9,8 @@ public:
     std::vector<std::shared_ptr<GameObject>>* getSceneObjects();
     void setSceneObjects(std::vector<std::shared_ptr<GameObject>>);
 
+    void appendSceneObjects(std::vector<std::shared_ptr<GameObject>>);
+
     void cleanSceneObjects();
 
 private:

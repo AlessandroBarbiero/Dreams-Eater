@@ -24,6 +24,8 @@ public:
     
     virtual void onGui();
 
+    virtual void resetKeys();
+
 protected:
     GameObject *gameObject;
 

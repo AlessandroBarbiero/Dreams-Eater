@@ -3,6 +3,7 @@
 #include <memory>
 #include "DreamGame.hpp"
 #include "DreamInspector.hpp"
+#include "GuiHelper.hpp";
 #include <Components/CharacterComponent.hpp>
 
 SpriteAnimationComponent::SpriteAnimationComponent(GameObject *gameObject) : Component(gameObject) {
@@ -203,8 +204,16 @@ void SpriteAnimationComponent::activate()
 }
 
 void SpriteAnimationComponent::onGui() {
-    std::string name = gameObject->name;
     if (DreamGame::instance->doDebugDraw && active) {
-        DreamInspector::instance->updateAnimationGui(gameObject->name, &animationTime);
+        bool* open = nullptr;
+        ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
+        auto title = "SpriteAnimationComponent - " + gameObject->name;
+        //auto field = "AnimationTime##" + gameObject->name;
+        if (ImGui::CollapsingHeader(title.c_str())) {
+            //ImGui::DragFloat(field.c_str(, &animationTime, 0.05f, 0.05f, 5);
+            ImGui::Text("AnimationTime : %1.3f", animationTime);
+            ImGui::Text("AnimationTime : %1.3f", animationTime);
+        }
+        ImGui::End();
     }
 }

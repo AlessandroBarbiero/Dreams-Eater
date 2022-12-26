@@ -21,6 +21,11 @@ void Component::onGui() {
 
 }
 
+void Component::resetKeys() {
+
+}
+
+
 GameObject *Component::getGameObject() {
     return gameObject;
 }

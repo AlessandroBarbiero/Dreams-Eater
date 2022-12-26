@@ -8,8 +8,6 @@
 #include "SideScrollingCamera.hpp"
 #include "Box2DDebugDraw.hpp"
 #include "Scene.hpp"
-#include "StartMenuComponent.hpp"
-#include "EndMenuComponent.hpp"
 #include "Level.hpp"
 
 
@@ -18,6 +16,7 @@ class PhysicsComponent;
 enum class GameState {
     Ready,
     Running,
+    Pause,
     GameOver
 };
 
@@ -40,6 +39,7 @@ public:
 
     static constexpr float32 timeStep = 1.0f / 60.0f;
     const float physicsScale = 100;
+
 
     bool doDebugDraw = false;
 
@@ -66,13 +66,23 @@ private:
 
     void play();
 
+    void pause();
+
+    void resume();
+
     std::shared_ptr<SideScrollingCamera> camera;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas_inside;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas_baseWraith;
 
+    std::shared_ptr<sre::SpriteAtlas> guiAtlas;
+
+    //std::string playerName = "";
+    
+    
     Scene startMenu;
     Scene game;
     Scene endMenu;
+    Scene pauseMenu;
 
 
     //std::vector<std::shared_ptr<GameObject>> sceneObjects;
@@ -94,6 +104,8 @@ private:
     friend class Level;
 
     friend class StartMenuComponent;
+    friend class PauseMenuComponent;
     friend class EndMenuComponent;
+    
 
 };
