@@ -22,13 +22,16 @@ private:
     void centerCursor(float width);
     void setupFont();
     void setupDebugGui();
+    void setZeroPadding();
 
 
     char* DEBUG_NAME = "DEBUG";
     std::string GUI_PATH = "Sprites/Gui/";
     ImFont* font;
 
-    const ImVec2 debugWindowSize = { 300,300 };
+    GuiStyle guiStyle;
+
+    const ImVec2 debugWindowSize = { 300,150 };
 
     const ImVec2 uv0 = { 0, 1 };
     const ImVec2 uv1 = { 1, 0 };

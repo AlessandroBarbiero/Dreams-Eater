@@ -15,10 +15,12 @@ void GuiHelper::setupFont() {
 
 void GuiHelper::setupDebugGui(){
 
+	int flags = ImGuiWindowFlags_AlwaysAutoResize;
+
 	ImGui::SetNextWindowPos(ImVec2{sre::Renderer::instance->getWindowSize().x/2.0f - debugWindowSize.x/2.0f, 0}, ImGuiCond_Always);
 	ImGui::SetNextWindowSize(debugWindowSize, ImGuiCond_Always);
 	bool* open = nullptr;
-	ImGui::Begin(DEBUG_NAME, open);
+	ImGui::Begin(DEBUG_NAME, open, flags);
 	ImGui::End();
 
 }
@@ -37,6 +39,11 @@ void GuiHelper::centerCursor(float width) {
 		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + off);
 }
 
+void GuiHelper::setZeroPadding() {
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, baseVec);
+
+}
+
 
  GuiHelper* GuiHelper::getInstance()
 {
@@ -50,13 +57,14 @@ void GuiHelper::centerCursor(float width) {
 
 void GuiHelper::setupImGuiStyle(GuiStyle desStyle)
 {
+	guiStyle = desStyle;
 	ImGuiStyle& style = ImGui::GetStyle();
 	if (desStyle == GuiStyle::Dark){
 		
 		style.Alpha = 1.0f;
 		style.WindowPadding = ImVec2(8.0f, 8.0f);
 		style.WindowRounding = 0.0f;
-		style.WindowBorderSize = 1.0f;
+		style.WindowBorderSize = 0.0f;
 		style.WindowMinSize = ImVec2(32.0f, 32.0f);
 		style.WindowTitleAlign = ImVec2(0.0f, 0.5f);
 		style.ChildRounding = 0.0f;
@@ -125,7 +133,7 @@ void GuiHelper::setupImGuiStyle(GuiStyle desStyle)
 		style.Alpha = 1.0f;
 		style.WindowPadding = ImVec2(8.0f, 8.0f);
 		style.WindowRounding = 0.0f;
-		style.WindowBorderSize = 1.0f;
+		style.WindowBorderSize = 0.0f;
 		style.WindowMinSize = ImVec2(32.0f, 32.0f);
 		style.WindowTitleAlign = ImVec2(0.0f, 0.5f);
 		style.ChildRounding = 0.0f;

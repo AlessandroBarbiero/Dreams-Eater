@@ -22,8 +22,5 @@ private:
     ImVec2 menuSize = { 220, 120 };
     ImVec2 buttonSize = { 200, 100 };
 
-    
-
-
     std::shared_ptr<sre::Texture> resumeTexture;
 };

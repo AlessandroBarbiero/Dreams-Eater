@@ -4,7 +4,7 @@
 #include "GuiHelper.hpp"
 
 PauseMenuComponent::PauseMenuComponent(GameObject* gameObject) : Component(gameObject) {
-    resumeTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "History.png").withFilterSampling(false).build();
+    resumeTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "ResumeBlack.png").withFilterSampling(false).build();
 
     auto r = sre::Renderer::instance;
     auto winsize = r->getWindowSize();

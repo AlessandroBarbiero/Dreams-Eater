@@ -8,7 +8,6 @@
 #include <Box2D/Box2D.h>
 #include "SpriteComponent.hpp"
 #include "PhysicsComponent.hpp"
-#include "DreamInspector.hpp"
 #include "DoorComponent.hpp"
 #include "GuiHelper.hpp";
 

@@ -6,7 +6,7 @@
 
 StartMenuComponent::StartMenuComponent(GameObject* gameObject) : Component(gameObject) {
 
-	auto s = false ? "Black" : "";
+	auto s = GuiHelper::getInstance()->guiStyle == GuiStyle::Dark ? "Black" : "";
 
 	playTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Play" + s + ".png").withFilterSampling(false).build();
 	settingsTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Settings" + s + ".png").withFilterSampling(false).build();
@@ -25,32 +25,33 @@ StartMenuComponent::StartMenuComponent(GameObject* gameObject) : Component(gameO
 
 void StartMenuComponent::onGui(){
 
-	//remove padding with border
-	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, GuiHelper::getInstance()->baseVec);
+	GuiHelper::getInstance()->setZeroPadding();
+	static auto uv0 = GuiHelper::getInstance()->uv0;
+	static auto uv1 = GuiHelper::getInstance()->uv1;
 
 	bool* open = nullptr;
 	
-	//ImGui::SetNextWindowBgAlpha(0.0f);
 	ImGui::SetNextWindowPos(menuPosition, cond);
 	ImGui::SetNextWindowSize(menuSize, cond);
 
+	
 	ImGui::Begin("StartMenu", open, menuFlags);
 
-	ImGui::Image(paperTexture.get()->getNativeTexturePtr(), menuSize, GuiHelper::getInstance()->uv0, GuiHelper::getInstance()->uv1);
+	ImGui::Image(paperTexture.get()->getNativeTexturePtr(), menuSize, uv0, uv1);
 
 	ImGui::SetCursorPos(ImVec2(0.0f, (menuSize.y - NUM_BUTTONS *(buttonSize.y) -(NUM_BUTTONS - 1)*itemSpacing.y - buttonSize.y/2.0f)/2.0f));
 
     // Render buttons
 	GuiHelper::getInstance()->centerCursor(buttonSize.x);
-    if (ImGui::ImageButton(playTexture.get()->getNativeTexturePtr(), buttonSize, GuiHelper::getInstance()->uv0, GuiHelper::getInstance()->uv1)) {
+    if (ImGui::ImageButton(playTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {
         DreamGame::instance->play();
     }
 
 	GuiHelper::getInstance()->centerCursor(buttonSize.x);
-    if (ImGui::ImageButton(settingsTexture.get()->getNativeTexturePtr(), buttonSize, GuiHelper::getInstance()->uv0, GuiHelper::getInstance()->uv1)) {}
+    if (ImGui::ImageButton(settingsTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {}
 
 	GuiHelper::getInstance()->centerCursor(buttonSize.x);
-    if (ImGui::ImageButton(historyTexture.get()->getNativeTexturePtr(), buttonSize, GuiHelper::getInstance()->uv0, GuiHelper::getInstance()->uv1)) {}
+    if (ImGui::ImageButton(historyTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {}
 
     ImGui::End();
 	ImGui::PopStyleVar();

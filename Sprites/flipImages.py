@@ -20,12 +20,11 @@ for character in os.listdir(path): #for each character in character folder
 
             if os.path.isdir(f"{p}//Right//{action}"):
 
-                os.mkdir(f"{p}//Left//{action}")
+                # os.mkdir(f"{p}//Left//{action}")
 
                 for pic in os.listdir(f"{p}//Right//{action}"):
 
                     image = cv2.imread(f"{p}//Right//{action}//{pic}", cv2.IMREAD_UNCHANGED)
-                    
                     flippedimage = cv2.flip(image, 1)
 
                     cv2.imwrite(f"{p}//Left//{action}//{pic}",flippedimage)

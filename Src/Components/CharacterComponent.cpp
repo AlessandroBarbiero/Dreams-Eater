@@ -6,7 +6,6 @@
 #include "DreamGame.hpp"
 #include "SpriteComponent.hpp"
 #include "BulletComponent.hpp"
-#include "DreamInspector.hpp"
 #include "SpriteAnimationComponent.hpp"
 #include "GuiHelper.hpp"
 #define KNOCKBACK_SCALE 10
@@ -73,33 +72,6 @@ void CharacterComponent::resetKeys(){
     down = false;
     left = false; 
     right = false;
-}
-
-// If the keys for fire are pressed generate a bullet in the right direction
-void CharacterComponent::fireOnKeyPress() {
-
-    glm::vec2 direction{ 0,0 };
-    if (up)
-        direction.y++;
-    if (down)
-        direction.y--;
-    if (left)
-        direction.x--;
-    if (right)
-        direction.x++;
-
-    if (direction != glm::vec2(0)) {
-        auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-        direction = glm::normalize(direction);
-        anim->displayCompleteAnimation(State::Attack, 1 / rateOfFire, [direction, this]() {shoot(direction); });
-        anim->setFacingDirection(vectorToDirection(direction), true);
-
-        // If the animation cannot go any faster just spawn the bullets
-        if (1 / rateOfFire < anim->getMinDuration())
-            shoot(direction);
-
-        return;
-    }
 }
 
 void CharacterComponent::changeState(State newState)
@@ -313,38 +285,42 @@ void CharacterComponent::onGui() {
 
 
 void CharacterComponent::setPlayerGui() {
-    auto r = sre::Renderer::instance;
-    auto winsize = r->getWindowSize();
 
-    ImVec2 pos = { 0,0 };
+    auto winsize = sre::Renderer::instance->getWindowSize();
 
-    ImGui::SetNextWindowPos(pos, ImGuiCond_Always, guiPivot);
+    GuiHelper::getInstance()->setZeroPadding();
 
-    auto guiSize = ImVec2(sre::Renderer::instance->getDrawableSize().x / 4.0f,sre::Renderer::instance->getDrawableSize().y);
-    ImGui::SetNextWindowSize(guiSize, ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(winsize.x / 4.0f, winsize.y / 4.0f), ImGuiCond_Always);
+    ImGui::SetNextWindowPos(GuiHelper::getInstance()->baseVec, ImGuiCond_Always, guiPivot);
+    ImGui::SetNextWindowBgAlpha(0.0f);
+
+    auto uv0 = GuiHelper::getInstance()->uv0;
+    auto uv1 = GuiHelper::getInstance()->uv1;
 
     bool* open = nullptr;
 
     ImGui::PushFont(GuiHelper::getInstance()->font);
     ImGui::Begin("#player", open, flags);
     
-    ImGui::Text(gameObject->name.c_str());
-    ImGui::Text("Health: %.2f", hp);
+    /*ImGui::Text(gameObject->name.c_str());
+    ImGui::Text("Health: %.2f", hp);*/
 
     int hpInt = (int)hp;
     float decimal = hp - hpInt;
 
-    auto heartSize = ImVec2{ 30,30 };
+    auto heartSize = ImVec2{ 40,40 };
 
-    for (int i = 0; i < hpInt; i++) {
-        ImGui::Image(heartFullTexture->getNativeTexturePtr(), heartSize, GuiHelper::getInstance()->uv0, GuiHelper::getInstance()->uv1);
+    for (int i = 0; i < 5; i++) {
+        ImGui::Image(heartFullTexture->getNativeTexturePtr(), heartSize, uv0, uv1);
         ImGui::SameLine();
     }
-
-    ImGui::Image(heartEmptyTexture->getNativeTexturePtr(), heartSize, GuiHelper::getInstance()->uv0, GuiHelper::getInstance()->uv1);
+    /*ImGui::Image(heartEmptyTexture->getNativeTexturePtr(), heartSize, uv0, uv1);
+    ImVec4 tintColor(1, 0, 0, 1);
+    ImGui::Image(heartEmptyTexture->getNativeTexturePtr(), ImVec2{heartSize.x/2.0f, heartSize.y/2.0f}, uv0, uv1, tintColor);*/
 
     ImGui::End();
     ImGui::PopFont();
+    ImGui::PopStyleVar();
 }
 
 //void CharacterComponent::setEnemyGui() {

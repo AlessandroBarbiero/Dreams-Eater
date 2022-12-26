@@ -1,4 +1,3 @@
-#include "DreamInspector.hpp"
 #include <iostream>
 #include "DreamGame.hpp"
 #include "GameObject.hpp"
@@ -20,7 +19,7 @@
 using namespace std;
 using namespace sre;
 
-const glm::vec2 DreamGame::windowSize(850, 550);
+const glm::vec2 DreamGame::windowSize(1200, 700);
 
 DreamGame* DreamGame::instance = nullptr;
 
@@ -229,8 +228,6 @@ void DreamGame::update(float time) {
             toErase = std::remove_if(roomObjects->begin(), roomObjects->end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
             roomObjects->erase(toErase, roomObjects->end());
         }
-
-        //currentScene->setSceneObjects(sceneObjects); //there must be a better way
     }
 }
 
@@ -262,10 +259,8 @@ void DreamGame::render() {
 
         GuiHelper::getInstance()->setupDebugGui();
 
-        //DreamInspector::instance->updateSceneObjectsSize(currentScene->getSceneObjects()->size());
-
         bool* open = nullptr;
-        ImGui::Begin("#debug", open);
+        ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
         ImGui::Text("TOTAL GAME OBJECTS: %i", currentScene->getSceneObjects()->size());
         ImGui::End();
 
@@ -290,9 +285,6 @@ void DreamGame::pause() {
     gameState = GameState::Pause;
     pauseMenu.appendSceneObjects(*currentScene->getSceneObjects());
     currentScene = &pauseMenu;
-
-    //SDL_FlushEvent(SDL_KEYDOWN); //doesn't work
-
     
 }
 
@@ -360,7 +352,8 @@ void DreamGame::onKey(SDL_Event& event) {
             break;
 
         case SDLK_p:
-            pause();
+            if(gameState != GameState::Pause)
+                pause();
             break;
         }
 

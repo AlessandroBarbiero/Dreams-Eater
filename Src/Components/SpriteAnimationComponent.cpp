@@ -2,7 +2,6 @@
 #include "GameObject.hpp"
 #include <memory>
 #include "DreamGame.hpp"
-#include "DreamInspector.hpp"
 #include "GuiHelper.hpp";
 #include <Components/CharacterComponent.hpp>
 
@@ -211,7 +210,6 @@ void SpriteAnimationComponent::onGui() {
         //auto field = "AnimationTime##" + gameObject->name;
         if (ImGui::CollapsingHeader(title.c_str())) {
             //ImGui::DragFloat(field.c_str(, &animationTime, 0.05f, 0.05f, 5);
-            ImGui::Text("AnimationTime : %1.3f", animationTime);
             ImGui::Text("AnimationTime : %1.3f", animationTime);
         }
         ImGui::End();
