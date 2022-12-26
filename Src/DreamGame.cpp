@@ -203,6 +203,12 @@ void DreamGame::update(float time) {
         auto toErase = std::remove_if(sceneObjects->begin(), sceneObjects->end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
         sceneObjects->erase(toErase, sceneObjects->end());
 
+        if (level != nullptr && level->currentRoom != nullptr) {
+            auto *roomObjects = &level->currentRoom->getComponent<RoomComponent>()->roomObjects;
+            toErase = std::remove_if(roomObjects->begin(), roomObjects->end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
+            roomObjects->erase(toErase, roomObjects->end());
+        }
+
         //currentScene->setSceneObjects(sceneObjects); //there must be a better way
     }
 }
