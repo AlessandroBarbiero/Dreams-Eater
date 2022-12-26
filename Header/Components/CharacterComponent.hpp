@@ -19,15 +19,14 @@ public:
 	void onCollisionStart(PhysicsComponent* comp) override;
 	// void onCollisionEnd(PhysicsComponent* comp) override;
 
-	bool onKey(SDL_Event& event) override;
+	// bool onKey(SDL_Event& event) override;
 
 	void onGui() override;
 	
 	void update(float deltaTime) override;
 	void resetKeys() override;
 
-	void shoot(glm::vec2 direction);
-	void setShotSprite(const sre::Sprite& sprite);
+	void shoot(glm::vec2 direction, const sre::Sprite& bulletSprite);
 
 	void stunned(float stunTimeout);
 	void stunned(bool stun);
@@ -56,7 +55,6 @@ private:
 	void updateStunTimeout(float deltaTime);
 	void checkRateOfFire(float deltaTime);
 	void updateFlyingProj();
-	void fireOnKeyPress();
 
 	void initSpecialEffectObject();
 	std::shared_ptr<SpriteAnimationComponent> specialEffects;
@@ -90,8 +88,6 @@ private:
 	bool readyToShoot = true;
 
 	std::queue<std::weak_ptr<BulletComponent>> flyingProj;
-
-	sre::Sprite shotSprite;
 
 	void startShotCooldown();
 	void die();

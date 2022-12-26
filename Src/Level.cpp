@@ -4,20 +4,21 @@
 #include "DreamGame.hpp"
 #include "CharacterBuilder.hpp"
 #include "PhysicsComponent.hpp"
+#include <Builders/PowerupBuilder.hpp>
 
 
 void Level::loadLevel() {
 }
 
-void Level::loadRoom(int room) {
+void Level::loadRoom(int room, DoorPosition enteredAt) {
 	if (currentRoom != nullptr) {
 		// Save currentRoom
 		std::cout << "Saving room" << std::endl;
 		/*
 		*/
 		roomObjects[currentRoomIndex] = currentRoom->getComponent<RoomComponent>()->roomObjects;
-		for (auto go : currentRoom->getComponent<RoomComponent>()->roomObjects) {
-			std::cout << "Destroying " << go->name << std::endl;
+		for (auto go : roomObjects[currentRoomIndex]) {
+			//std::cout << "Destroying " << go->name << std::endl;
 			go->destroy();
 			auto phys = go->getComponent<PhysicsComponent>();
 			if (phys != nullptr) {
@@ -36,15 +37,18 @@ void Level::loadRoom(int room) {
 				//phys->~PhysicsComponent();
 				phys->pause();
 				if (phys->getBody() != nullptr) {
-					std::cout << "Body still exists" << std::endl;
+					//std::cout << "Body still exists" << std::endl;
 				}
 			}
 		}
+		auto sceneObjects = DreamGame::instance->currentScene->getSceneObjects();
+		std::for_each(sceneObjects->begin(), sceneObjects->end(), [](std::shared_ptr<GameObject> go) {if (go->tag == Tag::EnemyBullet || go->tag == Tag::PlayerBullet) go->destroy();});
+
 		currentRoom->destroy();
 	}
 
 	// Create room
-	auto obj = RoomBuilder::createRoom(roomSettings[room]);
+	auto obj = RoomBuilder::createRoom(*roomSettings[room]);
 	auto newRoom = obj->getComponent<RoomComponent>();
 	currentRoom = obj;
 	currentRoomIndex = room;
@@ -62,14 +66,15 @@ void Level::loadRoom(int room) {
 		// Create room contents
 		auto roomSize = newRoom->getRoomSizeInPixels() / DreamGame::instance->physicsScale;
 		std::cout << "roomSize: (" << roomSize.x << ", " << roomSize.y << ")" << std::endl;
-		int enemies = 0;
+		int random = 0;
+		PowerupBuilder* pBuilder = PowerupBuilder::getInstance();
 		EnemySettings eSettings;
-		switch (roomSettings[room].roomType) {
+		switch (roomSettings[room]->roomType) {
 		case SpawnRoom:
 			break;
 		case EnemyRoom:
-			enemies = (rand() % 3) + 1;
-			for (int i = 0; i < enemies; i++) {
+			random = (rand() % 3) + 1;
+			for (int i = 0; i < random; i++) {
 				eSettings.name = "Enemy" + std::to_string(i);
 				eSettings.position = glm::vec2(rand() % (int)(roomSize.x - 2), rand() % (int)(roomSize.y - 2)) - glm::vec2(roomSize.x-2, roomSize.y-2)/2.0f;
 				eSettings.player = player;
@@ -80,6 +85,8 @@ void Level::loadRoom(int room) {
 			}
 			break;
 		case PowerUpRoom:
+			random = rand() % 4;
+			newRoom->roomObjects.push_back(pBuilder->createSinglePowerupObject(static_cast<PowerupType>(random), { 5,5 }));
 			break;
 		case BossRoom:
 			eSettings.name = "Boss";
@@ -100,9 +107,13 @@ void Level::loadRoom(int room) {
 
 	}
 	roomEntered[room] = true;
+
 	// TODO: Calculate player door entry
 	auto phys = player->getComponent<PhysicsComponent>();
-	auto roomSize = newRoom->getRoomSizeInPixels() / DreamGame::instance->physicsScale;
-	phys->getBody()->SetTransform({ roomSize.x / 4 - roomSize.x / 2.0f, roomSize.y / 4 - roomSize.y / 2.0f }, 0) ;
+	auto enterPos = newRoom->doorEntrances[enteredAt];
+	enterPos = enterPos / DreamGame::instance->physicsScale;
+	phys->getBody()->SetTransform({enterPos.x, enterPos.y} , 0);
+	//auto roomSize = newRoom->getRoomSizeInPixels() / DreamGame::instance->physicsScale;
+	//phys->getBody()->SetTransform({ roomSize.x / 4 - roomSize.x / 2.0f, roomSize.y / 4 - roomSize.y / 2.0f }, 0) ;
 
 }

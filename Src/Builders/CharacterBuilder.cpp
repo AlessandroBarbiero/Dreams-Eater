@@ -64,7 +64,6 @@ void CharacterBuilder::initSizesMap(CharacterType type) {
         value = m.value.GetInt();
         auto it = StringToState.find(name);
         state = it->second;
- 
         sizes.insert({ state, value});
     }
 
@@ -83,7 +82,7 @@ void CharacterBuilder::initAtlasMap() {
 std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settings) {
     auto game = DreamGame::instance;
     auto physicsScale = game->physicsScale;
-    auto type = settings.type; //todo reset to settings.type
+    auto type = settings.type;
 
     auto player = game->currentScene->createGameObject();
     player->name = settings.name;
@@ -103,29 +102,21 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerPhysics->fixRotation();
 
     auto playerCharacter = player->addComponent<CharacterComponent>();
-    //This will always be bullet if the main is a wraith, modify this if you want to play with another character
-    auto shotSprite = spriteAtlas->get("Bullet.png");
-    playerCharacter->setShotSprite(shotSprite);
     playerCharacter->type = type;
     playerCharacter->radius = radius;
     playerCharacter->hp = settings.hp;
     playerCharacter->speed = settings.speed;
-    playerCharacter->armor = 5.0f; // TODO: put back --   settings.armor;
+    playerCharacter->armor = settings.armor;
     playerCharacter->damage = settings.damage;
     playerCharacter->range = settings.range;
     playerCharacter->rateOfFire = settings.rateOfFire;
     playerCharacter->shotSpeed = settings.shotSpeed;
     playerCharacter->knockback = settings.knockback;
-    playerCharacter->useShootingKeys = true;
-    playerCharacter->keyShootUp = settings.keybinds.shootUp;
-    playerCharacter->keyShootDown = settings.keybinds.shootDown;
-    playerCharacter->keyShootLeft = settings.keybinds.shootLeft;
-    playerCharacter->keyShootRight = settings.keybinds.shootRight;
-
 
     auto playerController = player->addComponent<PlayerController>();
     playerController->playerPhysics = playerPhysics;
     playerController->character = playerCharacter;
+    playerController->setBulletSprites(spriteAtlas.get());
 
     // Controls
     playerController->keyUp = settings.keybinds.up;
@@ -133,6 +124,12 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerController->keyLeft = settings.keybinds.left;
     playerController->keyRight = settings.keybinds.right;
     playerController->keyShot = settings.keybinds.shot;
+
+    playerController->keyShootUp = settings.keybinds.shootUp;
+    playerController->keyShootDown = settings.keybinds.shootDown;
+    playerController->keyShootLeft = settings.keybinds.shootLeft;
+    playerController->keyShootRight = settings.keybinds.shootRight;
+
      
     auto animation = player->addComponent<SpriteAnimationComponent>();
     std::unordered_map<State, int> animationSizes = getAnimationSizes(type);
@@ -140,18 +137,15 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
 
     auto powerupComp = player->addComponent<PowerupComponent>();
 
-    // Use for Guy
-    // player->setScale(2.5f);
-
     return player;
 }
 
 // Insert both right and left animations related to the State
-void insertAnimationSequence(std::shared_ptr<SpriteAnimationComponent> animation, State state,
-    std::shared_ptr<sre::SpriteAtlas> spriteAtlas, std::unordered_map<State, int> animationSizes, Depth visualDepth) {
+void insertAnimationSequence(std::shared_ptr<SpriteAnimationComponent> animation, State state, int animationSize,
+    std::shared_ptr<sre::SpriteAtlas> spriteAtlas, Depth visualDepth) {
 
     //RIGHT
-    std::vector<sre::Sprite> rightAnimationVector(animationSizes[state]);
+    std::vector<sre::Sprite> rightAnimationVector(animationSize);
     std::string spriteName = std::string("Right/") + std::string(StateToString.at(state)) + std::string("/");
 
     for (int i = 0; i < rightAnimationVector.size(); i++) {
@@ -162,7 +156,7 @@ void insertAnimationSequence(std::shared_ptr<SpriteAnimationComponent> animation
     animation->addAnimationSequence(state, Direction::RIGHT, rightAnimationVector);
 
     // LEFT
-    std::vector<sre::Sprite> leftAnimationVector(animationSizes[state]);
+    std::vector<sre::Sprite> leftAnimationVector(animationSize);
     spriteName = std::string("Left/") + std::string(StateToString.at(state)) + std::string("/");
 
     for (int i = 0; i < leftAnimationVector.size(); i++) {
@@ -173,14 +167,13 @@ void insertAnimationSequence(std::shared_ptr<SpriteAnimationComponent> animation
     animation->addAnimationSequence(state, Direction::LEFT, leftAnimationVector);
 }
 
-// Fill up the animation component with all the animations
+// Fill up the animation component with all the animations following the animation sizes map 
 void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> animation,
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas, std::unordered_map<State, int> animationSizes, float baseAnimTime, Depth visualDepth) {
 
-    insertAnimationSequence(animation, State::Idle, spriteAtlas, animationSizes, visualDepth);
-    insertAnimationSequence(animation, State::Walk, spriteAtlas, animationSizes, visualDepth);
-    insertAnimationSequence(animation, State::Attack, spriteAtlas, animationSizes, visualDepth);
-    insertAnimationSequence(animation, State::Die, spriteAtlas, animationSizes, visualDepth);
+    for (const auto& pairStateSize : animationSizes) {
+        insertAnimationSequence(animation, pairStateSize.first, pairStateSize.second, spriteAtlas, visualDepth);
+    }
 
     animation->setBaseAnimationTime(baseAnimTime);
 }
@@ -188,7 +181,7 @@ void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> 
 
 std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings) {
 
-    CharacterType type = CharacterType::Wizard;       //TODO: put back --  settings.type;
+    CharacterType type = settings.type;
 
     auto game = DreamGame::instance;
     auto physicsScale = DreamGame::instance->physicsScale;
@@ -213,8 +206,6 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
 
     auto enemyCharacter = enemy->addComponent<CharacterComponent>();
 
-    auto shotSprite = spriteAtlas->get("Bullet.png"); // TODO: Add from enemy behaviour
-    enemyCharacter->setShotSprite(shotSprite);
     enemyCharacter->type = type;
     enemyCharacter->radius = radius;
     enemyCharacter->hp = settings.hp;
@@ -222,9 +213,9 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemyCharacter->speed = settings.speed;
     enemyCharacter->damage = settings.damage;
     enemyCharacter->range = settings.range;
-    enemyCharacter->rateOfFire = 1.0f; // TODO: put back --  settings.rateOfFire;
+    enemyCharacter->rateOfFire = settings.rateOfFire;
     enemyCharacter->shotSpeed = settings.shotSpeed;
-    enemyCharacter->knockback = 0; // TODO: put back --  settings.knockback;
+    enemyCharacter->knockback = settings.knockback;
 
     // Add a IEnemyController based on the type of enemy
     auto& addControllerFunction = findRightController(type);
@@ -232,6 +223,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemyController->character = enemyCharacter;
     enemyController->physics = physics;
     enemyController->player = settings.player;
+    enemyController->setBulletSprites(spriteAtlas.get());
 
     auto animation = enemy->addComponent<SpriteAnimationComponent>();
 
@@ -248,9 +240,17 @@ void CharacterBuilder::transform(GameObject* character, CharacterType newType)
 {
     auto playerCharacter = character->getComponent<CharacterComponent>();
     auto spriteAtlas = getAtlas(newType);
-    auto shotSprite = spriteAtlas->get("Bullet.png");
-    playerCharacter->setShotSprite(shotSprite);
     playerCharacter->type = newType;
+
+    if (character->tag == Tag::Player) {
+        auto playerController = character->getComponent<PlayerController>();
+        playerController->setBulletSprites(spriteAtlas.get());
+    }
+    else if (character->tag == Tag::Enemy) {
+        auto enemyController = character->getComponent<IEnemyController>();
+        enemyController->setBulletSprites(spriteAtlas.get());
+    }
+
 
     Depth depth = static_cast<Depth>(character->getComponent<SpriteComponent>()->getSprite().getOrderInBatch());
 

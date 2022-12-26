@@ -12,11 +12,6 @@ void SpriteComponent::renderSprite(sre::SpriteBatch::SpriteBatchBuilder &spriteB
     if (noRender)
         return;
     glm::vec2 position = gameObject->getPosition();
-    
-    // This was my attempt to fix the animation but it is not working 
-    /*if (sprite.getFlip().x) {
-        position = {    position.x - 2 * (sprite.getSpriteAnchor().x - 0.5) * sprite.getSpriteSize().x     , position.y};
-    }*/
 
     sprite.setPosition(position);
     sprite.setRotation(glm::degrees(gameObject->getRotation()));

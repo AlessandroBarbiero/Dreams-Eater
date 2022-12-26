@@ -2,9 +2,17 @@
 #include "SpriteAnimationComponent.hpp"
 #include "GameObject.hpp"
 #include "PhysicsComponent.hpp"
+#include "CharacterComponent.hpp"
 
 BigTroll::BigTroll(GameObject* gameObject) : IEnemyController(gameObject)
 {
+}
+
+void BigTroll::onCollisionStart(PhysicsComponent* comp)
+{
+    if (character->getState() == State::Die)
+        player->getComponent<CharacterComponent>()->showEffect(State::Victory);
+
 }
 
 void BigTroll::attack()
@@ -13,12 +21,11 @@ void BigTroll::attack()
     glm::vec2 direction = glm::normalize(towardPlayer);
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-    /* see Wizard
-    if (direction.x < 0)
-         anim->displayCompleteAnimation(State::AttackLeft, 1 / character->rateOfFire, [direction, this]() {character->shoot(direction); });
-     else
-         anim->displayCompleteAnimation(State::AttackRight, 1 / character->rateOfFire, [direction, this]() { character->shoot(direction); });*/
-    character->shoot(direction);
+    anim->displayCompleteAnimation(State::Attack1, 1 / character->getRateOfFire(), [direction, this]() { /*character->shoot(direction);*/ });
+
+    anim->setFacingDirection(vectorToDirection(direction));
+
+    //character->shoot(direction);
 
 
 }
@@ -26,13 +33,6 @@ void BigTroll::attack()
 void BigTroll::movement()
 {
     float distance = glm::length(towardPlayer);
-
-
-    // Range enemies don't go toward the player until the end
-    //if (distance < idealDistance) {
-    //    character->changeState(State::Idle);
-    //    return;
-    //}
 
     glm::vec2 direction = glm::normalize(towardPlayer);
     character->setDirection(vectorToDirection(direction));

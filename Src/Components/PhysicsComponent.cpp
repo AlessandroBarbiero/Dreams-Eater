@@ -65,6 +65,7 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
     bd.type = type;
     rbType = type;
     bd.position = b2Vec2(center.x, center.y);
+    bd.angle = gameObject->getRotation();
     body = world->CreateBody(&bd);
     circle = new b2CircleShape();
     circle->m_radius = radius;
@@ -196,7 +197,7 @@ void PhysicsComponent::pause() {
     DreamGame::instance->deregisterPhysicsComponent(this);
 
     // Save body data
-    std::cout << "Copying body" << std::endl;
+    //std::cout << "Copying body" << std::endl;
     lastBodyDef.position = {getPosition().x, getPosition().y};
     lastBodyDef.linearVelocity = body->GetLinearVelocity();
     lastBodyDef.linearDamping = body->GetLinearDamping();
@@ -213,7 +214,7 @@ void PhysicsComponent::pause() {
     lastBodyDef.allowSleep = body->IsSleepingAllowed();
 
     // Save fixture data
-    std::cout << "Copying fixture" << std::endl;
+    //std::cout << "Copying fixture" << std::endl;
     lastFixtureDef.density = fixture->GetDensity();
     lastFixtureDef.filter = fixture->GetFilterData();
     lastFixtureDef.friction = fixture->GetFriction();

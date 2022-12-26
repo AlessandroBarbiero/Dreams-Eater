@@ -18,6 +18,10 @@ void IEnemyController::update(float deltaTime) {
     attack();
 }
 
+void IEnemyController::setBulletSprites(sre::SpriteAtlas* atlas)
+{
+}
+
 
 //void IEnemyController::onGui()
 //{

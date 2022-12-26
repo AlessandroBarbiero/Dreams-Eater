@@ -10,23 +10,16 @@ Wizard::Wizard(GameObject* gameObject) : IEnemyController(gameObject)
 {
 }
 
-void Wizard::onCollisionStart(PhysicsComponent* comp)
-{
-    if (character->getState() == State::Die)
-        player->getComponent<CharacterComponent>()->showEffect(State::Victory);
-
-}
-
 void Wizard::attack()
 {
 	glm::vec2 direction = glm::normalize(towardPlayer);
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-    anim->displayCompleteAnimation(State::Attack, 1 / character->getRateOfFire(), [direction, this]() { character->shoot(direction); });
+    anim->displayCompleteAnimation(State::Attack, 1 / character->getRateOfFire(), [direction, this]() { character->shoot(direction, bulletSprite); });
 
     anim->setFacingDirection(vectorToDirection(direction));
 
-    character->shoot(direction);
+    character->shoot(direction, bulletSprite);
 
 }
 
@@ -47,4 +40,10 @@ void Wizard::movement()
     physics->setLinearVelocity(movement);
     character->changeState(State::Walk);
 
+}
+
+void Wizard::setBulletSprites(sre::SpriteAtlas* atlas)
+{
+    bulletSprite = atlas->get("Bullet.png");
+    bulletSprite.setOrderInBatch(Depth::Bullet);
 }

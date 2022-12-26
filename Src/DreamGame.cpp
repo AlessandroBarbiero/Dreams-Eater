@@ -113,11 +113,11 @@ void DreamGame::play() {
     auto player = CharacterBuilder::createPlayer(pSettings);
 
     // TODO: Remove me from here
-    PowerupBuilder* pBuilder = PowerupBuilder::getInstance();
-    pBuilder->createSinglePowerupObject(PowerupType::Fire,  { 5,5 });
-    pBuilder->createSinglePowerupObject(PowerupType::Water, { 0,5 });
-    pBuilder->createSinglePowerupObject(PowerupType::Earth, { 5,0 });
-    pBuilder->createSinglePowerupObject(PowerupType::Ice,   { 8,8 });
+    //PowerupBuilder* pBuilder = PowerupBuilder::getInstance();
+    //pBuilder->createSinglePowerupObject(PowerupType::Fire,  { 5,5 });
+    //pBuilder->createSinglePowerupObject(PowerupType::Water, { 0,5 });
+    //pBuilder->createSinglePowerupObject(PowerupType::Earth, { 5,0 });
+    //pBuilder->createSinglePowerupObject(PowerupType::Ice,   { 8,8 });
 
     /*
     EnemySettings eSettings;
@@ -138,10 +138,10 @@ void DreamGame::play() {
     room->buildFloor();
     room->buildWalls();
     */
-    RoomSettings rSettings;
-    rSettings.name = "Room0";
-    rSettings.position = { 0,0 };
-    rSettings.size = { 7,7 };
+    std::shared_ptr<RoomSettings> rSettings = make_shared<RoomSettings>();
+    rSettings->name = "TestRoom";
+    rSettings->position = { 0,0 };
+    rSettings->size = { 7,7 };
 
 
     /*rSettings.tileSetFloor = BricksFloor;
@@ -154,12 +154,12 @@ void DreamGame::play() {
     rSettings.tileSetWalls = LightWoodWalls;*/
 
 
-    rSettings.tileSetFloor = WoodFloor;
-    rSettings.tileSetWalls = WoodWalls;
+    rSettings->tileSetFloor = WoodFloor;
+    rSettings->tileSetWalls = WoodWalls;
 
-    rSettings.roomType = EnemyRoom;
+    rSettings->roomType = EnemyRoom;
 
-    rSettings.doors.push_back(Door{ false, Left, 1 });
+    rSettings->doors.push_back(Door{ false, Left, 1 });
     //auto testRoom = RoomBuilder::createRoom(rSettings);
 
     this->level = make_shared<Level>();
@@ -172,10 +172,10 @@ void DreamGame::play() {
     level->roomEntered.push_back(false);
     level->roomObjects.push_back({});
 
-    rSettings.name = "Room1";
-    rSettings.roomType = BossRoom;
-    rSettings.doors.clear();
-    rSettings.doors.push_back(Door{ false, Right, 0 });
+    rSettings->name = "Room1";
+    rSettings->roomType = BossRoom;
+    rSettings->doors.clear();
+    rSettings->doors.push_back(Door{ false, Right, 0 });
     level->roomSettings.push_back(rSettings);
     level->roomEntered.push_back(false);
     level->roomObjects.push_back({});
@@ -183,10 +183,19 @@ void DreamGame::play() {
     level->rooms = 2;
     level->startRoom = 0;
 
-    level->loadRoom(0);
+    //level->loadRoom(0);
     //level->loadRoom(1);
 
-    camera->setFollowObject(level->currentRoom, glm::vec2(0, 0));
+    LevelSettings testLevelSettings;
+    testLevelSettings.difficulty = 1;
+    testLevelSettings.name = "TestLevel";
+    testLevelSettings.rooms = 10;
+    this->level = LevelBuilder::createLevel(testLevelSettings);
+
+    this->level->player = player;
+    level->loadRoom(0, level->roomSettings[0]->doors[0].position);
+
+    camera->setFollowObject(player, glm::vec2(0, 0));
     // Fit room width to window
 
     camera->getCamera().setOrthographicProjection(level->currentRoom->getComponent<RoomComponent>()->getRoomSizeInPixels().x / 2.0f, -1, 1);
@@ -214,6 +223,12 @@ void DreamGame::update(float time) {
         // Remove elements marked for deletion
         auto toErase = std::remove_if(sceneObjects->begin(), sceneObjects->end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
         sceneObjects->erase(toErase, sceneObjects->end());
+
+        if (level != nullptr && level->currentRoom != nullptr) {
+            auto *roomObjects = &level->currentRoom->getComponent<RoomComponent>()->roomObjects;
+            toErase = std::remove_if(roomObjects->begin(), roomObjects->end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
+            roomObjects->erase(toErase, roomObjects->end());
+        }
 
         //currentScene->setSceneObjects(sceneObjects); //there must be a better way
     }

@@ -206,10 +206,10 @@ void RoomComponent::buildWalls() {
 	int offsetWidth = wallWidth / 2.0f;
 	int wallLength = spriteWallHorizontalBottom.getSpriteSize().x;
 	int offsetLength = wallLength / 2.0f;
-	std::cout << "BottomWallLength: " << spriteWallHorizontalBottom.getSpriteSize().x << std::endl;
-	std::cout << "TopWallLength: " << spriteWallHorizontalTop.getSpriteSize().x << std::endl;
-	std::cout << "LeftWallLength: " << spriteWallVerticalLeft.getSpriteSize().y << std::endl;
-	std::cout << "RightWallLength: " << spriteWallVerticalRight.getSpriteSize().y << std::endl;
+	//std::cout << "BottomWallLength: " << spriteWallHorizontalBottom.getSpriteSize().x << std::endl;
+	//std::cout << "TopWallLength: " << spriteWallHorizontalTop.getSpriteSize().x << std::endl;
+	//std::cout << "LeftWallLength: " << spriteWallVerticalLeft.getSpriteSize().y << std::endl;
+	//std::cout << "RightWallLength: " << spriteWallVerticalRight.getSpriteSize().y << std::endl;
 
 	// Calculate dimensions
 	auto roomSizePixels = getRoomSizeInPixels();
@@ -282,34 +282,41 @@ void RoomComponent::buildWalls() {
 	}
 
 	int tblr[4] = { 0,0,0,0 };
-	for (Door d : doors) {
+	glm::vec2 entryPosition = {0, 0};
+	for (auto &d : doors) {
 		switch (d.position) {
 			case Top:
 			case TopLeft:
 			case TopRight:
 				position = topLeft + glm::vec2(skipTop[tblr[0]] * wallLength + offsetLength, -offsetWidth);
+				entryPosition = position + glm::vec2(0, -wallLength * 2);
 				tblr[0]++;
 				break;
 			case Bottom:
 			case BottomLeft:
 			case BottomRight:
 				position = bottomLeft + glm::vec2(skipBottom[tblr[1]] * wallLength + offsetLength, offsetWidth);
+				entryPosition = position + glm::vec2(0, wallLength * 2);
 				tblr[1]++;
 				break;
 			case Left:
 			case LeftTop:
 			case LeftBottom:
 				position = bottomLeft + glm::vec2(offsetWidth, skipLeft[tblr[2]] * wallLength + offsetLength);
+				entryPosition = position + glm::vec2(wallLength * 2, 0);
 				tblr[2]++;
 				break;
 			case Right:
 			case RightTop:
 			case RightBottom:
 				position = bottomRight + glm::vec2(-offsetWidth, skipRight[tblr[3]] * wallLength + offsetLength);
+				entryPosition = position + glm::vec2(-wallLength * 2, 0);
 				tblr[3]++;
 				break;
 		}
-		go->addChild(spawnDoor(spriteDoor, position, d).get());
+		auto spawnedDoor = spawnDoor(spriteDoor, position, d).get();
+		go->addChild(spawnedDoor);
+		doorEntrances[d.position] = entryPosition;
 	}
 
 	//getGameObject()->setPosition(glm::vec2( (roomSize.x-1)* spriteWallHorizontalBottom.getSpriteSize().x / 2, (roomSize.y-1)* spriteWallVerticalLeft.getSpriteSize().y / 2));
