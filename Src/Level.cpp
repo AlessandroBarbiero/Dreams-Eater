@@ -5,9 +5,69 @@
 #include "CharacterBuilder.hpp"
 #include "PhysicsComponent.hpp"
 #include <Builders/PowerupBuilder.hpp>
-
+#include <rapidjson.h>
+#include <document.h>
+#include <istreamwrapper.h>
+#include <fstream>
 
 void Level::loadLevel() {
+
+	using namespace rapidjson;
+	std::ifstream fileStream("data/enemies.json");
+	IStreamWrapper isw(fileStream);
+	Document d;
+	d.ParseStream(isw);
+
+	Value& regularEnemies = d["regular"];
+	State state;
+	for (auto& m : regularEnemies.GetArray()) {
+		EnemySettings enemy;
+		auto test = m.GetObject();
+		enemy.name = test["name"].GetString();
+		enemy.speed = test["speed"].GetFloat();
+		enemy.knockback = test["knockback"].GetFloat();
+		enemy.damage = test["damage"].GetFloat();
+		enemy.hp = test["hp"].GetFloat();
+		enemy.rateOfFire = test["rateOfFire"].GetFloat();
+		enemy.range = test["range"].GetFloat();
+		enemy.shotSpeed = test["shotSpeed"].GetFloat();
+		enemy.idealDistance = test["idealDistance"].GetFloat();
+
+
+		const char* type = test["type"].GetString();
+		enemy.type = CharacterStringToType.at(type);
+
+
+		//auto it = StringToState.find(name);
+		//state = it->second;
+		regularEnemySettings.push_back(enemy);
+	}
+
+	Value& bossEnemies = d["boss"];
+	for (auto& m : bossEnemies.GetArray()) {
+		EnemySettings enemy;
+		auto test = m.GetObject();
+		enemy.name = test["name"].GetString();
+		enemy.speed = test["speed"].GetFloat();
+		enemy.knockback = test["knockback"].GetFloat();
+		enemy.damage = test["damage"].GetFloat();
+		enemy.hp = test["hp"].GetFloat();
+		enemy.rateOfFire = test["rateOfFire"].GetFloat();
+		enemy.range = test["range"].GetFloat();
+		enemy.shotSpeed = test["shotSpeed"].GetFloat();
+		enemy.idealDistance = test["idealDistance"].GetFloat();
+
+
+		const char* type = test["type"].GetString();
+		enemy.type = CharacterStringToType.at(type);
+
+
+		//auto it = StringToState.find(name);
+		//state = it->second;
+		bossEnemySettings.push_back(enemy);
+	}
+
+	loadRoom(0, roomSettings[0]->doors[0].position);
 }
 
 void Level::loadRoom(int room, DoorPosition enteredAt) {
@@ -75,11 +135,11 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 		case EnemyRoom:
 			random = (rand() % 3) + 1;
 			for (int i = 0; i < random; i++) {
-				eSettings.name = "Enemy" + std::to_string(i);
+				int randomEnemy = rand() % regularEnemySettings.size();
+				eSettings = regularEnemySettings[randomEnemy];
+				eSettings.name = eSettings.name + std::to_string(i);
 				eSettings.position = glm::vec2(rand() % (int)(roomSize.x - 2), rand() % (int)(roomSize.y - 2)) - glm::vec2(roomSize.x-2, roomSize.y-2)/2.0f;
 				eSettings.player = player;
-				eSettings.speed = 2.0f;
-				eSettings.knockback = 1.0f;
 				auto enemy = CharacterBuilder::createEnemy(eSettings);
 				newRoom->roomObjects.push_back(enemy);
 			}
@@ -89,17 +149,10 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 			newRoom->roomObjects.push_back(pBuilder->createSinglePowerupObject(static_cast<PowerupType>(random), { 5,5 }));
 			break;
 		case BossRoom:
-			eSettings.name = "Boss";
-			eSettings.type = CharacterType::FireWizard;
+			random = rand() % bossEnemySettings.size();
+			eSettings = bossEnemySettings[random];
 			eSettings.position = glm::vec2(roomSize.x / 2, roomSize.y / 2) - roomSize/2.0f;
 			eSettings.player = player;
-			eSettings.speed = 3.0f;
-			eSettings.knockback = 10.0f;
-			eSettings.damage = 1.0f;
-			eSettings.hp = 25;
-			eSettings.rateOfFire = 9.0f;
-			eSettings.range = 100;
-			eSettings.shotSpeed = 10;
 			auto enemy = CharacterBuilder::createEnemy(eSettings);
 			newRoom->roomObjects.push_back(enemy);
 			break;

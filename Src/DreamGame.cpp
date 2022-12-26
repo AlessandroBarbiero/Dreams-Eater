@@ -136,11 +136,12 @@ void DreamGame::play() {
     room->setRoomSize(glm::vec2(8, 8));
     room->buildFloor();
     room->buildWalls();
-    */
+
     std::shared_ptr<RoomSettings> rSettings = make_shared<RoomSettings>();
     rSettings->name = "TestRoom";
     rSettings->position = { 0,0 };
     rSettings->size = { 7,7 };
+    */
 
 
     /*rSettings.tileSetFloor = BricksFloor;
@@ -152,7 +153,7 @@ void DreamGame::play() {
     rSettings.tileSetFloor = LightWoodFloor;
     rSettings.tileSetWalls = LightWoodWalls;*/
 
-
+    /*
     rSettings->tileSetFloor = WoodFloor;
     rSettings->tileSetWalls = WoodWalls;
 
@@ -161,7 +162,7 @@ void DreamGame::play() {
     rSettings->doors.push_back(Door{ false, Left, 1 });
     //auto testRoom = RoomBuilder::createRoom(rSettings);
 
-    this->level = make_shared<Level>();
+    level = make_shared<Level>();
 
     level->name = "test";
     level->difficulty = 1;
@@ -181,18 +182,21 @@ void DreamGame::play() {
 
     level->rooms = 2;
     level->startRoom = 0;
-
+    
     //level->loadRoom(0);
     //level->loadRoom(1);
+    */
+
 
     LevelSettings testLevelSettings;
     testLevelSettings.difficulty = 1;
     testLevelSettings.name = "TestLevel";
     testLevelSettings.rooms = 10;
-    this->level = LevelBuilder::createLevel(testLevelSettings);
+    level = LevelBuilder::createLevel(testLevelSettings);
 
-    this->level->player = player;
-    level->loadRoom(0, level->roomSettings[0]->doors[0].position);
+    level->player = player;
+    level->loadLevel();
+    //level->loadRoom(0, level->roomSettings[0]->doors[0].position);
 
     camera->setFollowObject(player, glm::vec2(0, 0));
     // Fit room width to window
@@ -223,6 +227,7 @@ void DreamGame::update(float time) {
         auto toErase = std::remove_if(sceneObjects->begin(), sceneObjects->end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
         sceneObjects->erase(toErase, sceneObjects->end());
 
+        // Also remove deleted objects from the current room
         if (level != nullptr && level->currentRoom != nullptr) {
             auto *roomObjects = &level->currentRoom->getComponent<RoomComponent>()->roomObjects;
             toErase = std::remove_if(roomObjects->begin(), roomObjects->end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
