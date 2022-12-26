@@ -82,7 +82,7 @@ void CharacterBuilder::initAtlasMap() {
 std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settings) {
     auto game = DreamGame::instance;
     auto physicsScale = game->physicsScale;
-    auto type = settings.type; //todo reset to settings.type
+    auto type = settings.type;
 
     auto player = game->currentScene->createGameObject();
     player->name = settings.name;
@@ -102,29 +102,21 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerPhysics->fixRotation();
 
     auto playerCharacter = player->addComponent<CharacterComponent>();
-    //This will always be bullet if the main is a wraith, modify this if you want to play with another character
-    auto shotSprite = spriteAtlas->get("Bullet.png");
-    playerCharacter->setShotSprite(shotSprite);
     playerCharacter->type = type;
     playerCharacter->radius = radius;
     playerCharacter->hp = settings.hp;
     playerCharacter->speed = settings.speed;
-    playerCharacter->armor = 5.0f; // TODO: put back --   settings.armor;
+    playerCharacter->armor = settings.armor;
     playerCharacter->damage = settings.damage;
     playerCharacter->range = settings.range;
     playerCharacter->rateOfFire = settings.rateOfFire;
     playerCharacter->shotSpeed = settings.shotSpeed;
     playerCharacter->knockback = settings.knockback;
-    playerCharacter->useShootingKeys = true;
-    playerCharacter->keyShootUp = settings.keybinds.shootUp;
-    playerCharacter->keyShootDown = settings.keybinds.shootDown;
-    playerCharacter->keyShootLeft = settings.keybinds.shootLeft;
-    playerCharacter->keyShootRight = settings.keybinds.shootRight;
-
 
     auto playerController = player->addComponent<PlayerController>();
     playerController->playerPhysics = playerPhysics;
     playerController->character = playerCharacter;
+    playerController->setBulletSprites(spriteAtlas.get());
 
     // Controls
     playerController->keyUp = settings.keybinds.up;
@@ -132,15 +124,18 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerController->keyLeft = settings.keybinds.left;
     playerController->keyRight = settings.keybinds.right;
     playerController->keyShot = settings.keybinds.shot;
+
+    playerController->keyShootUp = settings.keybinds.shootUp;
+    playerController->keyShootDown = settings.keybinds.shootDown;
+    playerController->keyShootLeft = settings.keybinds.shootLeft;
+    playerController->keyShootRight = settings.keybinds.shootRight;
+
      
     auto animation = player->addComponent<SpriteAnimationComponent>();
     std::unordered_map<State, int> animationSizes = getAnimationSizes(type);
     animationSetup(animation, spriteAtlas, animationSizes, 0.1f, Depth::Player);
 
     auto powerupComp = player->addComponent<PowerupComponent>();
-
-    // Use for Guy
-    // player->setScale(2.5f);
 
     return player;
 }
@@ -186,7 +181,7 @@ void CharacterBuilder::animationSetup(std::shared_ptr<SpriteAnimationComponent> 
 
 std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings) {
 
-    CharacterType type = CharacterType::Wizard;       //TODO: put back --  settings.type;
+    CharacterType type = settings.type;
 
     auto game = DreamGame::instance;
     auto physicsScale = DreamGame::instance->physicsScale;
@@ -211,8 +206,6 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
 
     auto enemyCharacter = enemy->addComponent<CharacterComponent>();
 
-    auto shotSprite = spriteAtlas->get("Bullet.png"); // TODO: Add from enemy behaviour
-    enemyCharacter->setShotSprite(shotSprite);
     enemyCharacter->type = type;
     enemyCharacter->radius = radius;
     enemyCharacter->hp = settings.hp;
@@ -220,9 +213,9 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemyCharacter->speed = settings.speed;
     enemyCharacter->damage = settings.damage;
     enemyCharacter->range = settings.range;
-    enemyCharacter->rateOfFire = 1.0f; // TODO: put back --  settings.rateOfFire;
+    enemyCharacter->rateOfFire = settings.rateOfFire;
     enemyCharacter->shotSpeed = settings.shotSpeed;
-    enemyCharacter->knockback = 0; // TODO: put back --  settings.knockback;
+    enemyCharacter->knockback = settings.knockback;
 
     // Add a IEnemyController based on the type of enemy
     auto& addControllerFunction = findRightController(type);
@@ -230,6 +223,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     enemyController->character = enemyCharacter;
     enemyController->physics = physics;
     enemyController->player = settings.player;
+    enemyController->setBulletSprites(spriteAtlas.get());
 
     auto animation = enemy->addComponent<SpriteAnimationComponent>();
 
@@ -246,9 +240,17 @@ void CharacterBuilder::transform(GameObject* character, CharacterType newType)
 {
     auto playerCharacter = character->getComponent<CharacterComponent>();
     auto spriteAtlas = getAtlas(newType);
-    auto shotSprite = spriteAtlas->get("Bullet.png");
-    playerCharacter->setShotSprite(shotSprite);
     playerCharacter->type = newType;
+
+    if (character->tag == Tag::Player) {
+        auto playerController = character->getComponent<PlayerController>();
+        playerController->setBulletSprites(spriteAtlas.get());
+    }
+    else if (character->tag == Tag::Enemy) {
+        auto enemyController = character->getComponent<IEnemyController>();
+        enemyController->setBulletSprites(spriteAtlas.get());
+    }
+
 
     Depth depth = static_cast<Depth>(character->getComponent<SpriteComponent>()->getSprite().getOrderInBatch());
 

@@ -8,6 +8,7 @@
 #include <Wizard.hpp>
 #include <BigTroll.hpp>
 #include <EnemyBehaviours/Witch.hpp>
+#include <SimpleMelee.hpp>
 
 using std::map;
 
@@ -42,7 +43,7 @@ const std::unordered_map<CharacterType, char*> CharacterTypeToString{
 
 };
 
-#define DEFAULT_BEHAVIOUR Wizard
+#define DEFAULT_BEHAVIOUR SimpleMelee
 
 // Searching for the CharacterType it will return a function that links the right behaviour to the gameObject passed and return an EnemyController shared pointer
 const std::unordered_map<CharacterType, std::function<std::shared_ptr<IEnemyController>(GameObject*)>> CharacterTypeToBehaviour{

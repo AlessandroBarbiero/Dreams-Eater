@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Component.hpp"
+#include "sre/Sprite.hpp"
+#include "sre/SpriteAtlas.hpp"
 
 class CharacterComponent; //Forward declaration
 
@@ -19,6 +21,7 @@ public:
 
     virtual void attack() = 0;
     virtual void movement() = 0;
+    virtual void setBulletSprites(sre::SpriteAtlas* atlas);
 
 protected:
 

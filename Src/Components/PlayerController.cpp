@@ -41,7 +41,9 @@ void PlayerController::update(float deltaTime) {
     }
 
     if (shooting)
-        character->shoot(lastDirection);
+        character->shoot(lastDirection, bulletSprite);
+
+    fireOnKeyPress();
 }
 
 bool PlayerController::onKey(SDL_Event& event) {
@@ -56,17 +58,53 @@ bool PlayerController::onKey(SDL_Event& event) {
         left = event.type == SDL_KEYDOWN;    
     if (sym == keyRight) 
         right = event.type == SDL_KEYDOWN;   
+
     if (sym == keyShot) 
         shooting = event.type == SDL_KEYDOWN;  
+
+
+    if (sym == keyShootUp)
+        shootUp = event.type == SDL_KEYDOWN;
+    if (sym == keyShootDown)
+        shootDown = event.type == SDL_KEYDOWN;
+    if (sym == keyShootLeft)
+        shootLeft = event.type == SDL_KEYDOWN;
+    if (sym == keyShootRight)
+        shootRight = event.type == SDL_KEYDOWN;
 
     return false;
 
 }
 
-void PlayerController::onCollisionStart(PhysicsComponent* comp) {
+// If the keys for fire are pressed generate a bullet in the right direction
+void PlayerController::fireOnKeyPress() {
 
+    glm::vec2 direction{ 0,0 };
+    if (shootUp)
+        direction.y++;
+    if (shootDown)
+        direction.y--;
+    if (shootLeft)
+        direction.x--;
+    if (shootRight)
+        direction.x++;
+
+    if (direction != glm::vec2(0)) {
+        auto anim = gameObject->getComponent<SpriteAnimationComponent>();
+        direction = glm::normalize(direction);
+        anim->displayCompleteAnimation(State::Attack, 1 / character->rateOfFire, [direction, this]() {character->shoot(direction, bulletSprite); });
+        anim->setFacingDirection(vectorToDirection(direction), true);
+
+        // If the animation cannot go any faster just spawn the bullets
+        if (1 / character->rateOfFire < anim->getMinDuration())
+            character->shoot(direction, bulletSprite);
+
+        return;
+    }
 }
 
-void PlayerController::onCollisionEnd(PhysicsComponent* comp) {
-
+void PlayerController::setBulletSprites(sre::SpriteAtlas* atlas)
+{
+    bulletSprite = atlas->get("Bullet.png");
+    bulletSprite.setOrderInBatch(Depth::Bullet);
 }

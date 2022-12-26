@@ -59,38 +59,8 @@ void CharacterComponent::update(float deltaTime) {
         updateStunTimeout(deltaTime);
 
     checkRateOfFire(deltaTime);
-
-    if(useShootingKeys)
-        fireOnKeyPress();
    
     updateFlyingProj();
-}
-
-// If the keys for fire are pressed generate a bullet in the right direction
-void CharacterComponent::fireOnKeyPress() {
-
-    glm::vec2 direction{ 0,0 };
-    if (up)
-        direction.y++;
-    if (down)
-        direction.y--;
-    if (left)
-        direction.x--;
-    if (right)
-        direction.x++;
-
-    if (direction != glm::vec2(0)) {
-        auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-        direction = glm::normalize(direction);
-        anim->displayCompleteAnimation(State::Attack, 1 / rateOfFire, [direction, this]() {shoot(direction); });
-        anim->setFacingDirection(vectorToDirection(direction), true);
-
-        // If the animation cannot go any faster just spawn the bullets
-        if (1 / rateOfFire < anim->getMinDuration())
-            shoot(direction);
-
-        return;
-    }
 }
 
 void CharacterComponent::changeState(State newState)
@@ -139,22 +109,6 @@ void CharacterComponent::updateFlyingProj() {
     }
     else
         flyingProj.pop();
-}
-
-bool CharacterComponent::onKey(SDL_Event& event) {
-    if (useShootingKeys) {
-        auto sym = event.key.keysym.sym;
-        if (sym == keyShootUp) 
-            up = event.type == SDL_KEYDOWN;        
-        if (sym == keyShootDown) 
-            down = event.type == SDL_KEYDOWN;        
-        if (sym == keyShootLeft) 
-            left = event.type == SDL_KEYDOWN;        
-        if (sym == keyShootRight) 
-            right = event.type == SDL_KEYDOWN;
-    }
-
-    return false;
 }
 
 void CharacterComponent::onCollisionStart(PhysicsComponent* comp) {
@@ -234,7 +188,7 @@ State CharacterComponent::getState()
 // - shotSpeed
 // - range
 // - rateOfFire
-void CharacterComponent::shoot(glm::vec2 direction) {
+void CharacterComponent::shoot(glm::vec2 direction, const sre::Sprite& bulletSprite) {
     if (!readyToShoot) 
         return; // cooldown is not finished
 
@@ -255,12 +209,11 @@ void CharacterComponent::shoot(glm::vec2 direction) {
     
 
     auto spriteComp = shot->addComponent<SpriteComponent>();
-    //shotSprite.setScale(glm::vec2(damage));
-    spriteComp->setSprite(shotSprite);
+    spriteComp->setSprite(bulletSprite);
 
 
     auto shotPhy = shot->addComponent<PhysicsComponent>();
-    float radius = shotSprite.getSpriteSize().x / (2 * physicsScale);
+    float radius = bulletSprite.getSpriteSize().x / (2 * physicsScale);
     shotPhy->initCircle(b2_dynamicBody, radius, position, 1);
     shotPhy->setLinearVelocity(direction * shotSpeed);
     shotPhy->setSensor(true);
@@ -275,11 +228,6 @@ void CharacterComponent::shoot(glm::vec2 direction) {
     std::weak_ptr<BulletComponent> weakBullet = bullet;
     flyingProj.push(weakBullet);
     startShotCooldown();
-}
-
-void CharacterComponent::setShotSprite(const sre::Sprite& sprite) {
-    shotSprite = sprite;
-    shotSprite.setOrderInBatch(Depth::Bullet);
 }
 
 void CharacterComponent::startShotCooldown() {

@@ -19,14 +19,13 @@ public:
 	void onCollisionStart(PhysicsComponent* comp) override;
 	// void onCollisionEnd(PhysicsComponent* comp) override;
 
-	bool onKey(SDL_Event& event) override;
+	// bool onKey(SDL_Event& event) override;
 
 	void onGui() override;
 	
 	void update(float deltaTime) override;
 
-	void shoot(glm::vec2 direction);
-	void setShotSprite(const sre::Sprite& sprite);
+	void shoot(glm::vec2 direction, const sre::Sprite& bulletSprite);
 
 	void stunned(float stunTimeout);
 	void stunned(bool stun);
@@ -55,7 +54,6 @@ private:
 	void updateStunTimeout(float deltaTime);
 	void checkRateOfFire(float deltaTime);
 	void updateFlyingProj();
-	void fireOnKeyPress();
 
 	void initSpecialEffectObject();
 	std::shared_ptr<SpriteAnimationComponent> specialEffects;
@@ -90,8 +88,6 @@ private:
 
 	std::queue<std::weak_ptr<BulletComponent>> flyingProj;
 
-	sre::Sprite shotSprite;
-
 	void startShotCooldown();
 	void die();
 
@@ -106,18 +102,6 @@ private:
 		ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoScrollbar;
-
-	// If this variable is set to true you can control the shooting of this character using passed keybind
-	bool useShootingKeys = false;   
-	bool up = false;
-	bool down = false;
-	bool left = false;
-	bool right = false;
-
-	SDL_Keycode keyShootUp;
-	SDL_Keycode keyShootDown;
-	SDL_Keycode keyShootLeft;
-	SDL_Keycode keyShootRight;
 
 	friend class CharacterBuilder;
 	friend class PlayerController;

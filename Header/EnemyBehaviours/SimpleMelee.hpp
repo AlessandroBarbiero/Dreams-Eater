@@ -3,10 +3,10 @@
 #include "IEnemyController.hpp"
 #include "Component.hpp"
 
-//Ranged enemy, continuously attack and move toward player until a certain distance
-class Wizard : public IEnemyController {
+//Melee enemy, move toward the player and attack when on range
+class SimpleMelee : public IEnemyController {
 public:
-    explicit Wizard(GameObject* gameObject);
+    explicit SimpleMelee(GameObject* gameObject);
 
     //   void onCollisionStart(PhysicsComponent* comp) override;
     //   void onCollisionEnd(PhysicsComponent* comp) override;
@@ -15,10 +15,7 @@ public:
 
     void attack() override;
     void movement() override;
-    void setBulletSprites(sre::SpriteAtlas* atlas) override;
 
 private:
 
-    sre::Sprite bulletSprite;
-    float idealDistance = 600.0f;
 };

@@ -3,17 +3,12 @@
 #include "IEnemyController.hpp"
 #include "Component.hpp"
 
-//TODO: not implemented yet
-//
-// Boss enemy, alternates between 3 attacks:
-// - Melee stab
-// - Magic shot
-// - Thunder tempest
-class Witch : public IEnemyController {
+//Ranged enemy, continuously attack and move toward player until a certain distance
+class SimpleRanged : public IEnemyController {
 public:
-    explicit Witch(GameObject* gameObject);
+    explicit SimpleRanged(GameObject* gameObject);
 
-     void onCollisionStart(PhysicsComponent* comp) override;
+    //   void onCollisionStart(PhysicsComponent* comp) override;
     //   void onCollisionEnd(PhysicsComponent* comp) override;
     //   void update(float deltaTime) override;
     //   void onGui() override;

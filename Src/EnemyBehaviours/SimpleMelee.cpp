@@ -1,36 +1,29 @@
-#include "BigTroll.hpp"
+
+#include "SimpleMelee.hpp"
 #include "SpriteAnimationComponent.hpp"
 #include "GameObject.hpp"
 #include "PhysicsComponent.hpp"
 #include "CharacterComponent.hpp"
 
-BigTroll::BigTroll(GameObject* gameObject) : IEnemyController(gameObject)
+
+SimpleMelee::SimpleMelee(GameObject* gameObject) : IEnemyController(gameObject)
 {
 }
 
-void BigTroll::onCollisionStart(PhysicsComponent* comp)
+void SimpleMelee::attack()
 {
-    if (character->getState() == State::Die)
-        player->getComponent<CharacterComponent>()->showEffect(State::Victory);
-
-}
-
-void BigTroll::attack()
-{
-
-    glm::vec2 direction = glm::normalize(towardPlayer);
+	glm::vec2 direction = glm::normalize(towardPlayer);
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-    anim->displayCompleteAnimation(State::Attack1, 1 / character->getRateOfFire(), [direction, this]() { /*character->shoot(direction);*/ });
+    anim->displayCompleteAnimation(State::Attack, 1 / character->getRateOfFire(), [direction, this]() { /*character->shoot(direction);*/ });
 
     anim->setFacingDirection(vectorToDirection(direction));
 
     //character->shoot(direction);
 
-
 }
 
-void BigTroll::movement()
+void SimpleMelee::movement()
 {
     float distance = glm::length(towardPlayer);
 
@@ -40,4 +33,5 @@ void BigTroll::movement()
     glm::vec2 movement = direction * character->getSpeed();
     physics->setLinearVelocity(movement);
     character->changeState(State::Walk);
+
 }

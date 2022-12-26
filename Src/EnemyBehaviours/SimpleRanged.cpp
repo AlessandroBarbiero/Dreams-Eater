@@ -1,16 +1,17 @@
 
-#include "Wizard.hpp"
+#include "SimpleRanged.hpp"
 #include "SpriteAnimationComponent.hpp"
 #include "GameObject.hpp"
 #include "PhysicsComponent.hpp"
 #include "CharacterComponent.hpp"
 
 
-Wizard::Wizard(GameObject* gameObject) : IEnemyController(gameObject)
+SimpleRanged::SimpleRanged(GameObject* gameObject) : IEnemyController(gameObject)
 {
 }
 
-void Wizard::attack()
+
+void SimpleRanged::attack()
 {
 	glm::vec2 direction = glm::normalize(towardPlayer);
 
@@ -23,7 +24,7 @@ void Wizard::attack()
 
 }
 
-void Wizard::movement()
+void SimpleRanged::movement()
 {
     float distance = glm::length(towardPlayer);
 
@@ -42,7 +43,7 @@ void Wizard::movement()
 
 }
 
-void Wizard::setBulletSprites(sre::SpriteAtlas* atlas)
+void SimpleRanged::setBulletSprites(sre::SpriteAtlas* atlas)
 {
     bulletSprite = atlas->get("Bullet.png");
     bulletSprite.setOrderInBatch(Depth::Bullet);

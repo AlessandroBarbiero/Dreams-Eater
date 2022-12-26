@@ -9,16 +9,19 @@ public:
 
     bool onKey(SDL_Event& event) override;
 
-    void onCollisionStart(PhysicsComponent* comp) override;
-
-    void onCollisionEnd(PhysicsComponent* comp) override;
+    //  void onCollisionStart(PhysicsComponent* comp) override;
+    //  void onCollisionEnd(PhysicsComponent* comp) override;
     
     void update(float deltaTime) override;
+    void setBulletSprites(sre::SpriteAtlas* atlas);
 
 private:
 
     std::shared_ptr<PhysicsComponent> playerPhysics;
     std::shared_ptr<CharacterComponent> character;
+
+    sre::Sprite bulletSprite;
+    void fireOnKeyPress();
 
     glm::vec2 lastDirection;
 
@@ -28,11 +31,21 @@ private:
     bool right = false;
     bool shooting = false;
 
+    bool shootUp = false;
+    bool shootDown = false;
+    bool shootLeft = false;
+    bool shootRight = false;
+
     SDL_Keycode keyUp;
     SDL_Keycode keyDown;
     SDL_Keycode keyLeft;
     SDL_Keycode keyRight;
     SDL_Keycode keyShot;
+
+    SDL_Keycode keyShootUp;
+    SDL_Keycode keyShootDown;
+    SDL_Keycode keyShootLeft;
+    SDL_Keycode keyShootRight;
 
     friend class CharacterBuilder;
 };

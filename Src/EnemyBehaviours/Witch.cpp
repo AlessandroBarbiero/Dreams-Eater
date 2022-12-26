@@ -22,11 +22,11 @@ void Witch::attack()
 	glm::vec2 direction = glm::normalize(towardPlayer);
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-    anim->displayCompleteAnimation(State::Attack2, 1 / character->getRateOfFire(), [direction, this]() { character->shoot(direction); });
+    anim->displayCompleteAnimation(State::Attack1, 1 / character->getRateOfFire(), [direction, this]() { /*character->shoot(direction);*/ });
 
     anim->setFacingDirection(vectorToDirection(direction));
 
-    character->shoot(direction);
+ //   character->shoot(direction);
 
 }
 
@@ -47,4 +47,10 @@ void Witch::movement()
     physics->setLinearVelocity(movement);
     character->changeState(State::Walk);
 
+}
+
+void Witch::setBulletSprites(sre::SpriteAtlas* atlas)
+{
+    //bulletSprite = atlas->get("Bullet.png");
+    //bulletSprite.setOrderInBatch(Depth::Bullet);
 }
