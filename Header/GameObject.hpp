@@ -64,7 +64,7 @@ private:
     std::vector<std::shared_ptr<Component>> components;
 
     glm::vec2 position;
-    float rotation;
+    float rotation;     // In radians
     float scale = 1;
     bool destroyed = false;
 

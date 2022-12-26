@@ -65,6 +65,7 @@ void PhysicsComponent::initCircle(b2BodyType type, float radius, glm::vec2 cente
     bd.type = type;
     rbType = type;
     bd.position = b2Vec2(center.x, center.y);
+    bd.angle = gameObject->getRotation();
     body = world->CreateBody(&bd);
     circle = new b2CircleShape();
     circle->m_radius = radius;

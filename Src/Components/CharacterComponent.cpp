@@ -204,13 +204,11 @@ void CharacterComponent::shoot(glm::vec2 direction, const sre::Sprite& bulletSpr
     else
         shot->tag = Tag::Bullet;
 
-    glm::vec2 position = gameObject->getPosition() / physicsScale + direction * (radius * gameObject->getScale() + damage/2);
+    glm::vec2 position = gameObject->getPosition() / physicsScale + direction * (radius * gameObject->getScale() + damage);
     shot->setPosition(position * physicsScale);
-    
-
+    shot->setRotation(glm::atan(direction.y, direction.x));
     auto spriteComp = shot->addComponent<SpriteComponent>();
     spriteComp->setSprite(bulletSprite);
-
 
     auto shotPhy = shot->addComponent<PhysicsComponent>();
     float radius = bulletSprite.getSpriteSize().x / (2 * physicsScale);
