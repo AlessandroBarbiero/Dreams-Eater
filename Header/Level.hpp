@@ -2,6 +2,7 @@
 
 #include "GameObject.hpp"
 #include "RoomBuilder.hpp"
+#include "CharacterBuilder.hpp"
 
 class Level {
 public:
@@ -15,6 +16,9 @@ public:
 	std::shared_ptr<GameObject> currentRoom;
 	int currentRoomIndex;
 	std::vector<bool> roomEntered;
+
+	std::vector<EnemySettings> regularEnemySettings;
+	std::vector<EnemySettings> bossEnemySettings;
 
 	std::shared_ptr<GameObject> player;
 

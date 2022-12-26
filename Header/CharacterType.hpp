@@ -43,6 +43,22 @@ const std::unordered_map<CharacterType, char*> CharacterTypeToString{
 
 };
 
+const std::unordered_map < std::string, CharacterType> CharacterStringToType{
+	{"Wizard",			CharacterType::Wizard		},
+	{"FireWizard",		CharacterType::FireWizard	},
+	{"IceWizard",		CharacterType::IceWizard		},
+	{"Wraith",			CharacterType::Wraith		},
+	{"BrownWraith",		CharacterType::BrownWraith	},
+	{"PurpleWraith",	CharacterType::PurpleWraith	},
+	{"Slime",			CharacterType::Slime			},
+	{"Ninja",			CharacterType::Ninja			},
+	{"SamuraiHeavy",	CharacterType::SamuraiHeavy	},
+	{"SamuraiLight",	CharacterType::SamuraiLight	},
+	{"BigTroll",		CharacterType::BigTroll		},
+	{"Witch",			CharacterType::Witch			}
+
+};
+
 #define DEFAULT_BEHAVIOUR SimpleMelee
 
 // Searching for the CharacterType it will return a function that links the right behaviour to the gameObject passed and return an EnemyController shared pointer
