@@ -111,6 +111,7 @@ void DreamGame::play() {
     pSettings.speed = 8.0f;
     pSettings.knockback = 1.0f;
     pSettings.type = CharacterType::Wraith;
+    std::cout << "Creating player" << std::endl;
     auto player = CharacterBuilder::createPlayer(pSettings);
 
     // TODO: Remove me from here
@@ -197,6 +198,7 @@ void DreamGame::play() {
     testLevelSettings.difficulty = 1;
     testLevelSettings.name = "TestLevel";
     testLevelSettings.rooms = 10;
+    std::cout << "Creating level" << std::endl;
     level = LevelBuilder::createLevel(testLevelSettings);
 
     guiComp->setLevel(level);

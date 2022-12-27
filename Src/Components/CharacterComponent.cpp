@@ -14,6 +14,7 @@ std::shared_ptr<sre::SpriteAtlas> CharacterComponent::effectAtlas;
 
 CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameObject) {
     if (CharacterComponent::effectAtlas == nullptr) {
+        std::cout << "Loading effect atlas" << std::endl;
         CharacterComponent::effectAtlas = sre::SpriteAtlas::create("Sprites/SpecialEffects/SpecialEffects_atlas.json", "Sprites/SpecialEffects/SpecialEffects_atlas.png");
     }
 

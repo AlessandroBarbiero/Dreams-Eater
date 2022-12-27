@@ -70,6 +70,7 @@ private:
 	static unordered_map<CharacterType, unordered_map<State, int>> animationSizesMap;
 
 	static void initAtlasMap();
+	static void initAtlasMap(CharacterType type);
 	static void initSizesMap(CharacterType type);
 
 	static unordered_map<State, int> getAnimationSizes(CharacterType type);
