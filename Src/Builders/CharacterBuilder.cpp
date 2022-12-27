@@ -18,8 +18,16 @@ unordered_map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> CharacterBuilder
 unordered_map<CharacterType, unordered_map<State, int>> CharacterBuilder::animationSizesMap;
 
 std::shared_ptr<sre::SpriteAtlas> CharacterBuilder::getAtlas(CharacterType type) {
+#ifdef LAZY_LOADING
+    // Use this for lazy resource loading
+    auto it = atlasMap.find(type);
+    // If the atlas doesn't exist yet in the map
+    if (it == atlasMap.end())
+        initAtlasMap(type);
+#else
     if (atlasMap.size() == 0)
         initAtlasMap();
+#endif
     return atlasMap[type];
 }
 
@@ -46,6 +54,7 @@ std::function<std::shared_ptr<IEnemyController>(GameObject*)> findRightControlle
 
 // Read the number of images for each animation from a json file and populate the animationSizesMap for the specific type of character
 void CharacterBuilder::initSizesMap(CharacterType type) {
+    std::cout << "Read animation dimensions from json for "<< CharacterTypeToString.at(type) << std::endl;
     auto& sizes = animationSizesMap[type];
 
     using namespace rapidjson;
@@ -71,12 +80,21 @@ void CharacterBuilder::initSizesMap(CharacterType type) {
 
 // Create the atlases for all the types and save them in the atlasMap structure
 void CharacterBuilder::initAtlasMap() {
+    std::cout << "Loading atlas resources for all Characters" << std::endl;
     for (const auto& charStringPair : CharacterTypeToString)
     {
         std::string typeName = charStringPair.second;
         atlasMap.insert({ charStringPair.first,
             sre::SpriteAtlas::create("Sprites/Characters/" + typeName + "/" + typeName + "_atlas.json", "Sprites/Characters/" + typeName + "/" + typeName + "_atlas.png") });
     }
+}
+
+void CharacterBuilder::initAtlasMap(CharacterType type)
+{
+    std::string typeName = CharacterTypeToString.at(type);
+    std::cout << "Loading atlas resources for " << typeName << std::endl;
+    atlasMap.insert({ type,
+        sre::SpriteAtlas::create("Sprites/Characters/" + typeName + "/" + typeName + "_atlas.json", "Sprites/Characters/" + typeName + "/" + typeName + "_atlas.png") });
 }
 
 std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settings) {
@@ -232,7 +250,8 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     animationSetup(animation, spriteAtlas, animationSizes, 0.2f, Depth::Enemy);
 
 
-    enemy->setScale(0.9f);
+   enemy->setScale(0.9f);
+   // enemy->setScale(2.0f);
     return enemy;
 }
 

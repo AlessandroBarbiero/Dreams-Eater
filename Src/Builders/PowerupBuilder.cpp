@@ -75,6 +75,7 @@ std::shared_ptr<GameObject> PowerupBuilder::createSinglePowerupObject(PowerupTyp
 std::shared_ptr<sre::SpriteAtlas> PowerupBuilder::getPowerupAtlas()
 {
 	if (PowerupBuilder::powerupAtlas == nullptr) {
+        std::cout << "Loading atlas for Pickups" << std::endl;
 		PowerupBuilder::powerupAtlas = sre::SpriteAtlas::create("Sprites/PickUp/PickUp_atlas.json", "Sprites/PickUp/PickUp_atlas.png");
 	}
 	return PowerupBuilder::powerupAtlas;
