@@ -33,7 +33,9 @@ void PlayerController::update(float deltaTime) {
     if (movement != glm::vec2(0)) {
 
         character->changeState(State::Walk);
-        character->setDirection(vectorToDirection(movement));
+        if(movement.x != 0) // If I am not moving on the x axis mantain old orientation
+            character->setDirection(vectorToDirection(movement));
+
         lastDirection = glm::normalize(movement);
         playerPhysics->setLinearVelocity(lastDirection * character->speed);
     }
