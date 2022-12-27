@@ -43,5 +43,6 @@ private:
     friend class PauseMenuComponent;
     friend class SpriteAnimationComponent;
     friend class RoomComponent;
+    friend class LevelGuiComponent;
     friend class DreamGame;
 };

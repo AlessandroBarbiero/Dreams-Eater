@@ -41,6 +41,7 @@ private:
 
     Level* level;
 
+    friend class LevelGuiComponent;
     friend class RoomBuilder;
     friend class Level;
     friend class DreamGame;

@@ -18,7 +18,7 @@ void PauseMenuComponent::onGui(){
 
     ImGui::SetNextWindowPos(menuPosition, cond);
     ImGui::SetNextWindowSize(menuSize, cond);
-    ImGui::Begin("", open, menuFlags);
+    ImGui::Begin("PauseMenu", open, menuFlags);
 
     // Render buttons
     if (ImGui::ImageButton(resumeTexture->getNativeTexturePtr() , buttonSize, GuiHelper::getInstance()->uv0, GuiHelper::getInstance()->uv1)) {

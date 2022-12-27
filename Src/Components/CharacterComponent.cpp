@@ -310,7 +310,7 @@ void CharacterComponent::setPlayerGui() {
 
     auto heartSize = ImVec2{ 40,40 };
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < hpInt && i < 5; i++) {
         ImGui::Image(heartFullTexture->getNativeTexturePtr(), heartSize, uv0, uv1);
         ImGui::SameLine();
     }

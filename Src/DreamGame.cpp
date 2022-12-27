@@ -14,6 +14,7 @@
 #include "EndMenuComponent.hpp"
 #include "PauseMenuComponent.hpp"
 #include "GuiHelper.hpp"
+#include "LevelGuiComponent.hpp"
 
 
 using namespace std;
@@ -85,6 +86,7 @@ void DreamGame::init() {
     if (world != nullptr) { // deregister call backlistener to avoid getting callbacks when recreating the world
         world->SetContactListener(nullptr);
     }
+
     this->level.reset();
     camera.reset();
     game.cleanSceneObjects();
@@ -187,12 +189,18 @@ void DreamGame::play() {
     //level->loadRoom(1);
     */
 
+    auto levelGui = currentScene->createGameObject();
+    auto guiComp = levelGui->addComponent<LevelGuiComponent>();
+    
 
     LevelSettings testLevelSettings;
     testLevelSettings.difficulty = 1;
     testLevelSettings.name = "TestLevel";
     testLevelSettings.rooms = 10;
     level = LevelBuilder::createLevel(testLevelSettings);
+
+    guiComp->setLevel(level);
+    guiComp->setPlayer(player);
 
     level->player = player;
     level->loadLevel();
