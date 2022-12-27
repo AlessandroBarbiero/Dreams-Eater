@@ -9,6 +9,7 @@
 #include <document.h>
 #include <istreamwrapper.h>
 #include <fstream>
+#include "Components/CharacterComponent.hpp"
 
 void Level::loadLevel() {
 
@@ -32,6 +33,7 @@ void Level::loadLevel() {
 		enemy.range = test["range"].GetFloat();
 		enemy.shotSpeed = test["shotSpeed"].GetFloat();
 		enemy.idealDistance = test["idealDistance"].GetFloat();
+		enemy.scale = test["scale"].GetFloat();
 
 
 		const char* type = test["type"].GetString();
@@ -56,6 +58,7 @@ void Level::loadLevel() {
 		enemy.range = test["range"].GetFloat();
 		enemy.shotSpeed = test["shotSpeed"].GetFloat();
 		enemy.idealDistance = test["idealDistance"].GetFloat();
+		enemy.scale = test["scale"].GetFloat();
 
 
 		const char* type = test["type"].GetString();
@@ -101,6 +104,7 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 				}
 			}
 		}
+
 		auto sceneObjects = DreamGame::instance->currentScene->getSceneObjects();
 		std::for_each(sceneObjects->begin(), sceneObjects->end(), [](std::shared_ptr<GameObject> go) {if (go->tag == Tag::EnemyBullet || go->tag == Tag::PlayerBullet) go->destroy();});
 
@@ -117,7 +121,7 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 	if (roomEntered[room]) {
 		// Reactivate saved objects
 		newRoom->roomObjects = roomObjects[room];
-
+		roomObjects[room].clear();
 		for (auto go : newRoom->roomObjects) {
 			DreamGame::instance->reactivateGameObject(go);
 		}
@@ -127,6 +131,20 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 		auto roomSize = newRoom->getRoomSizeInPixels() / DreamGame::instance->physicsScale;
 		std::cout << "roomSize: (" << roomSize.x << ", " << roomSize.y << ")" << std::endl;
 		int random = 0;
+		int roomSizeMultiplier = 1;
+		switch (roomSettings[room]->roomSize)
+		{
+		case Medium:
+			roomSizeMultiplier = 1;
+			break;
+		case Wide:
+		case Long:
+			roomSizeMultiplier = 2;
+			break;
+		case Large:
+			roomSizeMultiplier = 3;
+			break;
+		}
 		PowerupBuilder* pBuilder = PowerupBuilder::getInstance();
 		EnemySettings eSettings;
 		switch (roomSettings[room]->roomType) {
@@ -134,6 +152,7 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 			break;
 		case EnemyRoom:
 			random = (rand() % 3) + 1;
+			random *= roomSizeMultiplier;
 			for (int i = 0; i < random; i++) {
 				int randomEnemy = rand() % regularEnemySettings.size();
 				eSettings = regularEnemySettings[randomEnemy];
@@ -145,8 +164,10 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 			}
 			break;
 		case PowerUpRoom:
-			random = rand() % 4;
-			newRoom->roomObjects.push_back(pBuilder->createSinglePowerupObject(static_cast<PowerupType>(random), { 5,5 }));
+			for (int i = 0; i < roomSizeMultiplier; i++) {
+				random = rand() % 4;
+				newRoom->roomObjects.push_back(pBuilder->createSinglePowerupObject(static_cast<PowerupType>(random), { 2*i, 0 }));
+			}
 			break;
 		case BossRoom:
 			random = rand() % bossEnemySettings.size();
@@ -155,6 +176,18 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 			eSettings.player = player;
 			auto enemy = CharacterBuilder::createEnemy(eSettings);
 			newRoom->roomObjects.push_back(enemy);
+
+			random = (rand() % 2) + 1;
+			random *= roomSizeMultiplier;
+			for (int i = 0; i < random; i++) {
+				int randomEnemy = rand() % regularEnemySettings.size();
+				eSettings = regularEnemySettings[randomEnemy];
+				eSettings.name = eSettings.name + std::to_string(i);
+				eSettings.position = glm::vec2(rand() % (int)(roomSize.x - 2), rand() % (int)(roomSize.y - 2)) - glm::vec2(roomSize.x - 2, roomSize.y - 2) / 2.0f;
+				eSettings.player = player;
+				auto enemy = CharacterBuilder::createEnemy(eSettings);
+				newRoom->roomObjects.push_back(enemy);
+			}
 			break;
 		}
 

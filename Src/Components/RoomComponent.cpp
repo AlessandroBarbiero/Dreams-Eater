@@ -344,12 +344,12 @@ void RoomComponent::buildFloor() {
 	auto spriteFloor = game->spriteAtlas_inside->get(floorString + ".png");
 	glm::vec2 spriteFloorSize = spriteFloor.getSpriteSize();
 	float scale = 0.9*6.0f; // Scaled by 0.9 to fit size of room, then by an even number
-	spriteFloorSize *= scale;
 	
 	
 	std::string wallString = TileSetWallsToString.at(tileSetWalls);
 	auto spriteWallHorizontalBottom = game->spriteAtlas_inside->get(wallString + "Bottom.png");
 	int wallLength = spriteWallHorizontalBottom.getSpriteSize().x;
+
 
 	auto roomSizePixels = getRoomSizeInPixels();
 	glm::vec2 bottomLeft = { -(roomSizePixels.x / 2.0f), -(roomSizePixels.y / 2.0f) };
@@ -357,6 +357,9 @@ void RoomComponent::buildFloor() {
 	// Wall length is 341 pixels per segment
 	auto horizontal = roomSize.x * wallLength;
 	auto vertical = roomSize.y * wallLength;
+
+	scale = horizontal / (spriteFloorSize.x*6);
+	spriteFloorSize *= scale;
 
 	auto floorSize = glm::vec2(horizontal / spriteFloorSize.x, vertical / spriteFloorSize.y);
 	

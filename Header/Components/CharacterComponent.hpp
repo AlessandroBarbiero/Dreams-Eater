@@ -132,6 +132,7 @@ private:
 	friend class IEnemyController;
 	friend class Powerup;
 	friend class PowerupBuilder;
+	friend class Level;
 };
 
 // Cannot include it at the beginning of the file because they are mutually referenciate each other

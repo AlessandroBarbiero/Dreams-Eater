@@ -54,6 +54,7 @@ struct EnemySettings {
 	float rateOfFire = 1.0f;
 	float shotSpeed = 5.0f;
 	float knockback = 0;
+	float scale = 0.9f;
 
 	std::shared_ptr<GameObject> player;
 };

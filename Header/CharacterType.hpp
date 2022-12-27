@@ -43,7 +43,7 @@ const std::unordered_map<CharacterType, char*> CharacterTypeToString{
 
 };
 
-const std::unordered_map < std::string, CharacterType> CharacterStringToType{
+const std::unordered_map <std::string, CharacterType> CharacterStringToType{
 	{"Wizard",			CharacterType::Wizard		},
 	{"FireWizard",		CharacterType::FireWizard	},
 	{"IceWizard",		CharacterType::IceWizard		},

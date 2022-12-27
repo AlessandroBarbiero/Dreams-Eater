@@ -250,7 +250,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     animationSetup(animation, spriteAtlas, animationSizes, 0.2f, Depth::Enemy);
 
 
-   enemy->setScale(0.9f);
+   enemy->setScale(settings.scale);
    // enemy->setScale(2.0f);
     return enemy;
 }

@@ -290,7 +290,7 @@ std::shared_ptr<RoomSettings> LevelBuilder::generateRoom(std::shared_ptr<Level> 
     // Room Size
     int roomSize = rand() % 100;
     int maxDoors;
-    if (roomSize < 50) {
+    if (roomSize < 50 || spawn) {
         roomSettings->roomSize = Medium;
     }
     else if (roomSize < 70) {
