@@ -33,7 +33,7 @@ private:
     int cond = ImGuiCond_Always;
 
     ImVec2 menuPosition;
-    ImVec2 menuSize = { 250, 250 };
+    ImVec2 menuSize;
     ImVec2 buttonSize = { 200, 100 };
 
     ImU32 borderColor = IM_COL32(0, 0, 0, 255);
@@ -44,6 +44,7 @@ private:
 
     float borderThickness = 2.0f;
     float scale = 3.0f;
+    float offset = 25.0f;
 
     std::shared_ptr<sre::Texture> mapTexture;
 

@@ -5,10 +5,12 @@
 #include "PhysicsComponent.hpp"
 
 LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObject) {
-    auto offset = 25.0f;
-    menuPosition = ImVec2{sre::Renderer::instance->getWindowSize().x - menuSize.x - offset,offset };
-
+    
     mapTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "map.png").withFilterSampling(false).build();
+    
+    menuSize = { mapTexture->getWidth() / scale, mapTexture->getHeight() / scale };
+
+    menuPosition = { sre::Renderer::instance->getWindowSize().x - menuSize.x - offset,offset };
 }
 
 LevelGuiComponent::~LevelGuiComponent(){
@@ -25,9 +27,9 @@ void LevelGuiComponent::setLevel(std::shared_ptr<Level> level) {
 
 void LevelGuiComponent::drawRoom(std::shared_ptr<RoomSettings> roomSettings, ImVec2 topLeft, ImVec2 bottomRight, ImVec2 size){
 
-    ImGui::GetWindowDrawList()->AddRect({ topLeft.x, topLeft.y}, { bottomRight.x , bottomRight.y}, borderColor, 0.0f, ImDrawCornerFlags_All, borderThickness);
+    ImGui::GetWindowDrawList()->AddRectFilled(topLeft, bottomRight, borderColor);
     ImGui::GetWindowDrawList()->AddRectFilled({ topLeft.x + borderThickness, topLeft.y + borderThickness }, { bottomRight.x - borderThickness, bottomRight.y - borderThickness }, roomColor);
-    
+
     float radius = 2.0f;
 
     auto halfSize = ImVec2{ size.x / 2.0f, size.y / 2.0f };
@@ -87,17 +89,7 @@ void LevelGuiComponent::drawRoom(std::shared_ptr<RoomSettings> roomSettings, ImV
 }
 
 void LevelGuiComponent::onGui() {
-    if (DreamGame::instance->doDebugDraw) {
-        
-        bool* open = nullptr;
-
-        ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
-        if (ImGui::CollapsingHeader("sss")) {
-            ImGui::DragFloat("scale ##", &scale, 0.1f, 0, 20);
-        }
-        ImGui::End();
-    }
-
+    
     GuiHelper::getInstance()->setZeroPadding();
     ImGui::SetNextWindowBgAlpha(0.0f);
 

@@ -41,9 +41,10 @@ void StartMenuComponent::onGui(){
 
 	ImGui::SetCursorPos(ImVec2(0.0f, (menuSize.y - NUM_BUTTONS *(buttonSize.y) -(NUM_BUTTONS - 1)*itemSpacing.y - buttonSize.y/2.0f)/2.0f));
 
+
     // Render buttons
 	GuiHelper::getInstance()->centerCursor(buttonSize.x);
-    if (ImGui::ImageButton(playTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {
+    if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Space))  || ImGui::ImageButton(playTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {
         DreamGame::instance->play();
 	}
 
