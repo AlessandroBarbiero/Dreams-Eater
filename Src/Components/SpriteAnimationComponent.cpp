@@ -158,7 +158,7 @@ bool SpriteAnimationComponent::displayCompleteAnimation(State anim, float totalD
 // Display one time the animation and then disable the sprite, the object will not be displayed after the animation.
 // If urgent is set the animation can override himself or other animations
 // Return true if the animation is being displayed
-bool SpriteAnimationComponent::displayOnce(State anim, bool urgent)
+bool SpriteAnimationComponent::displayOnce(State anim, float animTime, bool urgent)
 {
     if (!urgent && showingCompleteAnim == true) {
         return false;
@@ -168,7 +168,10 @@ bool SpriteAnimationComponent::displayOnce(State anim, bool urgent)
     spriteIndex = 0;
     sprites = getAnimationSequences(facingDirection)[anim];
     currentAnimation = anim;
-    animationTime = baseAnimationTime;
+    if (animTime == -1)
+        animationTime = baseAnimationTime;
+    else
+        animationTime = animTime;
     // Deactivate everything at the end of the animation
     callbackFunc = [this]() { spriteComp->deactivate(); deactivate(); };
     spriteComp->setSprite(sprites[0]);

@@ -1,5 +1,6 @@
 #include "PowerupComponent.hpp"
 #include "PhysicsComponent.hpp"
+#include "CharacterComponent.hpp"
 
 PowerupComponent::PowerupComponent(GameObject* gameObject) : Component(gameObject) {}
 
@@ -11,6 +12,7 @@ void PowerupComponent::onCollisionStart(PhysicsComponent* comp)
         applyPowerups(player);
         // Save the new powerups inside the player component
         player->getComponent<PowerupComponent>()->addPowerups(powerups);
+        player->getComponent<CharacterComponent>()->showEffect(State::Item, 0.2f);
         gameObject->destroy();
     }
 }

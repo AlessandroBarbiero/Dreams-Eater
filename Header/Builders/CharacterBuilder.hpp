@@ -46,7 +46,6 @@ struct EnemySettings {
 	glm::vec2 position;
 	float speed = 2.0f;
 
-	float idealDistance = 6.0f; // meters 
 	float hp = 5.0f;
 	float armor = 0;
 	float damage = 1.5f;

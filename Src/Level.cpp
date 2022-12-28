@@ -32,7 +32,6 @@ void Level::loadLevel() {
 		enemy.rateOfFire = test["rateOfFire"].GetFloat();
 		enemy.range = test["range"].GetFloat();
 		enemy.shotSpeed = test["shotSpeed"].GetFloat();
-		enemy.idealDistance = test["idealDistance"].GetFloat();
 		enemy.scale = test["scale"].GetFloat();
 
 
@@ -57,7 +56,6 @@ void Level::loadLevel() {
 		enemy.rateOfFire = test["rateOfFire"].GetFloat();
 		enemy.range = test["range"].GetFloat();
 		enemy.shotSpeed = test["shotSpeed"].GetFloat();
-		enemy.idealDistance = test["idealDistance"].GetFloat();
 		enemy.scale = test["scale"].GetFloat();
 
 

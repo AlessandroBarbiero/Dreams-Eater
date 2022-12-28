@@ -28,7 +28,7 @@ public:
     bool displayCompleteAnimation(State anim, const std::function<void()>& callback);
     bool displayCompleteAnimation(State anim, const std::function<void()>& callback, bool urgent);
     bool displayCompleteAnimation(State anim, float totalDuration);
-    bool displayOnce(State anim, bool urgent = true);
+    bool displayOnce(State anim, float animTime = -1, bool urgent = true);
     float getMinDuration();
 
     void setFacingDirection(Direction newDirection, bool reload = false);
