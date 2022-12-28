@@ -22,6 +22,12 @@ public:
 	static PowerupBuilder* getInstance();
 
 	std::shared_ptr<GameObject> createSinglePowerupObject(PowerupType type, glm::vec2 position);
+
+	std::string firePowerupMessage  = "Damage +3";
+	std::string waterPowerupMessage = "Speed +3\nArmor + 0.5\nRateOfFire + 0.5";
+	std::string icePowerupMessage   = "Health +10\nSpeed -0.5";
+	std::string earthPowerupMessage = "Transform into Earth Wraith";
+	//std::string loremIpsum = "ccccccccccccc\ncccccccccccccccccc\ncccccccccccccccc";
 	
 
 	const std::unordered_map<PowerupType, std::shared_ptr<Powerup>> PowerupMap {
@@ -30,10 +36,10 @@ public:
 		// {PowerupType::Fire,	 
 		//	std::make_shared<Powerup>("Fire", [](GameObject* player) { player->getComponent<CharacterComponent>()->damage += 3; }, getPowerupAtlas()->get("badges/fire.png"))},
 
-		{PowerupType::Fire,		std::make_shared<Powerup>("Fire",	&PowerupBuilder::firePowerup,		getPowerupAtlas()->get("badges/fire.png"))},
-		{PowerupType::Water,	std::make_shared<Powerup>("Water",	&PowerupBuilder::waterPowerup,		getPowerupAtlas()->get("badges/water-drop.png"))},
-		{PowerupType::Ice,		std::make_shared<Powerup>("Ice",	&PowerupBuilder::icePowerup,		getPowerupAtlas()->get("badges/ice.png"))},
-		{PowerupType::Earth,	std::make_shared<Powerup>("Earth",	&PowerupBuilder::earthPowerup,		getPowerupAtlas()->get("badges/earth.png"))},
+		{PowerupType::Fire,		std::make_shared<Powerup>("Fire", 	  firePowerupMessage,      &PowerupBuilder::firePowerup,		getPowerupAtlas()->get("badges/fire.png"))},
+		{PowerupType::Water,	std::make_shared<Powerup>("Water",	  waterPowerupMessage,     &PowerupBuilder::waterPowerup,		getPowerupAtlas()->get("badges/water-drop.png"))},
+		{PowerupType::Ice,		std::make_shared<Powerup>("Ice",	  icePowerupMessage,       &PowerupBuilder::icePowerup,		    getPowerupAtlas()->get("badges/ice.png"))},
+		{PowerupType::Earth,	std::make_shared<Powerup>("Earth",	  earthPowerupMessage,     &PowerupBuilder::earthPowerup,		getPowerupAtlas()->get("badges/earth.png"))},
 	};
 
 
@@ -48,5 +54,8 @@ private:
 
 	std::shared_ptr<sre::SpriteAtlas> powerupAtlas;
 	std::shared_ptr<sre::SpriteAtlas> getPowerupAtlas();
+
+
+	
 
 };

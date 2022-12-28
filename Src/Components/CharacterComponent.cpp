@@ -7,6 +7,7 @@
 #include "SpriteComponent.hpp"
 #include "BulletComponent.hpp"
 #include "SpriteAnimationComponent.hpp"
+#include "PowerupComponent.hpp"
 #include "GuiHelper.hpp"
 #define KNOCKBACK_SCALE 10
 
@@ -21,11 +22,14 @@ CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameO
     initSpecialEffectObject();
 
     heartTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Heart.png").withFilterSampling(false).build();
+    signTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Sign.png").withFilterSampling(false).build();
+
+    spriteSize = gameObject->getComponent<SpriteComponent>()->getSprite().getSpriteSize();
 
     ImGuiStyle& style = ImGui::GetStyle();
     itemSpacing = style.ItemSpacing;
     auto winsize = sre::Renderer::instance->getWindowSize();
-    auto size = offset + heartInRow * heartSize.x + (heartInRow - 1) * itemSpacing.x;
+    auto size = heartOffset + heartInRow * heartSize.x + (heartInRow - 1) * itemSpacing.x;
     menuSize = ImVec2(size, size);
 
 }
@@ -89,6 +93,11 @@ void CharacterComponent::update(float deltaTime) {
     checkRateOfFire(deltaTime);
    
     updateFlyingProj();
+
+    if (powerupMessageTimeOut > 0) {
+        powerupMessageTimeOut -= deltaTime;
+    }
+
 }
 
 void CharacterComponent::changeState(State newState)
@@ -306,6 +315,9 @@ void CharacterComponent::startShotCooldown() {
 
 void CharacterComponent::showEffect(State effect, float animTime) {
     specialEffects->displayOnce(effect, animTime);
+    if (effect == State::Item) {
+        powerupMessageTimeOut = messageTime;
+    }
 }
 
 
@@ -313,12 +325,18 @@ void CharacterComponent::showEffect(State effect, float animTime) {
 // %%%%%%%%%%%%%%%%% GUI %%%%%%%%%%%%%%%%%%%%%%%%
 
 void CharacterComponent::onGui() {
-    if (gameObject->tag == Tag::Player)
+    if (gameObject->tag == Tag::Player) {
         setPlayerGui();
+        if (powerupMessageTimeOut > 0) {
+            displayPowerupMessage();
+        }
+    }
+        
 
     if (DreamGame::instance->doDebugDraw) {
 
         auto title = "Character Component - " + gameObject->name;
+        auto titleGui = "Character Component GUI- " + gameObject->name;
 
         bool* open = nullptr;
         ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
@@ -337,6 +355,10 @@ void CharacterComponent::onGui() {
             if (ImGui::Button(std::string("Scale-##").append(gameObject->name).c_str(), { 100,25 })) {
                 gameObject->setScale(gameObject->getScale() - 0.1f);
             }
+        }
+
+        if (ImGui::CollapsingHeader(titleGui.c_str())) {
+            ImGui::DragFloat(std::string("TextOffset##").append(gameObject->name).c_str(), &textOffset, 1.0f, 10, 100);
         }
         ImGui::End();
     }
@@ -378,6 +400,52 @@ void CharacterComponent::setPlayerGui() {
     }
   
     ImGui::End();
+}
+
+void CharacterComponent::displayPowerupMessage(){
+    bool* open = nullptr;
+
+    auto position = DreamGame::instance->camera->getWindowCoordinates(glm::vec3(gameObject->getPosition(), 0.0));
+
+    auto uv0 = GuiHelper::getInstance()->uv0;
+    auto uv1 = GuiHelper::getInstance()->uv1;
+
+    auto powerupComponent = gameObject->getComponent<PowerupComponent>();
+    auto lastPowerup = powerupComponent->getPowerups()[powerupComponent->getPowerups().size() - 1];
+    std::string message = lastPowerup->getMessage();
+
+    auto textSize = ImGui::CalcTextSize(message.c_str());
+
+    auto scale = 0.1f;
+
+    while (textSize.x + textOffset > signTexture->getWidth() * scale || textSize.y + textOffset > signTexture->getHeight() * scale) {
+        scale += 0.1f;
+    }
+
+    auto signSize = ImVec2{ signTexture->getWidth() * scale, signTexture->getHeight() * scale };
+    
+    auto powerupMessagePosition = ImVec2{ position.x - signSize.x / 2.0f , position.y - spriteSize.y / 2.0f - signSize.y / 1.5f};
+
+    ImGui::SetNextWindowPos(powerupMessagePosition, ImGuiCond_Always);
+    ImGui::SetNextWindowSize(signSize, ImGuiCond_Always);
+
+    ImGui::Begin("Sign", open, flags);
+    ImGui::Image(signTexture->getNativeTexturePtr(), ImGui::GetContentRegionAvail(), uv0, uv1);
+    ImGui::End();
+
+    //ImGui::PushFont(GuiHelper::getInstance()->font20);
+    ImGui::SetNextWindowPos(powerupMessagePosition, ImGuiCond_Always);
+    ImGui::SetNextWindowSize(signSize, ImGuiCond_Always);
+    ImGui::SetNextWindowBgAlpha(0.0f);
+
+    
+    ImGui::Begin("Text", open, flags);
+    ImGui::SetCursorPos({ ImGui::GetWindowSize().x / 2.0f - textSize.x / 2.0f, ImGui::GetWindowSize().y / 2.0f - textSize.y / 2.0f });
+    ImGui::TextColored(ImVec4(0, 0, 0, 1), message.c_str());
+    ImGui::End();
+    //ImGui::PopFont();
+    
+    
 }
 
 //void CharacterComponent::setEnemyGui() {

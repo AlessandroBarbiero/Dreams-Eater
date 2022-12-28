@@ -7,10 +7,13 @@
 
 class Powerup {
 public:
-    Powerup(const std::string& name, std::function<void(GameObject*)> effect, sre::Sprite image)
-        : name(name), effect_(effect), image_(image) {}
+    Powerup(const std::string& name, const std::string& message, std::function<void(GameObject*)> effect, sre::Sprite image)
+        : name(name), message_(message), effect_(effect), image_(image) {}
 
     void apply(GameObject* player) { effect_(player); }
+
+    std::string getMessage() { return message_; }
+
 
     sre::Sprite getSprite() {   return image_;  }
 
@@ -21,6 +24,8 @@ private:
 
     std::function<void(GameObject*)> effect_;
     sre::Sprite image_;
+
+    std::string message_;
 };
 
 // How to use:
