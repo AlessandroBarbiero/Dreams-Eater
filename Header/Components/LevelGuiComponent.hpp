@@ -56,10 +56,10 @@ private:
     float doorRadius = 2.0f;
     float borderThickness = 2.0f;
     
-    float minScale = 5.0f;;
-    float scale = 10.0f;
+    float minScale = 6.0f;;
+    float scale = 7.0f;
     float scaleDecrement = 0.7;
-    float mapScale = 0.3;
+    float mapScale = 0.4;
     float windowOffset = 25.0f;
     float iconLength = 4.0f;
 

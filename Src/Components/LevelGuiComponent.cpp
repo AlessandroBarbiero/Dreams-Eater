@@ -2,6 +2,7 @@
 #include "sre/Renderer.hpp"
 #include "DreamGame.hpp";
 #include "GuiHelper.hpp"
+#include "RoomComponent.hpp"
 
 LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObject) {
 
@@ -118,11 +119,21 @@ void LevelGuiComponent::onGui() {
 
     if (DreamGame::instance->doDebugDraw) {
 
+        auto room = level->currentRoom;
+        auto roomComp = room->getComponent<RoomComponent>();
+        int num_enemies = 0;
+        for (auto& elem : roomComp->roomObjects) {
+            if (elem->tag == Tag::Enemy) {
+                num_enemies += 1;
+            }
+        }
+
         bool* open = nullptr;
         ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
         if (ImGui::CollapsingHeader("Minimap")) {
             ImGui::DragFloat("room scale ##", &scale, 0.1f, 0, 20);
             ImGui::DragFloat("map scale ##", &mapScale, 0.1f, 0, 1);
+            ImGui::Text("Number of enemies here: %d", num_enemies);
         }
         ImGui::End();
     }
@@ -169,11 +180,11 @@ void LevelGuiComponent::onGui() {
     glm::vec2 currPos1 = currentRoom->positions[0];
     glm::vec2 currPos2 = currentRoom->positions[0];
 
-    auto lowerX = centerTopLeft.x;
+    /*auto lowerX = centerTopLeft.x;
     auto lowerY = centerTopLeft.y;
 
     auto higherX = centerBottomRight.x;
-    auto higherY = centerBottomRight.y;
+    auto higherY = centerBottomRight.y;*/
     
 
     switch (currentRoom->roomSize)
@@ -219,19 +230,19 @@ void LevelGuiComponent::onGui() {
         ImVec2 bottomRight = { centerBottomRight.x + offset2.x, centerBottomRight.y - offset2.y };
 
 
-        lowerX = topLeft.x < lowerX ? topLeft.x : lowerX;
+        /*lowerX = topLeft.x < lowerX ? topLeft.x : lowerX;
         higherX = bottomRight.x > higherX ? bottomRight.x : higherX;
 
         higherY = bottomRight.y > higherY ? bottomRight.y : higherY;
-        lowerY = topLeft.y < lowerY ? topLeft.y : lowerY;
+        lowerY = topLeft.y < lowerY ? topLeft.y : lowerY;*/
         
         
         drawRoom(room, topLeft, bottomRight, drawSize);
     }
 
-    if (scale > minScale && (lowerX < mapPosition.x + internalOffset.x || higherY > mapPosition.y + menuSize.y - internalOffset.y || higherX > mapPosition.x + menuSize.x - internalOffset.x || lowerY < mapPosition.y + internalOffset.y)) {
+    /*if (scale > minScale && (lowerX < mapPosition.x + internalOffset.x || higherY > mapPosition.y + menuSize.y - internalOffset.y || higherX > mapPosition.x + menuSize.x - internalOffset.x || lowerY < mapPosition.y + internalOffset.y)) {
         scale -= scaleDecrement;
-    }
+    }*/
     
 
     ImGui::End();
