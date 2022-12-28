@@ -35,3 +35,16 @@ void SideScrollingCamera::setFollowObject(std::shared_ptr<GameObject> followObje
     this->followObject = followObject;
     this->offset = offset;
 }
+
+//from SRE examples
+glm::vec2 SideScrollingCamera::getWindowCoordinates(glm::vec3 worldpos) {
+    using namespace glm;
+    vec4 w(worldpos, 1.0f);
+    auto inst = sre::Renderer::instance;
+    auto viewport = static_cast<glm::vec2>(inst->getDrawableSize());
+    vec4 clipSpace = camera.getProjectionTransform(viewport) * camera.getViewTransform() * w;
+    vec4 ndc = clipSpace / clipSpace.w;
+    ndc.y *= -1;
+    vec4 winCoords = ndc * 0.5f + 0.5f;
+    return vec2(winCoords) * vec2(inst->getWindowSize());
+}

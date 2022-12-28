@@ -12,6 +12,8 @@ public:
 
     void setFollowObject(std::shared_ptr<GameObject> followObject, glm::vec2 offset);
 
+    glm::vec2 getWindowCoordinates(glm::vec3 worldpos);
+
     sre::Camera& getCamera();
 private:
     sre::Camera camera;

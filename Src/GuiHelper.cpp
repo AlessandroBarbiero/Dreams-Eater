@@ -9,9 +9,10 @@ void GuiHelper::setupFont() {
 	auto fonts = ImGui::GetIO().Fonts;
 	fonts->AddFontDefault();
 	auto fontName = GUI_PATH + "/Mustard Smile.ttf";
-	int fontSize = 20;
-	font = fonts->AddFontFromFileTTF(fontName.c_str(), fontSize);
+	font20 = fonts->AddFontFromFileTTF(fontName.c_str(), 20);
+	font30 = fonts->AddFontFromFileTTF(fontName.c_str(), 30);
 }
+
 
 void GuiHelper::setupDebugGui(){
 

@@ -107,6 +107,8 @@ private:
     friend class StartMenuComponent;
     friend class PauseMenuComponent;
     friend class EndMenuComponent;
+
+    friend class CharacterComponent;
     
 
 };

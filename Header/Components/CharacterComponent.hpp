@@ -109,22 +109,30 @@ private:
 
 
 	//==============GUI==============
-
 	std::shared_ptr<sre::Texture> heartTexture;
+	std::shared_ptr<sre::Texture> signTexture;
 
 	void setPlayerGui();
+	void displayPowerupMessage();
 	//void setEnemyGui();
 
 	ImVec2 guiPivot = { 0,0 };
 	ImVec2 heartSize = { 30,30 };
 	ImVec2 menuSize;
 	ImVec2 itemSpacing;
+	//ImVec2 powerupMessageSize = {100.0f, 100.0f};
 
 	ImVec4 RED = {1,0,0,1};
 	ImVec4 WHITE = {1,1,1,1};
 
+	glm::vec2 spriteSize;
+
 	int heartInRow = 8;
-	float offset = 20;
+	float heartOffset = 20;
+	float textOffset = 50;
+
+	float messageTime = 3.0f;
+	float powerupMessageTimeOut = 0.0f;
 
 	
 
