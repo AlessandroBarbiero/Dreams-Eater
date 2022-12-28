@@ -20,13 +20,11 @@ CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameO
 
     initSpecialEffectObject();
 
-    heartFullTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "FullHeart2.png").withFilterSampling(false).build();
-    heartEmptyTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "EmptyHeart2.png").withFilterSampling(false).build();
+    heartTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Heart.png").withFilterSampling(false).build();
 
     ImGuiStyle& style = ImGui::GetStyle();
-    ImVec2 itemSpacing = style.ItemSpacing;
+    itemSpacing = style.ItemSpacing;
     auto winsize = sre::Renderer::instance->getWindowSize();
-    auto offset = 20;
     auto size = offset + heartInRow * heartSize.x + (heartInRow - 1) * itemSpacing.x;
     menuSize = ImVec2(size, size);
 
@@ -303,10 +301,6 @@ void CharacterComponent::onGui() {
 
 void CharacterComponent::setPlayerGui() {
 
-    //GuiHelper::getInstance()->setZeroPadding();
-    
-
-
     ImGui::SetNextWindowSize(menuSize, ImGuiCond_Always);
     ImGui::SetNextWindowPos(GuiHelper::getInstance()->baseVec, ImGuiCond_Always, guiPivot);
     ImGui::SetNextWindowBgAlpha(0.0f);
@@ -316,54 +310,29 @@ void CharacterComponent::setPlayerGui() {
 
     bool* open = nullptr;
 
-    ImGui::PushFont(GuiHelper::getInstance()->font);
     ImGui::Begin("#player", open, flags);
     
     
     int hpInt = (int)hp;
-    bool decimal = hp - hpInt > 0;
-
-    /*int numHearts = 0;
-    if (hpInt > 15){
-        hpInt = 15;
-        numHearts = 15;
-        decimal = false;
-    }
-    else if (hpInt < 5){
-        numHearts = 5;
-    }
-    else {
-        numHearts = decimal ? hpInt + 1 : hpInt;
-    }
-
-    ImVec2 size = ImGui::GetContentRegionAvail();
-
-    
-
-    auto spaceForHearts = size.x - itemSpacing.x * numHearts;
-
-    float s = (size.x * 5 * heartSize.x) / (numHearts * menuSize.x);
-
-    auto scaledSize = ImVec2{s ,s };*/
+    auto decimal = hp - hpInt;
 
     for (int i = 0; i < hpInt && i <= maxHp; i++) {
-        ImGui::Image(heartFullTexture->getNativeTexturePtr(), heartSize, uv0, uv1, ImVec4(1, 0, 0, 1));
+        ImGui::Image(heartTexture->getNativeTexturePtr(), heartSize, uv0, uv1,  RED);
         if (i < heartInRow - 1 || i > heartInRow - 1)
             ImGui::SameLine();
     }
-    if (decimal && hpInt < maxHp)
-        ImGui::Image(heartEmptyTexture->getNativeTexturePtr(), heartSize, uv0, uv1, ImVec4(1, 0, 0, 1));
-         
-    
+    if (decimal > 0.0 && hpInt < maxHp){
+        ImGui::Image(heartTexture->getNativeTexturePtr(), heartSize, uv0, uv1, WHITE);
+        ImGui::SameLine();
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - heartSize.x - itemSpacing.x);
 
-    
-    /*ImGui::Image(heartEmptyTexture->getNativeTexturePtr(), heartSize, uv0, uv1);
-    ImVec4 tintColor(1, 0, 0, 1);
-    ImGui::Image(heartEmptyTexture->getNativeTexturePtr(), ImVec2{heartSize.x/2.0f, heartSize.y/2.0f}, uv0, uv1, tintColor);*/
+        auto uv1Fill = ImVec2{ uv1.x * decimal, uv1.y};
+        auto fillSize = ImVec2{ heartSize.x * decimal, heartSize.y};
 
+        ImGui::Image(heartTexture->getNativeTexturePtr(), fillSize, uv0, uv1Fill, RED);
+    }
+  
     ImGui::End();
-    ImGui::PopFont();
-    //ImGui::PopStyleVar();
 }
 
 //void CharacterComponent::setEnemyGui() {

@@ -110,8 +110,7 @@ private:
 
 	//==============GUI==============
 
-	std::shared_ptr<sre::Texture> heartFullTexture;
-	std::shared_ptr<sre::Texture> heartEmptyTexture;
+	std::shared_ptr<sre::Texture> heartTexture;
 
 	void setPlayerGui();
 	//void setEnemyGui();
@@ -119,7 +118,13 @@ private:
 	ImVec2 guiPivot = { 0,0 };
 	ImVec2 heartSize = { 30,30 };
 	ImVec2 menuSize;
+	ImVec2 itemSpacing;
+
+	ImVec4 RED = {1,0,0,1};
+	ImVec4 WHITE = {1,1,1,1};
+
 	int heartInRow = 8;
+	float offset = 20;
 
 	
 

@@ -2,16 +2,24 @@
 #include "sre/Renderer.hpp"
 #include "DreamGame.hpp";
 #include "GuiHelper.hpp"
-#include "PhysicsComponent.hpp"
 
 LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObject) {
-    
-    mapTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "map.png").withFilterSampling(false).build();
-    
-    menuSize = { mapTexture->getWidth() / scale, mapTexture->getHeight() / scale };
 
-    menuPosition = { sre::Renderer::instance->getWindowSize().x - menuSize.x - offset,offset };
-}
+    auto path = GuiHelper::getInstance()->GUI_PATH;
+
+    mapTexture = sre::Texture::create().withFile(path + "map.png").withFilterSampling(false).build();
+    bossTexture = sre::Texture::create().withFile(path + "FinalBoss.png").withFilterSampling(false).build();
+    powerupTexture = sre::Texture::create().withFile(path + "boost.png").withFilterSampling(false).build();
+    spawnTexture = sre::Texture::create().withFile(path + "home.png").withFilterSampling(false).build();
+    
+    menuSize = { mapTexture->getWidth() * mapScale, mapTexture->getHeight() * mapScale };
+    menuPosition = { sre::Renderer::instance->getWindowSize().x - menuSize.x - windowOffset,windowOffset };
+    
+    internalOffset = {internalOffsetPercentage * mapTexture->getWidth(),internalOffsetPercentage * mapTexture->getHeight()};
+
+    mapPosition = { sre::Renderer::instance->getWindowSize().x - menuSize.x - windowOffset + internalOffset.x, menuPosition.y + internalOffset.y};
+    mapSize = { mapTexture->getWidth() * mapScale - 2 * internalOffset.x, mapTexture->getHeight() * mapScale - 2 * internalOffset.y  };
+    }
 
 LevelGuiComponent::~LevelGuiComponent(){
     level.reset();
@@ -27,14 +35,32 @@ void LevelGuiComponent::setLevel(std::shared_ptr<Level> level) {
 
 void LevelGuiComponent::drawRoom(std::shared_ptr<RoomSettings> roomSettings, ImVec2 topLeft, ImVec2 bottomRight, ImVec2 size){
 
+    auto halfSize = ImVec2{ size.x / 2.0f, size.y / 2.0f };
+    auto center = ImVec2{ topLeft.x + halfSize.x, topLeft.y + halfSize.y };
+    iconSize = { iconLength * scale, iconLength * scale};
+
+    auto uv0 = GuiHelper::getInstance()->uv0;
+    auto uv1 = GuiHelper::getInstance()->uv1;
+
     ImGui::GetWindowDrawList()->AddRectFilled(topLeft, bottomRight, borderColor);
     ImGui::GetWindowDrawList()->AddRectFilled({ topLeft.x + borderThickness, topLeft.y + borderThickness }, { bottomRight.x - borderThickness, bottomRight.y - borderThickness }, roomColor);
 
-    float radius = 2.0f;
+    ImGui::SetCursorScreenPos(ImVec2{center.x - iconSize.x / 2.0f, center.y - iconSize.x / 2.0f });
+    switch (roomSettings->roomType) {
+        case EnemyRoom:
+            break;
+        case PowerUpRoom:
+            ImGui::Image(powerupTexture->getNativeTexturePtr(), iconSize, uv0, uv1,ImVec4(0,0,0,1));
+            break;
+        case BossRoom:
+            ImGui::Image(bossTexture->getNativeTexturePtr(), iconSize, uv0, uv1, ImVec4(0, 0, 0, 1));
+            break;
+        case SpawnRoom:
+            ImGui::Image(spawnTexture->getNativeTexturePtr(), iconSize, uv0, uv1, ImVec4(0, 0, 0, 1));
+            break;
+    }
 
-    auto halfSize = ImVec2{ size.x / 2.0f, size.y / 2.0f };
-
-    auto center = ImVec2{ topLeft.x + halfSize.x, topLeft.y + halfSize.y };
+    
 
     for (auto& door : roomSettings->doors) {
         auto point = center;
@@ -84,11 +110,24 @@ void LevelGuiComponent::drawRoom(std::shared_ptr<RoomSettings> roomSettings, ImV
             point.y += halfSize.y / 2.0f;
             break;
         }
-        ImGui::GetWindowDrawList()->AddCircleFilled(point, radius, doorColor);
+        ImGui::GetWindowDrawList()->AddCircleFilled(point, doorRadius, doorColor);
     }
 }
 
 void LevelGuiComponent::onGui() {
+
+    if (DreamGame::instance->doDebugDraw) {
+
+        bool* open = nullptr;
+        ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
+        if (ImGui::CollapsingHeader("Minimap")) {
+            ImGui::DragFloat("room scale ##", &scale, 0.1f, 0, 20);
+            ImGui::DragFloat("map scale ##", &mapScale, 0.1f, 0, 1);
+        }
+        ImGui::End();
+    }
+
+    
     
     GuiHelper::getInstance()->setZeroPadding();
     ImGui::SetNextWindowBgAlpha(0.0f);
@@ -102,11 +141,21 @@ void LevelGuiComponent::onGui() {
 
     ImGui::SetNextWindowPos(menuPosition, cond);
     ImGui::SetNextWindowSize(menuSize, cond);
-    ImGui::Begin("Minimap", open, menuFlags);
+    ImGui::Begin("Back", open, menuFlags);
 
     ImGui::Image(mapTexture.get()->getNativeTexturePtr(), menuSize, uv0, uv1);
 
-    ImGui::SetCursorPos(GuiHelper::getInstance()->baseVec);
+    ImGui::End();
+    ImGui::PopStyleVar();
+
+    GuiHelper::getInstance()->setZeroPadding();
+    ImGui::SetNextWindowBgAlpha(0.0f);
+
+    ImGui::SetNextWindowPos(mapPosition, cond);
+    ImGui::SetNextWindowSize(mapSize, cond);
+    ImGui::Begin("Minimap", open, menuFlags);
+
+    //ImGui::SetCursorPos(GuiHelper::getInstance()->baseVec);
 
     auto roomSize = currentRoom->size;
     ImVec2 size = { roomSize.x * scale, roomSize.y * scale };
@@ -119,6 +168,13 @@ void LevelGuiComponent::onGui() {
 
     glm::vec2 currPos1 = currentRoom->positions[0];
     glm::vec2 currPos2 = currentRoom->positions[0];
+
+    auto lowerX = centerTopLeft.x;
+    auto lowerY = centerTopLeft.y;
+
+    auto higherX = centerBottomRight.x;
+    auto higherY = centerBottomRight.y;
+    
 
     switch (currentRoom->roomSize)
     {
@@ -161,8 +217,22 @@ void LevelGuiComponent::onGui() {
         auto offset2 = (pos2 - currPos2) * squareSize;
         ImVec2 topLeft = { centerTopLeft.x + offset1.x, centerTopLeft.y - offset1.y };
         ImVec2 bottomRight = { centerBottomRight.x + offset2.x, centerBottomRight.y - offset2.y };
+
+
+        lowerX = topLeft.x < lowerX ? topLeft.x : lowerX;
+        higherX = bottomRight.x > higherX ? bottomRight.x : higherX;
+
+        higherY = bottomRight.y > higherY ? bottomRight.y : higherY;
+        lowerY = topLeft.y < lowerY ? topLeft.y : lowerY;
+        
+        
         drawRoom(room, topLeft, bottomRight, drawSize);
     }
+
+    if (scale > minScale && (lowerX < mapPosition.x + internalOffset.x || higherY > mapPosition.y + menuSize.y - internalOffset.y || higherX > mapPosition.x + menuSize.x - internalOffset.x || lowerY < mapPosition.y + internalOffset.y)) {
+        scale -= scaleDecrement;
+    }
+    
 
     ImGui::End();
     ImGui::PopStyleVar();

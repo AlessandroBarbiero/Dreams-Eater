@@ -32,8 +32,19 @@ private:
 
     int cond = ImGuiCond_Always;
 
+    //menuPosition and size refer to the background image
     ImVec2 menuPosition;
     ImVec2 menuSize;
+
+    //mapPosition and size refer to the actual minimap
+    ImVec2 mapPosition;
+    ImVec2 mapSize;
+
+    //distance between background image and the minimap in the menu
+    ImVec2 internalOffset;
+    float internalOffsetPercentage = 0.02f;
+
+    ImVec2 iconSize;
     ImVec2 buttonSize = { 200, 100 };
 
     ImU32 borderColor = IM_COL32(0, 0, 0, 255);
@@ -42,10 +53,19 @@ private:
     ImU32 doorColor = IM_COL32(255, 0, 0, 255);
     ImU32 roomColor;
 
+    float doorRadius = 2.0f;
     float borderThickness = 2.0f;
-    float scale = 3.0f;
-    float offset = 25.0f;
+    
+    float minScale = 5.0f;;
+    float scale = 10.0f;
+    float scaleDecrement = 0.7;
+    float mapScale = 0.3;
+    float windowOffset = 25.0f;
+    float iconLength = 4.0f;
 
     std::shared_ptr<sre::Texture> mapTexture;
+    std::shared_ptr<sre::Texture> bossTexture;
+    std::shared_ptr<sre::Texture> powerupTexture;
+    std::shared_ptr<sre::Texture> spawnTexture;
 
 };
