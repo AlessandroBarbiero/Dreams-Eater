@@ -18,6 +18,7 @@ enum class State {
 	Hit,
 	Victory,
 	Item,
+	Charge,
 };
 
 const std::unordered_map<State, const char*> StateToString{
@@ -34,6 +35,7 @@ const std::unordered_map<State, const char*> StateToString{
 	{State::Hit,			"Hit"		},
 	{State::Victory,		"Victory"	},
 	{State::Item,			"Item"		},
+	{State::Charge,			"Charge"		},
 };
 
 const std::unordered_map<std::string, State> StringToState{
@@ -50,6 +52,7 @@ const std::unordered_map<std::string, State> StringToState{
 	{"Hit"		,		State::Hit				},
 	{"Victory"	,		State::Victory			},
 	{"Item"		,		State::Item				},
+	{"Charge"	,		State::Charge			},
 };
 
 enum class Direction {

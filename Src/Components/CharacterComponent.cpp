@@ -62,12 +62,21 @@ void CharacterComponent::initSpecialEffectObject() {
         itemAnim[i].setOrderInBatch(Depth::Effect);
     }
 
+    std::vector<sre::Sprite> chargeAnim(12);
+    spriteName = "Charge/";
+    for (int i = 0; i < chargeAnim.size(); i++) {
+        chargeAnim[i] = CharacterComponent::effectAtlas->get(spriteName + std::to_string(i) + ".png");
+        chargeAnim[i].setOrderInBatch(Depth::Effect);
+    }
+
     specialEffects->addAnimationSequence(State::Victory,    Direction::RIGHT,       victoryAnim);
     specialEffects->addAnimationSequence(State::Victory,    Direction::LEFT,        victoryAnim);
     specialEffects->addAnimationSequence(State::Hit,        Direction::RIGHT,       hitAnim);
     specialEffects->addAnimationSequence(State::Hit,        Direction::LEFT,        hitAnim);
     specialEffects->addAnimationSequence(State::Item,       Direction::RIGHT,       itemAnim);
     specialEffects->addAnimationSequence(State::Item,       Direction::LEFT,        itemAnim);
+    specialEffects->addAnimationSequence(State::Charge,     Direction::RIGHT,       chargeAnim);
+    specialEffects->addAnimationSequence(State::Charge,     Direction::LEFT,        chargeAnim);
     specialEffects->setBaseAnimationTime(0.1f);
 
     gameObject->addChild(specialEffectsObj.get());
@@ -80,13 +89,6 @@ void CharacterComponent::update(float deltaTime) {
     checkRateOfFire(deltaTime);
    
     updateFlyingProj();
-}
-
-void CharacterComponent::resetKeys(){
-    up = false;
-    down = false;
-    left = false; 
-    right = false;
 }
 
 void CharacterComponent::changeState(State newState)
@@ -252,6 +254,49 @@ void CharacterComponent::shoot(glm::vec2 direction, const sre::Sprite& bulletSpr
     std::weak_ptr<BulletComponent> weakBullet = bullet;
     flyingProj.push(weakBullet);
     startShotCooldown();
+}
+
+
+void CharacterComponent::specialAttack(glm::vec2 direction, float dmg, const std::vector<sre::Sprite> bulletSprites, float imageScale)
+{
+    showEffect(State::Charge);
+    auto game = DreamGame::instance;
+    auto physicsScale = game->physicsScale;
+
+    auto specialShot = game->currentScene->createGameObject();
+    specialShot->name = "SpecialBullet";
+    if (gameObject->tag == Tag::Player)
+        specialShot->tag = Tag::PlayerBullet;
+    else if (gameObject->tag == Tag::Enemy)
+        specialShot->tag = Tag::EnemyBullet;
+    else
+        specialShot->tag = Tag::Bullet;
+
+    auto spriteComp = specialShot->addComponent<SpriteComponent>();
+    spriteComp->setSprite(bulletSprites[0]);
+    float bulletRadius = bulletSprites[0].getSpriteSize().x / (2 * physicsScale);
+
+    glm::vec2 position = gameObject->getPosition() / physicsScale + direction * (radius * gameObject->getScale() + bulletRadius*imageScale);
+    specialShot->setPosition(position * physicsScale);
+    specialShot->setRotation(glm::atan(direction.y, direction.x));
+
+    auto shotPhy = specialShot->addComponent<PhysicsComponent>();
+    shotPhy->initCircle(b2_dynamicBody, bulletRadius, position, 1);
+    shotPhy->setLinearVelocity(direction * shotSpeed);
+    shotPhy->setSensor(true);
+
+    specialShot->setScale( imageScale );
+
+    auto bullet = specialShot->addComponent<BulletComponent>();
+    bullet->startingPosition = specialShot->getPosition();
+    // Infitity range
+    bullet->range = 50;
+    bullet->damage = dmg;
+    bullet->knockback = 1.5 * KNOCKBACK_SCALE;
+    std::weak_ptr<BulletComponent> weakBullet = bullet;
+    specialProj.push(weakBullet);
+
+    //TODO: use animation component to animate the attack
 }
 
 void CharacterComponent::startShotCooldown() {

@@ -17,23 +17,23 @@ void PlayerController::update(float deltaTime) {
         character->changeState(State::Idle);
         return;
     }
-        
+
     glm::vec2 movement{ 0,0 };
 
-    if (up) 
+    if (up)
         movement.y++;
-    if (down) 
-        movement.y--;    
-    if (left) 
-        movement.x--;    
-    if (right) 
+    if (down)
+        movement.y--;
+    if (left)
+        movement.x--;
+    if (right)
         movement.x++;
 
-    
+
     if (movement != glm::vec2(0)) {
 
         character->changeState(State::Walk);
-        if(movement.x != 0) // If I am not moving on the x axis mantain old orientation
+        if (movement.x != 0) // If I am not moving on the x axis mantain old orientation
             character->setDirection(vectorToDirection(movement));
 
         lastDirection = glm::normalize(movement);
@@ -43,18 +43,26 @@ void PlayerController::update(float deltaTime) {
         character->changeState(State::Idle);
     }
 
-    if (shooting)
-        character->shoot(lastDirection, bulletSprite);
+    // If there is a super bullet registered
+    if (superBullet.size() != 0)
+        handleSuperAttack(deltaTime);
 
     fireOnKeyPress();
 }
+
+
 
 void PlayerController::resetKeys(){
     up  = false;
     down = false;
     left  = false;
     right = false;
-    shooting = false;
+    superShoot = false;
+
+    shootUp = false;
+    shootDown = false;
+    shootLeft = false;
+    shootRight = false;
 }
 
 bool PlayerController::onKey(SDL_Event& event) {
@@ -70,8 +78,8 @@ bool PlayerController::onKey(SDL_Event& event) {
     if (sym == keyRight) 
         right = event.type == SDL_KEYDOWN;   
 
-    if (sym == keyShot) 
-        shooting = event.type == SDL_KEYDOWN;  
+    if (sym == keySuperShot) 
+        superShoot = event.type == SDL_KEYDOWN;
 
 
     if (sym == keyShootUp)
@@ -114,8 +122,35 @@ void PlayerController::fireOnKeyPress() {
     }
 }
 
+void PlayerController::handleSuperAttack(float deltaTime)
+{
+    if (superReady) {
+        if (superShoot) {
+            character->specialAttack(lastDirection, superDmg, superBullet, superScale);
+            superReady = false;
+            superCooldownTimer = 0;
+        }
+    }
+    else {
+        // Update cooldown
+        superCooldownTimer += deltaTime;
+        if (superCooldownTimer >= superCooldown)
+            superReady = true;
+    }
+}
+
+
+
 void PlayerController::setBulletSprites(sre::SpriteAtlas* atlas)
 {
     bulletSprite = atlas->get("Bullet.png");
     bulletSprite.setOrderInBatch(Depth::Bullet);
+}
+
+void PlayerController::overrideSuperAttack(float dmg, float cooldown, const std::vector<sre::Sprite> bulletSprites, float imageScale)
+{
+    superDmg = dmg;
+    superBullet = bulletSprites;
+    superScale = imageScale;
+    superCooldown = cooldown;
 }

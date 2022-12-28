@@ -14,6 +14,7 @@ public:
     
     void update(float deltaTime) override;
     void setBulletSprites(sre::SpriteAtlas* atlas);
+    void overrideSuperAttack(float dmg, float cooldown, const std::vector<sre::Sprite> bulletSprites, float imageScale);
 
     void resetKeys() override;
 
@@ -25,13 +26,22 @@ private:
     sre::Sprite bulletSprite;
     void fireOnKeyPress();
 
+    //SuperAttack
+    std::vector<sre::Sprite> superBullet;
+    float superDmg;
+    float superScale;
+    bool superReady = false;
+    float superCooldownTimer = 0;
+    float superCooldown;
+    void handleSuperAttack(float deltaTime);
+
     glm::vec2 lastDirection;
 
     bool up = false;
     bool down = false;
     bool left = false;
     bool right = false;
-    bool shooting = false;
+    bool superShoot = false;
 
     bool shootUp = false;
     bool shootDown = false;
@@ -42,7 +52,7 @@ private:
     SDL_Keycode keyDown;
     SDL_Keycode keyLeft;
     SDL_Keycode keyRight;
-    SDL_Keycode keyShot;
+    SDL_Keycode keySuperShot;
 
     SDL_Keycode keyShootUp;
     SDL_Keycode keyShootDown;

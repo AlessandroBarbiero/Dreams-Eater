@@ -27,6 +27,9 @@ void BulletComponent::onCollisionStart(PhysicsComponent* comp) {
     Tag tag = comp->getGameObject()->tag;
     if (tag == Tag::EnemyBullet || tag == Tag::PlayerBullet || tag == Tag::Powerup)
         return;
+    Tag myTag = gameObject->tag;
+    if ((tag == Tag::Enemy && myTag == Tag::EnemyBullet )|| (tag == Tag::Player && myTag == Tag::PlayerBullet) )
+        return;
     destroyBullet();
 }
 

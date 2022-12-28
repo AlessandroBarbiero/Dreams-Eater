@@ -17,6 +17,7 @@ constexpr auto R_TO_SPRITE_RATIO = 0.6;
 
 unordered_map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> CharacterBuilder::atlasMap;
 unordered_map<CharacterType, unordered_map<State, int>> CharacterBuilder::animationSizesMap;
+std::shared_ptr<sre::SpriteAtlas> CharacterBuilder::attackAtlas;
 
 std::shared_ptr<sre::SpriteAtlas> CharacterBuilder::getAtlas(CharacterType type) {
 #ifdef LAZY_LOADING
@@ -31,6 +32,21 @@ std::shared_ptr<sre::SpriteAtlas> CharacterBuilder::getAtlas(CharacterType type)
 #endif
     return atlasMap[type];
 }
+
+std::shared_ptr<sre::SpriteAtlas> CharacterBuilder::getAttackAtlas()
+{
+    if (!attackAtlas) {
+        std::cout << "Loading atlas resources for special attacks" << std::endl;
+        std::string attackName = "LightEffect";
+        attackAtlas = 
+            sre::SpriteAtlas::create("Sprites/AttackAnimation/" + attackName + "/" + attackName + "_atlas.json", "Sprites/AttackAnimation/" + attackName + "/" + attackName + "_atlas.png");
+
+    }
+
+    return attackAtlas;
+}
+
+
 
 unordered_map<State, int> CharacterBuilder::getAnimationSizes(CharacterType type) {
     if (animationSizesMap[type].size() == 0)
@@ -142,7 +158,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     playerController->keyDown = settings.keybinds.down;
     playerController->keyLeft = settings.keybinds.left;
     playerController->keyRight = settings.keybinds.right;
-    playerController->keyShot = settings.keybinds.shot;
+    playerController->keySuperShot = settings.keybinds.shot;
 
     playerController->keyShootUp = settings.keybinds.shootUp;
     playerController->keyShootDown = settings.keybinds.shootDown;
@@ -158,6 +174,8 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
 
     return player;
 }
+
+
 
 // Insert both right and left animations related to the State
 void insertAnimationSequence(std::shared_ptr<SpriteAnimationComponent> animation, State state, int animationSize,
@@ -265,6 +283,11 @@ void CharacterBuilder::transform(GameObject* character, CharacterType newType)
     if (character->tag == Tag::Player) {
         auto playerController = character->getComponent<PlayerController>();
         playerController->setBulletSprites(spriteAtlas.get());
+        if (newType == CharacterType::BrownWraith) {
+            std::string spriteName = "Style4/";
+            std::vector<sre::Sprite> superAnimationVector = getAnimationVector(spriteName, 5, getAttackAtlas(), Depth::Bullet);
+            playerController->overrideSuperAttack(15, 3, superAnimationVector, 5);
+        }
     }
     else if (character->tag == Tag::Enemy) {
         auto enemyController = character->getComponent<IEnemyController>();
@@ -278,4 +301,15 @@ void CharacterBuilder::transform(GameObject* character, CharacterType newType)
     std::unordered_map<State, int> animationSizes = getAnimationSizes(newType);
     animationSetup(animation, spriteAtlas, animationSizes, animation->getBaseAnimationTime(), depth);
 
+}
+
+std::vector<sre::Sprite> CharacterBuilder::getAnimationVector(std::string spriteName, int animationSize, std::shared_ptr<sre::SpriteAtlas> spriteAtlas, Depth visualDepth)
+{
+    std::vector<sre::Sprite> animationVector(animationSize);
+
+    for (int i = 0; i < animationVector.size(); i++) {
+        animationVector[i] = spriteAtlas->get(spriteName + std::to_string(i) + ".png");
+        animationVector[i].setOrderInBatch(visualDepth);
+    }
+    return animationVector;
 }

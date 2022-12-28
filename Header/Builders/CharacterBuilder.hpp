@@ -64,10 +64,14 @@ public:
 	static std::shared_ptr<GameObject> createEnemy(EnemySettings settings);
 	static void transform(GameObject* character, CharacterType newType);
 
+	static std::vector<sre::Sprite> getAnimationVector(std::string spriteName, int animationSize,
+		std::shared_ptr<sre::SpriteAtlas> spriteAtlas, Depth visualDepth);
+
 private:
 
 	static unordered_map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> atlasMap;
 	static unordered_map<CharacterType, unordered_map<State, int>> animationSizesMap;
+	static std::shared_ptr<sre::SpriteAtlas> attackAtlas;
 
 	static void initAtlasMap();
 	static void initAtlasMap(CharacterType type);
@@ -75,6 +79,7 @@ private:
 
 	static unordered_map<State, int> getAnimationSizes(CharacterType type);
 	static std::shared_ptr<sre::SpriteAtlas> getAtlas(CharacterType type);
+	static std::shared_ptr<sre::SpriteAtlas> getAttackAtlas();
 
 	static void animationSetup(std::shared_ptr<SpriteAnimationComponent> animation, std::shared_ptr<sre::SpriteAtlas> spriteAtlas,
 		std::unordered_map<State, int> AnimationSizes, float baseAnimTime, Depth visualDepth);

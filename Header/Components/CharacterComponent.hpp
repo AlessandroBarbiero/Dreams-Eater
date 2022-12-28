@@ -24,9 +24,15 @@ public:
 	void onGui() override;
 	
 	void update(float deltaTime) override;
-	void resetKeys() override;
 
+	// Shoot a bullet in the passed direction that is destroyed after it travels for range distance, this method is subjected to the stats:
+	// - damage
+	// - shotSpeed
+	// - range
+	// - rateOfFire
 	void shoot(glm::vec2 direction, const sre::Sprite& bulletSprite);
+	// Infinity range attack with the display of an animation and a given damage, not subjected to rate of fire
+	void specialAttack(glm::vec2 direction, float dmg, const std::vector<sre::Sprite> bulletSprites, float imageScale);
 
 	void stunned(float stunTimeout);
 	void stunned(bool stun);
@@ -90,6 +96,7 @@ private:
 	bool readyToShoot = true;
 
 	std::queue<std::weak_ptr<BulletComponent>> flyingProj;
+	std::queue<std::weak_ptr<BulletComponent>> specialProj;
 
 	void startShotCooldown();
 	void die();
