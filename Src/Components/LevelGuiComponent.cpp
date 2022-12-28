@@ -5,28 +5,34 @@
 #include "PhysicsComponent.hpp"
 
 LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObject) {
-    roomTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Room.png").withFilterSampling(false).build(); 
-    menuPosition = ImVec2{sre::Renderer::instance->getWindowSize().x - menuSize.x,0.0f};
+    auto offset = 25.0f;
+    menuPosition = ImVec2{sre::Renderer::instance->getWindowSize().x - menuSize.x - offset,offset };
+
+    mapTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "map.png").withFilterSampling(false).build();
+}
+
+LevelGuiComponent::~LevelGuiComponent(){
+    level.reset();
 }
 
 void LevelGuiComponent::setLevel(std::shared_ptr<Level> level) {
     this->level = level;
 }
-void LevelGuiComponent::setPlayer(std::shared_ptr<GameObject> player) {
-    this->player = player;
-}
+
+//void LevelGuiComponent::setPlayer(std::shared_ptr<GameObject> player) {
+//    this->player = player;
+//}
 
 void LevelGuiComponent::drawRoom(std::shared_ptr<RoomSettings> roomSettings, ImVec2 topLeft, ImVec2 bottomRight, ImVec2 size){
 
-    ImGui::GetWindowDrawList()->AddRectFilled(topLeft, bottomRight, borderColor);
-    ImGui::GetWindowDrawList()->AddRectFilled({ topLeft.x + 1, topLeft.y + 1 }, { bottomRight.x - 1, bottomRight.y - 1 }, roomColor);
+    ImGui::GetWindowDrawList()->AddRect({ topLeft.x, topLeft.y}, { bottomRight.x , bottomRight.y}, borderColor, 0.0f, ImDrawCornerFlags_All, borderThickness);
+    ImGui::GetWindowDrawList()->AddRectFilled({ topLeft.x + borderThickness, topLeft.y + borderThickness }, { bottomRight.x - borderThickness, bottomRight.y - borderThickness }, roomColor);
+    
     float radius = 2.0f;
 
     auto halfSize = ImVec2{ size.x / 2.0f, size.y / 2.0f };
 
     auto center = ImVec2{ topLeft.x + halfSize.x, topLeft.y + halfSize.y };
-
-   
 
     for (auto& door : roomSettings->doors) {
         auto point = center;
@@ -81,29 +87,22 @@ void LevelGuiComponent::drawRoom(std::shared_ptr<RoomSettings> roomSettings, ImV
 }
 
 void LevelGuiComponent::onGui() {
+    if (DreamGame::instance->doDebugDraw) {
+        
+        bool* open = nullptr;
+
+        ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
+        if (ImGui::CollapsingHeader("sss")) {
+            ImGui::DragFloat("scale ##", &scale, 0.1f, 0, 20);
+        }
+        ImGui::End();
+    }
 
     GuiHelper::getInstance()->setZeroPadding();
-    //ImGui::SetNextWindowBgAlpha(0.0f);
+    ImGui::SetNextWindowBgAlpha(0.0f);
 
-    /*auto uv0 = GuiHelper::getInstance()->uv0;
-    auto uv1 = GuiHelper::getInstance()->uv1;*/
-
-    
-    
-
-    /*auto roomSizePixel = roomComp->getRoomSizeInPixels();
-    std::cout << "ROOM PIX " << std::endl;
-    std::cout << roomSizePixel.x << " " << roomSizePixel.y << std::endl;
-
-    std::cout << "POS PLAYER PHYS" << std::endl;
-    auto playerPos = player->getComponent<PhysicsComponent>()->getPosition();
-    std::cout << playerPos.x << " " << playerPos.y << std::endl;
-
-    auto center = ImVec2{ topLeft.x + size.x + playerPos.x / roomSizePixel.x * size.x, topLeft.y + size.y + playerPos.y / roomSizePixel.y * size.y };
-    float radius = 2.0f;
-    ImU32 colorPlayer = IM_COL32(255, 0, 0, 255);
-
-    ImGui::GetWindowDrawList()->AddCircleFilled(center, radius, colorPlayer);*/
+    static auto uv0 = GuiHelper::getInstance()->uv0;
+    static auto uv1 = GuiHelper::getInstance()->uv1;
 
     auto currentRoom = level->roomSettings[level->currentRoomIndex];
     
@@ -113,41 +112,36 @@ void LevelGuiComponent::onGui() {
     ImGui::SetNextWindowSize(menuSize, cond);
     ImGui::Begin("Minimap", open, menuFlags);
 
+    ImGui::Image(mapTexture.get()->getNativeTexturePtr(), menuSize, uv0, uv1);
+
+    ImGui::SetCursorPos(GuiHelper::getInstance()->baseVec);
+
     auto roomSize = currentRoom->size;
     ImVec2 size = { roomSize.x * scale, roomSize.y * scale };
-    
-    /*for (auto it = level->roomSettings.begin(); it != level->roomSettings.end(); ++it)
-    {}*/
-    //if (level->roomEntered[i]) {}
 
     //show current room
     ImVec2 centerTopLeft = { menuSize.x / 2.0f - size.x / 2.0f + menuPosition.x, menuSize.y / 2.0f - size.y / 2.0f + menuPosition.y };
     ImVec2 centerBottomRight = { menuSize.x / 2.0f + size.x / 2.0f + menuPosition.x , menuSize.y / 2.0f + size.y / 2.0f + menuPosition.y };
-    roomColor = IM_COL32(0, 0, 128, 255);
+    roomColor = currentRoomColor;
     drawRoom(currentRoom, centerTopLeft, centerBottomRight, size);
-
-    int i = -1;
-    //explore doors
-
-    auto border = 3.0f;
-
 
     glm::vec2 currPos1 = currentRoom->positions[0];
     glm::vec2 currPos2 = currentRoom->positions[0];
+
     switch (currentRoom->roomSize)
     {
-    case Medium:
-        currPos2 = currentRoom->positions[0];
-        break;
-    case Wide:
-    case Long:
-        currPos2 = currentRoom->positions[1];
-        break;
-    case Large:
-        currPos2 = currentRoom->positions[3];
-        break;
+        case Medium:
+            currPos2 = currentRoom->positions[0];
+            break;
+        case Wide:
+        case Long:
+            currPos2 = currentRoom->positions[1];
+            break;
+        case Large:
+            currPos2 = currentRoom->positions[3];
+            break;
     }
-    roomColor = IM_COL32(0, 0, 0, 255);
+    roomColor = otherRoomColor;
     for (auto room : level->roomSettings )
     {
         if (room == currentRoom || !level->roomEntered[room->id]) {

@@ -20,8 +20,15 @@ CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameO
 
     initSpecialEffectObject();
 
-    heartFullTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "HeartFull.png").withFilterSampling(false).build();
-    heartEmptyTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "HeartEmpty.png").withFilterSampling(false).build();
+    heartFullTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "FullHeart2.png").withFilterSampling(false).build();
+    heartEmptyTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "EmptyHeart2.png").withFilterSampling(false).build();
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    ImVec2 itemSpacing = style.ItemSpacing;
+    auto winsize = sre::Renderer::instance->getWindowSize();
+    auto offset = 20;
+    auto size = offset + heartInRow * heartSize.x + (heartInRow - 1) * itemSpacing.x;
+    menuSize = ImVec2(size, size);
 
 }
 
@@ -264,7 +271,7 @@ void CharacterComponent::onGui() {
         bool* open = nullptr;
         ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
         if (ImGui::CollapsingHeader(title.c_str())) {
-            ImGui::DragFloat(std::string("HP ##").append(gameObject->name).c_str(),          &hp, 0.1f, 0, 5);
+            ImGui::DragFloat(std::string("HP ##").append(gameObject->name).c_str(),          &hp, 0.1f, 0, 20);
             ImGui::DragFloat(std::string("Armor##").append(gameObject->name).c_str(),        &armor, 0.1f, 0, 5);
             ImGui::DragFloat(std::string("Damage##").append(gameObject->name).c_str(),       &damage, 0.1f, 0, 5);
             ImGui::DragFloat(std::string("Rate Of Fire##").append(gameObject->name).c_str(), &rateOfFire, 0.1f, 0.5f, 10);
@@ -287,11 +294,11 @@ void CharacterComponent::onGui() {
 
 void CharacterComponent::setPlayerGui() {
 
-    auto winsize = sre::Renderer::instance->getWindowSize();
+    //GuiHelper::getInstance()->setZeroPadding();
+    
 
-    GuiHelper::getInstance()->setZeroPadding();
 
-    ImGui::SetNextWindowSize(ImVec2(winsize.x / 4.0f, winsize.y / 4.0f), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(menuSize, ImGuiCond_Always);
     ImGui::SetNextWindowPos(GuiHelper::getInstance()->baseVec, ImGuiCond_Always, guiPivot);
     ImGui::SetNextWindowBgAlpha(0.0f);
 
@@ -303,25 +310,51 @@ void CharacterComponent::setPlayerGui() {
     ImGui::PushFont(GuiHelper::getInstance()->font);
     ImGui::Begin("#player", open, flags);
     
-    /*ImGui::Text(gameObject->name.c_str());
-    ImGui::Text("Health: %.2f", hp);*/
-
+    
     int hpInt = (int)hp;
-    float decimal = hp - hpInt;
+    bool decimal = hp - hpInt > 0;
 
-    auto heartSize = ImVec2{ 40,40 };
-
-    for (int i = 0; i < hpInt && i < 5; i++) {
-        ImGui::Image(heartFullTexture->getNativeTexturePtr(), heartSize, uv0, uv1);
-        ImGui::SameLine();
+    /*int numHearts = 0;
+    if (hpInt > 15){
+        hpInt = 15;
+        numHearts = 15;
+        decimal = false;
     }
+    else if (hpInt < 5){
+        numHearts = 5;
+    }
+    else {
+        numHearts = decimal ? hpInt + 1 : hpInt;
+    }
+
+    ImVec2 size = ImGui::GetContentRegionAvail();
+
+    
+
+    auto spaceForHearts = size.x - itemSpacing.x * numHearts;
+
+    float s = (size.x * 5 * heartSize.x) / (numHearts * menuSize.x);
+
+    auto scaledSize = ImVec2{s ,s };*/
+
+    for (int i = 0; i < hpInt && i <= maxHp; i++) {
+        ImGui::Image(heartFullTexture->getNativeTexturePtr(), heartSize, uv0, uv1, ImVec4(1, 0, 0, 1));
+        if (i < heartInRow - 1 || i > heartInRow - 1)
+            ImGui::SameLine();
+    }
+    if (decimal && hpInt < maxHp)
+        ImGui::Image(heartEmptyTexture->getNativeTexturePtr(), heartSize, uv0, uv1, ImVec4(1, 0, 0, 1));
+         
+    
+
+    
     /*ImGui::Image(heartEmptyTexture->getNativeTexturePtr(), heartSize, uv0, uv1);
     ImVec4 tintColor(1, 0, 0, 1);
     ImGui::Image(heartEmptyTexture->getNativeTexturePtr(), ImVec2{heartSize.x/2.0f, heartSize.y/2.0f}, uv0, uv1, tintColor);*/
 
     ImGui::End();
     ImGui::PopFont();
-    ImGui::PopStyleVar();
+    //ImGui::PopStyleVar();
 }
 
 //void CharacterComponent::setEnemyGui() {

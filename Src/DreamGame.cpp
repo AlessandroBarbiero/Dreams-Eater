@@ -11,7 +11,6 @@
 #include "LevelBuilder.hpp"
 #include <Builders/PowerupBuilder.hpp>
 #include "StartMenuComponent.hpp"
-#include "EndMenuComponent.hpp"
 #include "PauseMenuComponent.hpp"
 #include "GuiHelper.hpp"
 #include "LevelGuiComponent.hpp"
@@ -40,14 +39,23 @@ DreamGame::DreamGame()
     srand((unsigned)time(&t));
 
     init();
-    buildMenus();
+    buildStartMenu();
 
-    GuiHelper::getInstance()->setupImGuiStyle(GuiStyle::Light);
+    deathEvent = SDL_RegisterEvents(1);
+
+    GuiHelper::getInstance()->setupImGuiStyle(GuiStyle::Dark);
     GuiHelper::getInstance()->setupFont();
 
     // setup callback functions
     r.keyEvent = [&](SDL_Event& e) {
         onKey(e);
+    };
+
+    r.otherEvent = [&](SDL_Event& e) {
+        if (e.type == deathEvent) {
+            init();
+            currentScene = &startMenu;
+        }
     };
     r.frameUpdate = [&](float deltaTime) {
         update(deltaTime);
@@ -61,9 +69,10 @@ DreamGame::DreamGame()
 
 }
 
-void DreamGame::buildMenus() {
+void DreamGame::buildStartMenu() {
     auto start = startMenu.createGameObject();
     start->addComponent<StartMenuComponent>();
+    
 
     auto background = Texture::create()
         .withFile(GuiHelper::getInstance()->GUI_PATH + "BackgroundTitle.png")
@@ -73,12 +82,12 @@ void DreamGame::buildMenus() {
     guiAtlas = SpriteAtlas::createSingleSprite(background, "background");
 
     auto backgroundSprite = guiAtlas->get("background");
-
     auto spriteComponent = start->addComponent<SpriteComponent>();
     spriteComponent->setSprite(backgroundSprite);
+    
 
-    auto end = endMenu.createGameObject();
-    end->addComponent<EndMenuComponent>();
+    /*auto end = endMenu.createGameObject();
+    end->addComponent<EndMenuComponent>();*/
 }
 
 void DreamGame::init() {
@@ -98,17 +107,17 @@ void DreamGame::init() {
     camObj->name = "Camera";
     camera = camObj->addComponent<SideScrollingCamera>();
     camObj->setPosition(windowSize * 0.5f);
-
-    gameState = GameState::Running;
 }
 
 void DreamGame::play() {
+
+    gameState = GameState::Running;
 
     currentScene = &game;
 
     PlayerSettings pSettings;
     pSettings.position = glm::vec2(1,1);
-    pSettings.speed = 8.0f;
+    pSettings.speed = 15.0f;
     pSettings.knockback = 1.0f;
     pSettings.type = CharacterType::Wraith;
     std::cout << "Creating player" << std::endl;
@@ -202,7 +211,7 @@ void DreamGame::play() {
     level = LevelBuilder::createLevel(testLevelSettings);
 
     guiComp->setLevel(level);
-    guiComp->setPlayer(player);
+    //guiComp->setPlayer(player);
 
     level->player = player;
     level->loadLevel();
@@ -216,15 +225,20 @@ void DreamGame::play() {
 }
 
 
-
 void DreamGame::gameOver() {
     gameState = GameState::GameOver;
-    //std::cout << "Game Over!\nPress SPACE to restart" << std::endl;
-    currentScene = &endMenu;
+    //init();
+
+    SDL_Event event;
+    //SDL_memset(&event, 0, sizeof(event));   
+    event.user.type = deathEvent;
+    SDL_PushEvent(&event);
+    
 }
 
 void DreamGame::update(float time) {
-    if (gameState == GameState::Running) {
+    auto b = false;
+    if (gameState == GameState::Running || gameState == GameState::Ready) {
         updatePhysics();
 
         auto sceneObjects = currentScene->getSceneObjects();
@@ -252,16 +266,12 @@ void DreamGame::render() {
         .withCamera(camera->getCamera())
         .build();
 
-    
-
-    auto pos = camera->getGameObject()->getPosition();
+    //auto pos = camera->getGameObject()->getPosition();
 
     auto spriteBatchBuilder = SpriteBatch::create();
     for (auto& go : *(currentScene->getSceneObjects())) {
         go->renderSprite(spriteBatchBuilder);
     }
-
-    
 
     auto sb = spriteBatchBuilder.build();
     rp.draw(sb);
@@ -288,8 +298,6 @@ void DreamGame::render() {
         }
     }
 
-    
-    
 }
 
 void DreamGame::pause() {
@@ -330,7 +338,6 @@ void DreamGame::onKey(SDL_Event& event) {
     }
 
     // General Keys
-
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
         /*case SDLK_SPACE:
@@ -367,8 +374,10 @@ void DreamGame::onKey(SDL_Event& event) {
             break;
 
         case SDLK_p:
-            if(gameState != GameState::Pause)
+            if (gameState != GameState::Pause)
                 pause();
+            else
+                resume();
             break;
         }
 

@@ -81,6 +81,8 @@ private:
 	float shotSpeed = 10.0f;
 	float knockback = 0;
 
+	float maxHp = 16;
+
 	// The radius of the physic component -> it is also the distance from which the bullet is spawned
 	float radius; 
 
@@ -114,9 +116,12 @@ private:
 	void setPlayerGui();
 	//void setEnemyGui();
 
-	//ImVec2 guiSize = { 180, 50 };
 	ImVec2 guiPivot = { 0,0 };
-	ImFont* font;
+	ImVec2 heartSize = { 30,30 };
+	ImVec2 menuSize;
+	int heartInRow = 8;
+
+	
 
 	int flags =
 		ImGuiWindowFlags_NoTitleBar |

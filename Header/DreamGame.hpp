@@ -17,7 +17,7 @@ enum class GameState {
     Ready,
     Running,
     Pause,
-    GameOver
+    GameOver,
 };
 
 class DreamGame : public b2ContactListener {
@@ -46,8 +46,10 @@ public:
     Scene* currentScene;
     std::shared_ptr<Level> level;
 
+    Uint32 deathEvent;
+
 private:
-    GameState gameState = GameState::Running;
+    GameState gameState = GameState::Ready;
     sre::SDLRenderer r;
 
     void init();
@@ -62,7 +64,7 @@ private:
 
     void handleContact(b2Contact* contact, bool begin);
 
-    void buildMenus();
+    void buildStartMenu();
 
     void play();
 
@@ -81,7 +83,6 @@ private:
     
     Scene startMenu;
     Scene game;
-    Scene endMenu;
     Scene pauseMenu;
 
 

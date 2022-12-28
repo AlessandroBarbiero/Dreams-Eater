@@ -45,7 +45,7 @@ void StartMenuComponent::onGui(){
 	GuiHelper::getInstance()->centerCursor(buttonSize.x);
     if (ImGui::ImageButton(playTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {
         DreamGame::instance->play();
-    }
+	}
 
 	GuiHelper::getInstance()->centerCursor(buttonSize.x);
     if (ImGui::ImageButton(settingsTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {}
