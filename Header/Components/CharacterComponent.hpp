@@ -36,7 +36,7 @@ public:
 	Direction getDirection();
 	void setDirection(Direction newFacingDirection);
 
-	void showEffect(State effect);
+	void showEffect(State effect, float animTime = -1);
 
 	float getHp()			{ return hp; };
 	float getArmor()		{ return armor ; };

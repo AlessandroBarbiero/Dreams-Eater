@@ -50,10 +50,19 @@ void CharacterComponent::initSpecialEffectObject() {
         victoryAnim[i].setOrderInBatch(Depth::Effect);
     }
 
+    std::vector<sre::Sprite> itemAnim(9);
+    spriteName = "Item/";
+    for (int i = 0; i < itemAnim.size(); i++) {
+        itemAnim[i] = CharacterComponent::effectAtlas->get(spriteName + std::to_string(i) + ".png");
+        itemAnim[i].setOrderInBatch(Depth::Effect);
+    }
+
     specialEffects->addAnimationSequence(State::Victory,    Direction::RIGHT,       victoryAnim);
     specialEffects->addAnimationSequence(State::Victory,    Direction::LEFT,        victoryAnim);
     specialEffects->addAnimationSequence(State::Hit,        Direction::RIGHT,       hitAnim);
     specialEffects->addAnimationSequence(State::Hit,        Direction::LEFT,        hitAnim);
+    specialEffects->addAnimationSequence(State::Item,       Direction::RIGHT,       itemAnim);
+    specialEffects->addAnimationSequence(State::Item,       Direction::LEFT,        itemAnim);
     specialEffects->setBaseAnimationTime(0.1f);
 
     gameObject->addChild(specialEffectsObj.get());
@@ -245,8 +254,8 @@ void CharacterComponent::startShotCooldown() {
     shotCooldownTimer = 0;
 }
 
-void CharacterComponent::showEffect(State effect) {
-    specialEffects->displayOnce(effect);
+void CharacterComponent::showEffect(State effect, float animTime) {
+    specialEffects->displayOnce(effect, animTime);
 }
 
 
