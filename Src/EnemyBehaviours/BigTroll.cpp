@@ -21,7 +21,7 @@ void BigTroll::attack()
     glm::vec2 direction = glm::normalize(towardPlayer);
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
-    anim->displayCompleteAnimation(State::Attack1, 1 / character->getRateOfFire(), [direction, this]() { /*character->shoot(direction);*/ });
+    //anim->displayCompleteAnimation(State::Attack1, 1 / character->getRateOfFire(), [direction, this]() { character->shoot(direction, rocks[0]); });
 
     anim->setFacingDirection(vectorToDirection(direction));
 
@@ -40,4 +40,12 @@ void BigTroll::movement()
     glm::vec2 movement = direction * character->getSpeed();
     physics->setLinearVelocity(movement);
     character->changeState(State::Walk);
+}
+
+void BigTroll::setBulletSprites(sre::SpriteAtlas* atlas)
+{
+    rocks[0] = atlas->get("rock1.png");
+    rocks[0].setOrderInBatch(Depth::Bullet);
+    rocks[1] = atlas->get("rock2.png");
+    rocks[1].setOrderInBatch(Depth::Bullet);
 }

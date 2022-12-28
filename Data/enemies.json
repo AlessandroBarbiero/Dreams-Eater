@@ -10,7 +10,6 @@
 			"rateOfFire": 1,
 			"range": 6,
 			"shotSpeed": 5,
-			"idealDistance": 6,
 			"scale": 0.9
 		}, 
 		{
@@ -23,7 +22,6 @@
 			"rateOfFire": 0.5,
 			"range": 10,
 			"shotSpeed": 15,
-			"idealDistance": 6,
 			"scale": 0.9
 		}, 
 		{
@@ -36,7 +34,6 @@
 			"rateOfFire": 0.5,
 			"range": 0,
 			"shotSpeed": 0,
-			"idealDistance": 0,
 			"scale": 3
 		}
 	],
@@ -51,7 +48,6 @@
 			"rateOfFire": 10,
 			"range": 100,
 			"shotSpeed": 10,
-			"idealDistance": 6,
 			"scale": 1.5
 		}
 	]

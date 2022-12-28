@@ -13,6 +13,7 @@
 #include <EnemyBehaviours/Wizard.hpp>
 #include <Components/PowerupComponent.hpp>
 constexpr auto SIZES_PATH = "Sprites/animationSizes.json";
+constexpr auto R_TO_SPRITE_RATIO = 0.6;
 
 unordered_map<CharacterType, std::shared_ptr<sre::SpriteAtlas>> CharacterBuilder::atlasMap;
 unordered_map<CharacterType, unordered_map<State, int>> CharacterBuilder::animationSizesMap;
@@ -114,7 +115,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     spriteComp->setSprite(sprite);
 
     auto playerPhysics = player->addComponent<PhysicsComponent>();
-    float radius = (sprite.getSpriteSize().x / 2.0f) / physicsScale;
+    float radius = R_TO_SPRITE_RATIO*(sprite.getSpriteSize().x / 2.0f) / physicsScale;
     playerPhysics->initCircle(b2_dynamicBody, radius, player->getPosition(), 1);
     playerPhysics->getBody()->SetLinearDamping(5.0f);
     playerPhysics->fixRotation();
@@ -217,7 +218,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
     spriteComp->setSprite(sprite);
 
     auto physics = enemy->addComponent<PhysicsComponent>();
-    float radius = (sprite.getSpriteSize().x * sprite.getScale().x / 2) / physicsScale;
+    float radius = R_TO_SPRITE_RATIO*(sprite.getSpriteSize().x * sprite.getScale().x / 2) / physicsScale;
     physics->initCircle(b2_dynamicBody, radius, enemy->getPosition(), 1);
     physics->getBody()->SetLinearDamping(5.0f);
     physics->fixRotation();

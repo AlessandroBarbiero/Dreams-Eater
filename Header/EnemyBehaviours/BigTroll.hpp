@@ -17,7 +17,8 @@ public:
 
     void attack() override;
     void movement() override;
-
+    void setBulletSprites(sre::SpriteAtlas* atlas) override;
 private:
 
+    sre::Sprite rocks[2];
 };
