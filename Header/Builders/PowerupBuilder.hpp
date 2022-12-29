@@ -26,7 +26,7 @@ public:
 	std::string firePowerupMessage  = "Damage +3";
 	std::string waterPowerupMessage = "Speed +3\nArmor + 0.5\nRateOfFire + 0.5";
 	std::string icePowerupMessage   = "Health +10\nSpeed -0.5";
-	std::string earthPowerupMessage = "Transform into Earth Wraith";
+	std::string earthPowerupMessage = "Transform into Earth Wraith\n\nPress SPACE to reveal\nthe power of the sandstorm";
 	//std::string loremIpsum = "ccccccccccccc\ncccccccccccccccccc\ncccccccccccccccc";
 	
 
