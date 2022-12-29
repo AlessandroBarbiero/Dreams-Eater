@@ -16,8 +16,7 @@ class PhysicsComponent;
 enum class GameState {
     Ready,
     Running,
-    Pause,
-    GameOver,
+    Pause
 };
 
 class DreamGame : public b2ContactListener {
@@ -47,6 +46,7 @@ public:
     std::shared_ptr<Level> level;
 
     Uint32 deathEvent;
+    Uint32 playEvent;
 
 private:
     GameState gameState = GameState::Ready;
@@ -71,6 +71,8 @@ private:
     void pause();
 
     void resume();
+
+    void startGame();
 
     std::shared_ptr<SideScrollingCamera> camera;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas_inside;

@@ -356,9 +356,10 @@ void CharacterComponent::onGui() {
                 gameObject->setScale(gameObject->getScale() - 0.1f);
             }
         }
-
-        if (ImGui::CollapsingHeader(titleGui.c_str())) {
-            ImGui::DragFloat(std::string("TextOffset##").append(gameObject->name).c_str(), &textOffset, 1.0f, 10, 100);
+        if (powerupMessageTimeOut > 0) {
+            if (ImGui::CollapsingHeader(titleGui.c_str())) {
+                ImGui::DragFloat(std::string("TextOffset##").append(gameObject->name).c_str(), &textOffset, 1.0f, 10, 100);
+            }
         }
         ImGui::End();
     }
@@ -441,7 +442,7 @@ void CharacterComponent::displayPowerupMessage(){
     
     ImGui::Begin("Text", open, flags);
     ImGui::SetCursorPos({ ImGui::GetWindowSize().x / 2.0f - textSize.x / 2.0f, ImGui::GetWindowSize().y / 2.0f - textSize.y / 2.0f });
-    ImGui::TextColored(ImVec4(0, 0, 0, 1), message.c_str());
+    ImGui::TextColored(GuiHelper::getInstance()->BLACK, message.c_str());
     ImGui::End();
     //ImGui::PopFont();
     

@@ -20,12 +20,18 @@ private:
 
     const int cond = ImGuiCond_Always;
 
-    std::string path;
+    float scaleWraith = 0.5;
 
-    
+    float lateralOffset = 11.0f;
+    float textOffset = 30.0f;
+    const char* loadingMessage = "Loading...";
+
+    ImVec2 textSize;
     ImVec2 itemSpacing;
     ImVec2 menuPosition;
     ImVec2 menuSize;   
+    ImVec2 wraithSize;
+
     const ImVec2 buttonSize = { 100, 50 };
 
    
@@ -35,6 +41,8 @@ private:
     std::shared_ptr<sre::Texture> historyTexture;
     std::shared_ptr<sre::Texture> settingsTexture;
     std::shared_ptr<sre::Texture> paperTexture;
+
+    std::shared_ptr<sre::Texture> wraithTexture;
 
 
 

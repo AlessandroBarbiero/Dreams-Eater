@@ -26,7 +26,7 @@ void GuiHelper::setupDebugGui(){
 
 }
 
-void GuiHelper::centerCursor(float width) {
+float GuiHelper::centerCursorX(float width) {
 
 	ImGuiStyle& style = ImGui::GetStyle();
 
@@ -36,8 +36,7 @@ void GuiHelper::centerCursor(float width) {
 
 	float off = (avail - size) * 0.5;
 
-	if (off > 0.0f)
-		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + off);
+	return ImGui::GetCursorPosX() + off;
 }
 
 void GuiHelper::setZeroPadding() {

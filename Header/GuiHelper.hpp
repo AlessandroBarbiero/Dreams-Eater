@@ -19,7 +19,7 @@ public:
 private:
 
     void setupImGuiStyle(GuiStyle);
-    void centerCursor(float width);
+    float centerCursorX(float width);
     void setupFont();
     void setupDebugGui();
     void setZeroPadding();
@@ -33,6 +33,7 @@ private:
     GuiStyle guiStyle;
 
     const ImVec2 debugWindowSize = { 300,150 };
+    const ImVec4 BLACK = ImVec4(0, 0, 0, 1);
 
     const ImVec2 uv0 = { 0, 1 };
     const ImVec2 uv1 = { 1, 0 };

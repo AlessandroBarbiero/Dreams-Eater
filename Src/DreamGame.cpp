@@ -42,6 +42,7 @@ DreamGame::DreamGame()
     buildStartMenu();
 
     deathEvent = SDL_RegisterEvents(1);
+    playEvent = SDL_RegisterEvents(2);
 
     GuiHelper::getInstance()->setupImGuiStyle(GuiStyle::Dark);
     GuiHelper::getInstance()->setupFont();
@@ -55,6 +56,9 @@ DreamGame::DreamGame()
         if (e.type == deathEvent) {
             init();
             currentScene = &startMenu;
+        }
+        else if (e.type == playEvent) {
+            play();
         }
     };
     r.frameUpdate = [&](float deltaTime) {
@@ -111,9 +115,7 @@ void DreamGame::init() {
 
 void DreamGame::play() {
 
-    gameState = GameState::Running;
-
-    currentScene = &game;
+    
 
     PlayerSettings pSettings;
     pSettings.position = glm::vec2(1,1);
@@ -222,15 +224,24 @@ void DreamGame::play() {
 
     camera->getCamera().setOrthographicProjection(level->currentRoom->getComponent<RoomComponent>()->getRoomSizeInPixels().x / 2.0f, -1, 1);
 
+    gameState = GameState::Running;
+
+    currentScene = &game;
+
 }
 
+void DreamGame::startGame() {
+    SDL_Event event;
+    event.user.type = DreamGame::instance->playEvent;
+    SDL_PushEvent(&event);
+
+}
 
 void DreamGame::gameOver() {
-    gameState = GameState::GameOver;
+    gameState = GameState::Ready;
     //init();
 
     SDL_Event event;
-    //SDL_memset(&event, 0, sizeof(event));   
     event.user.type = deathEvent;
     SDL_PushEvent(&event);
     
