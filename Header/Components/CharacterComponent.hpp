@@ -32,7 +32,7 @@ public:
 	// - rateOfFire
 	void shoot(glm::vec2 direction, const sre::Sprite& bulletSprite);
 	// Infinity range attack with the display of an animation and a given damage, not subjected to rate of fire
-	void specialAttack(glm::vec2 direction, float dmg, const std::vector<sre::Sprite> bulletSprites, float imageScale);
+	void specialAttack(glm::vec2 direction, float dmg, const std::vector<sre::Sprite> bulletSprites, float imageScale, bool displayEffect = true, bool rotateBullet = true);
 
 	void stunned(float stunTimeout);
 	void stunned(bool stun);
