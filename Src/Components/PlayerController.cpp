@@ -6,8 +6,23 @@
 #include "PlayerController.hpp"
 #include "DreamGame.hpp"
 #include "SpriteAnimationComponent.hpp"
+#include"GuiHelper.hpp"
 
-PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) { }
+PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) { 
+    
+    barTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Bar.png").withFilterSampling(false).build();;
+
+    uv0 = GuiHelper::getInstance()->uv0;
+    uv1 = GuiHelper::getInstance()->uv1;
+
+    barSize = { (float)barTexture->getWidth(), (float)barTexture->getHeight() };
+
+    auto r = sre::Renderer::instance;
+    barPosition = {barSize.y, r->getWindowSize().y - 2*barSize.y};
+    ImGuiStyle& style = ImGui::GetStyle();
+    itemSpacing = style.ItemSpacing;
+
+}
 
 void PlayerController::update(float deltaTime) {
     if (character->state == State::Die)
@@ -153,4 +168,41 @@ void PlayerController::overrideSuperAttack(float dmg, float cooldown, const std:
     superBullet = bulletSprites;
     superScale = imageScale;
     superCooldown = cooldown;
+    superCooldownTimer = cooldown;
+}
+
+
+void PlayerController::onGui() {
+
+
+    if (superCooldownTimer > 0.0) {
+
+        ImGui::SetNextWindowSize(barSize, ImGuiCond_Always);
+        ImGui::SetNextWindowPos(barPosition, ImGuiCond_Always);
+        ImGui::SetNextWindowBgAlpha(0.0f);
+
+        bool* open = nullptr;
+
+        ImGui::Begin("SuperAttack", open, flags);
+
+        ImGui::Image(barTexture->getNativeTexturePtr(), barSize, uv0, uv1);
+
+        ImGui::SameLine();
+
+        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - barSize.x - itemSpacing.x);
+
+        auto ratio = (float)superCooldownTimer / superCooldown;
+
+        auto uv1Fill = ImVec2{ uv1.x * ratio, uv1.y };
+        auto fillSize = ImVec2{ barSize.x * ratio, barSize.y };
+
+        ImVec4 color = { 0,ratio,0,1 };
+
+        ImGui::Image(barTexture->getNativeTexturePtr(), fillSize, uv0, uv1Fill, color);
+
+
+        ImGui::End();
+    }
+    
+
 }

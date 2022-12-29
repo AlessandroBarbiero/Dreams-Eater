@@ -26,7 +26,7 @@ public:
 	std::string firePowerupMessage  = "Flames strengthen your bullets";
 	std::string waterPowerupMessage = "Nobody will stand the speed of the river";
 	std::string icePowerupMessage   = "Ice heals your wounds";
-	std::string earthPowerupMessage = "Press space to unleash the sandstorm power";
+	std::string earthPowerupMessage = "Press space to unleash the power of the sandstorm";
 	//std::string loremIpsum = "ccccccccccccc\ncccccccccccccccccc\ncccccccccccccccc";
 	
 

@@ -18,6 +18,8 @@ public:
 
     void resetKeys() override;
 
+    void onGui() override;
+
 private:
 
     std::shared_ptr<PhysicsComponent> playerPhysics;
@@ -58,6 +60,28 @@ private:
     SDL_Keycode keyShootDown;
     SDL_Keycode keyShootLeft;
     SDL_Keycode keyShootRight;
+
+
+
+    //===================GUI===================
+
+    int flags =
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoScrollbar;
+
+    std::shared_ptr<sre::Texture> barTexture;
+
+    ImVec2 heartSize = { 30,30 };
+    ImVec2 barSize;
+    ImVec2 barPosition;
+    ImVec2 uv0;
+    ImVec2 uv1;
+    ImVec2 itemSpacing;
+
+    
+
 
     friend class CharacterBuilder;
 };

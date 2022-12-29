@@ -52,4 +52,5 @@ private:
     friend class RoomComponent;
     friend class LevelGuiComponent;
     friend class DreamGame;
+    friend class PlayerController;
 };
