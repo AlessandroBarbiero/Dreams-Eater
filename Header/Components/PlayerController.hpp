@@ -15,6 +15,7 @@ public:
     void update(float deltaTime) override;
     void setBulletSprites(sre::SpriteAtlas* atlas);
     void overrideSuperAttack(float dmg, float cooldown, const std::vector<sre::Sprite> bulletSprites, float imageScale);
+    glm::vec2 getLastDirection();
 
     void resetKeys() override;
 

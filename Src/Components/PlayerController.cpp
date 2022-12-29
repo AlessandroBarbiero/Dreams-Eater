@@ -173,6 +173,11 @@ void PlayerController::overrideSuperAttack(float dmg, float cooldown, const std:
     superCooldownTimer = cooldown;
 }
 
+glm::vec2 PlayerController::getLastDirection()
+{
+    return lastDirection;
+}
+
 
 void PlayerController::onGui() {
 

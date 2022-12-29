@@ -9,6 +9,7 @@
 #include "SpriteAnimationComponent.hpp"
 #include "PowerupComponent.hpp"
 #include "GuiHelper.hpp"
+#include "PlayerController.hpp"
 #define KNOCKBACK_SCALE 10
 
 std::shared_ptr<sre::SpriteAtlas> CharacterComponent::effectAtlas;
@@ -270,10 +271,15 @@ void CharacterComponent::shoot(glm::vec2 direction, const sre::Sprite& bulletSpr
 }
 
 
-void CharacterComponent::specialAttack(glm::vec2 direction, float dmg, const std::vector<sre::Sprite> bulletSprites, float imageScale, bool displayEffect, bool rotateBullet)
+void CharacterComponent::specialAttack(glm::vec2 givenDirection, float dmg, const std::vector<sre::Sprite> bulletSprites, float imageScale, bool displayEffect, bool rotateBullet)
 {
 
     std::function<void()> callback = [=]() {
+        glm::vec2 direction;
+        if (gameObject->tag == Tag::Player)
+            direction = gameObject->getComponent<PlayerController>()->getLastDirection();
+        else
+            direction = givenDirection;
         auto game = DreamGame::instance;
         auto physicsScale = game->physicsScale;
 
