@@ -23,10 +23,10 @@ public:
 
 	std::shared_ptr<GameObject> createSinglePowerupObject(PowerupType type, glm::vec2 position);
 
-	std::string firePowerupMessage  = "Damage +3";
-	std::string waterPowerupMessage = "Speed +3\nArmor + 0.5\nRateOfFire + 0.5";
-	std::string icePowerupMessage   = "Health +10\nSpeed -0.5";
-	std::string earthPowerupMessage = "Transform into Earth Wraith";
+	std::string firePowerupMessage  = "Flames strengthen your bullets";
+	std::string waterPowerupMessage = "Nobody will stand the speed of the river";
+	std::string icePowerupMessage   = "Ice heals your wounds";
+	std::string earthPowerupMessage = "Press space to unleash the sandstorm power";
 	//std::string loremIpsum = "ccccccccccccc\ncccccccccccccccccc\ncccccccccccccccc";
 	
 

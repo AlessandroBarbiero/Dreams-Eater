@@ -272,7 +272,7 @@ std::shared_ptr<RoomSettings> LevelBuilder::generateRoom(std::shared_ptr<Level> 
     else {
         roomSettings->name = "room" + std::to_string(roomId);
         int roomType = rand() % 100;
-        if (roomType < 80) {
+        if (roomType < 1) {
             roomSettings->roomType = EnemyRoom;
         }
         else {

@@ -13,6 +13,11 @@ public:
 
 private:
 
+
+
+    void start();
+    void settings();
+
     const int startMenuFlags =
         ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoResize |
@@ -28,11 +33,12 @@ private:
 
     float scaleWraith = 0.5;
     float scaleCloseButton = 0.3;
+    float settingsScale = 3.0;
 
     float lateralOffset = 11.0f;
     float textOffset = 30.0f;
     float closeButtonOffset = 7.0f;
-    float settingsScale = 3;
+    
     const char* loadingMessage = "Loading...";
 
     ImVec2 closeButtonSize;
@@ -59,10 +65,8 @@ private:
 
     std::shared_ptr<sre::Texture> wraithTexture;
     std::shared_ptr<sre::Texture> closeTexture;
+    std::shared_ptr<sre::Texture> settingsPaperTexture;
 
-
-    void start();
-    void settings();
 
 
 

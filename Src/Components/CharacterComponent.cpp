@@ -22,7 +22,7 @@ CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameO
     initSpecialEffectObject();
 
     heartTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Heart.png").withFilterSampling(false).build();
-    signTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Sign.png").withFilterSampling(false).build();
+    signTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "MessagePaper.png").withFilterSampling(false).build();
 
     spriteSize = gameObject->getComponent<SpriteComponent>()->getSprite().getSpriteSize();
 
@@ -31,6 +31,9 @@ CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameO
     auto winsize = sre::Renderer::instance->getWindowSize();
     auto size = heartOffset + heartInRow * heartSize.x + (heartInRow - 1) * itemSpacing.x;
     menuSize = ImVec2(size, size);
+
+    uv0 = GuiHelper::getInstance()->uv0;
+    uv1 = GuiHelper::getInstance()->uv1;
 
 }
 
@@ -373,9 +376,6 @@ void CharacterComponent::setPlayerGui() {
     ImGui::SetNextWindowPos(GuiHelper::getInstance()->baseVec, ImGuiCond_Always, guiPivot);
     ImGui::SetNextWindowBgAlpha(0.0f);
 
-    auto uv0 = GuiHelper::getInstance()->uv0;
-    auto uv1 = GuiHelper::getInstance()->uv1;
-
     bool* open = nullptr;
 
     ImGui::Begin("#player", open, flags);
@@ -406,10 +406,12 @@ void CharacterComponent::setPlayerGui() {
 void CharacterComponent::displayPowerupMessage(){
     bool* open = nullptr;
 
+    GuiHelper::getInstance()->setZeroPadding();
+    ImGui::PushFont(GuiHelper::getInstance()->fontMessage);
+
     auto position = DreamGame::instance->camera->getWindowCoordinates(glm::vec3(gameObject->getPosition(), 0.0));
 
-    auto uv0 = GuiHelper::getInstance()->uv0;
-    auto uv1 = GuiHelper::getInstance()->uv1;
+    
 
     auto powerupComponent = gameObject->getComponent<PowerupComponent>();
     auto lastPowerup = powerupComponent->getPowerups()[powerupComponent->getPowerups().size() - 1];
@@ -425,16 +427,20 @@ void CharacterComponent::displayPowerupMessage(){
 
     auto signSize = ImVec2{ signTexture->getWidth() * scale, signTexture->getHeight() * scale };
     
-    auto powerupMessagePosition = ImVec2{ position.x - signSize.x / 2.0f , position.y - spriteSize.y / 2.0f - signSize.y / 1.5f};
+    auto powerupMessagePosition = ImVec2{ position.x - signSize.x / 2.0f , position.y - spriteSize.y / 2.0f - signSize.y / 1.3f};
 
     ImGui::SetNextWindowPos(powerupMessagePosition, ImGuiCond_Always);
     ImGui::SetNextWindowSize(signSize, ImGuiCond_Always);
+    ImGui::SetNextWindowBgAlpha(0.0f);
 
     ImGui::Begin("Sign", open, flags);
-    ImGui::Image(signTexture->getNativeTexturePtr(), ImGui::GetContentRegionAvail(), uv0, uv1);
-    ImGui::End();
+    ImGui::Image(signTexture->getNativeTexturePtr(), signSize);
 
-    //ImGui::PushFont(GuiHelper::getInstance()->font20);
+    /*ImGui::GetWindowDrawList()->AddImageRounded(signTexture->getNativeTexturePtr(), powerupMessagePosition,
+        { powerupMessagePosition.x + signSize.x, powerupMessagePosition.y + signSize.y }, uv0, uv1, IM_COL32(255, 255, 255, 255), 10.0);*/
+    
+
+    ImGui::End();
     ImGui::SetNextWindowPos(powerupMessagePosition, ImGuiCond_Always);
     ImGui::SetNextWindowSize(signSize, ImGuiCond_Always);
     ImGui::SetNextWindowBgAlpha(0.0f);
@@ -444,7 +450,8 @@ void CharacterComponent::displayPowerupMessage(){
     ImGui::SetCursorPos({ ImGui::GetWindowSize().x / 2.0f - textSize.x / 2.0f, ImGui::GetWindowSize().y / 2.0f - textSize.y / 2.0f });
     ImGui::TextColored(GuiHelper::getInstance()->BLACK, message.c_str());
     ImGui::End();
-    //ImGui::PopFont();
+    ImGui::PopFont();
+    ImGui::PopStyleVar();
     
     
 }

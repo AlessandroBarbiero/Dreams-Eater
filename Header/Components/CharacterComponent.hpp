@@ -127,6 +127,8 @@ private:
 	ImVec2 heartSize = { 30,30 };
 	ImVec2 menuSize;
 	ImVec2 itemSpacing;
+	ImVec2 uv0;
+	ImVec2 uv1;
 	//ImVec2 powerupMessageSize = {100.0f, 100.0f};
 
 	ImVec4 RED = {1,0,0,1};
@@ -135,8 +137,8 @@ private:
 	glm::vec2 spriteSize;
 
 	int heartInRow = 8;
-	float heartOffset = 20;
-	float textOffset = 50;
+	float heartOffset = 20.0f;
+	float textOffset = 15.0f;
 
 	float messageTime = 3.0f;
 	float powerupMessageTimeOut = 0.0f;

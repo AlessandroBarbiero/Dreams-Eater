@@ -17,11 +17,19 @@ StartMenuComponent::StartMenuComponent(GameObject* gameObject) : Component(gameO
 	wraithTexture = sre::Texture::create().withFile(path + "Wraith.png").withFilterSampling(false).build();
 	closeTexture = sre::Texture::create().withFile(path + "Close.png").withFilterSampling(false).build();
 
+	settingsPaperTexture = sre::Texture::create().withFile(path + "SettingsPaper.png").withFilterSampling(false).build();
+
 	startMenuSize = { (float)paperTexture->getWidth(), (float)paperTexture->getHeight() };
-	settingsMenuSize = { (float)paperTexture->getWidth() * settingsScale, (float)paperTexture->getHeight()};
+
+	//float ratio = (float)settingsPaperTexture->getHeight() / paperTexture->getHeight();
+
+	//settingsMenuSize = { (float)settingsPaperTexture->getWidth() * settingsScale / ratio, (float)paperTexture->getHeight() * settingsScale };
+
+	settingsMenuSize = { (float)paperTexture->getWidth() * settingsScale , (float)paperTexture->getHeight() };
 
 	wraithSize = { (float)wraithTexture->getWidth() * scaleWraith, (float)wraithTexture->getHeight() * scaleWraith};
 	closeButtonSize = { (float)closeTexture->getWidth() * scaleCloseButton, (float)closeTexture->getHeight() * scaleCloseButton };
+	
 
 	auto &styleSpacing = ImGui::GetStyle().ItemSpacing;
 	itemSpacing = styleSpacing;
@@ -50,6 +58,7 @@ void StartMenuComponent::onGui(){
 		if (ImGui::CollapsingHeader("Start")) {
 			ImGui::DragFloat("Lateral", &lateralOffset, 0.1f, 0, 100);
 			ImGui::DragFloat("text", &textOffset, 0.1f, 0, 100);
+			ImGui::DragFloat("sett", &settingsScale, 0.05f, 0, 1);
 	
 		}
 		ImGui::End();
@@ -73,7 +82,7 @@ void StartMenuComponent::start() {
 
 	GuiHelper::getInstance()->setZeroPadding();
 	//ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, GuiHelper::getInstance()->baseVec);
-
+	ImGui::PushFont(GuiHelper::getInstance()->fontFunny30);
 
 	bool* open = nullptr;
 
@@ -88,7 +97,7 @@ void StartMenuComponent::start() {
 
 	auto pos = (startMenuSize.y - NUM_BUTTONS * (buttonSize.y) - (NUM_BUTTONS - 1) * itemSpacing.y - buttonSize.y / 2.0f) / 2.0f;
 	ImGui::SetCursorPos(ImVec2(GuiHelper::getInstance()->centerCursorX(buttonSize.x), pos));
-
+	
 
 	if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Space)) || ImGui::ImageButton(playTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {
 
@@ -117,6 +126,7 @@ void StartMenuComponent::start() {
 
 	ImGui::End();
 	ImGui::PopStyleVar();
+	ImGui::PopFont();
 
 
 	
@@ -129,19 +139,20 @@ void StartMenuComponent::settings() {
 	//ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, GuiHelper::getInstance()->baseVec);
 
 
+	ImGui::SetNextWindowBgAlpha(0.0f);
+
 	bool* open = nullptr;
 
-	//ImGui::SetNextWindowBgAlpha(0.0f);
 	ImGui::SetNextWindowPos(settingsMenuPosition, cond);
 	ImGui::SetNextWindowSize(settingsMenuSize, cond);
 
-	ImGui::PushFont(GuiHelper::getInstance()->font30);
+	ImGui::PushFont(GuiHelper::getInstance()->fontFunny30);
 
 	textSize = ImGui::CalcTextSize(loadingMessage);
 
 	ImGui::Begin("StartMenu", open, settingsMenuFlags);
 
-	//ImGui::Image(settingsTexture.get()->getNativeTexturePtr(), settingsMenuSize, uv0, uv1);
+	//ImGui::Image(settingsPaperTexture.get()->getNativeTexturePtr(), settingsMenuSize, uv0, uv1);
 
 
 	ImGui::SetCursorPos({ settingsMenuSize.x - closeButtonSize.x - closeButtonOffset * settingsScale, closeButtonOffset });

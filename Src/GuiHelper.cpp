@@ -8,9 +8,17 @@ GuiHelper* GuiHelper::instance = nullptr;
 void GuiHelper::setupFont() {
 	auto fonts = ImGui::GetIO().Fonts;
 	fonts->AddFontDefault();
-	auto fontName = GUI_PATH + "/Mustard Smile.ttf";
-	font20 = fonts->AddFontFromFileTTF(fontName.c_str(), 20);
-	font30 = fonts->AddFontFromFileTTF(fontName.c_str(), 30);
+	auto fontName = GUI_PATH + "/Settings.ttf";
+	fontSettings20 = fonts->AddFontFromFileTTF(fontName.c_str(), 20);
+	fontSettings30 = fonts->AddFontFromFileTTF(fontName.c_str(), 30);
+
+	fontName = GUI_PATH + "/Message.ttf";
+	fontMessage = fonts->AddFontFromFileTTF(fontName.c_str(), 15);
+
+	fontName = GUI_PATH + "/Funny.ttf";
+	fontFunny20 = fonts->AddFontFromFileTTF(fontName.c_str(), 20);
+	fontFunny30 = fonts->AddFontFromFileTTF(fontName.c_str(), 30);
+
 }
 
 

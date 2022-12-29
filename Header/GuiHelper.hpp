@@ -27,8 +27,13 @@ private:
 
     char* DEBUG_NAME = "DEBUG";
     std::string GUI_PATH = "Sprites/Gui/";
-    ImFont* font20;
-    ImFont* font30;
+    ImFont* fontMessage;
+    ImFont* fontMessage20;/*
+    ImFont* fontMessage30;*/
+    ImFont* fontSettings20;
+    ImFont* fontSettings30;
+    ImFont* fontFunny20;
+    ImFont* fontFunny30;
 
     GuiStyle guiStyle;
 
