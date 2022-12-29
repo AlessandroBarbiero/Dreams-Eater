@@ -156,9 +156,10 @@ bool SpriteAnimationComponent::displayCompleteAnimation(State anim, float totalD
 }
 
 // Display one time the animation and then disable the sprite, the object will not be displayed after the animation.
+// If a callback is given it will be called when the animation ends
 // If urgent is set the animation can override himself or other animations
 // Return true if the animation is being displayed
-bool SpriteAnimationComponent::displayOnce(State anim, float animTime, bool urgent)
+bool SpriteAnimationComponent::displayOnce(State anim, float animTime, bool urgent, const std::function<void()>& callback)
 {
     if (!urgent && showingCompleteAnim == true) {
         return false;
@@ -172,13 +173,21 @@ bool SpriteAnimationComponent::displayOnce(State anim, float animTime, bool urge
         animationTime = baseAnimationTime;
     else
         animationTime = animTime;
-    // Deactivate everything at the end of the animation
-    callbackFunc = [this]() { spriteComp->deactivate(); deactivate(); };
+    // Deactivate everything at the end of the animation and call the callback if present
+    if(callback)
+        callbackFunc = [this, callback]() { callback(); spriteComp->deactivate(); deactivate(); };
+    else
+        callbackFunc = [this]() { spriteComp->deactivate(); deactivate(); };
     spriteComp->setSprite(sprites[0]);
 
     spriteComp->activate();
     activate();
     return true;
+}
+
+bool SpriteAnimationComponent::displayOnce(State anim, const std::function<void()>& callback)
+{
+    return displayOnce(anim, -1, true, callback);
 }
 
 float SpriteAnimationComponent::getMinDuration()
