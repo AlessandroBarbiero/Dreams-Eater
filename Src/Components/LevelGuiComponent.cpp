@@ -22,9 +22,9 @@ LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObj
     mapSize = { mapTexture->getWidth() * mapScale - 2 * internalOffset.x, mapTexture->getHeight() * mapScale - 2 * internalOffset.y  };
     }
 
-LevelGuiComponent::~LevelGuiComponent(){
-    level.reset();
-}
+//LevelGuiComponent::~LevelGuiComponent(){
+//    level.reset();
+//}
 
 void LevelGuiComponent::setLevel(std::shared_ptr<Level> level) {
     this->level = level;

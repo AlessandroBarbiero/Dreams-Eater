@@ -73,6 +73,7 @@ private:
         ImGuiWindowFlags_NoScrollbar;
 
     std::shared_ptr<sre::Texture> barTexture;
+    std::shared_ptr<sre::Texture> signTexture;
 
     ImVec2 heartSize = { 30,30 };
     ImVec2 barSize;

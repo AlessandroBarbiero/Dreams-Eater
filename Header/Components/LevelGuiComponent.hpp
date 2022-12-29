@@ -11,7 +11,7 @@ public:
 
     explicit LevelGuiComponent(GameObject* gameObject);
 
-    ~LevelGuiComponent();
+    //~LevelGuiComponent();
 
     void onGui() override;
     void setLevel(std::shared_ptr<Level>);
