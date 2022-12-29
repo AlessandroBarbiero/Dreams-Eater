@@ -32,6 +32,8 @@ public:
     bool displayOnce(State anim, const std::function<void()>& callback);
     float getMinDuration();
 
+    bool showFixedAnimation(std::vector<sre::Sprite> animVector, bool loop = true, bool urgent = false);
+
     void setFacingDirection(Direction newDirection, bool reload = false);
 
     // Stop the animation -> useful for objects to be displayed only in particular conditions
@@ -54,6 +56,7 @@ private:
 
     std::shared_ptr<SpriteComponent> spriteComp;
 
+    bool loopAnimation = false;
     bool showingCompleteAnim = false;
     std::function<void()> callbackFunc = nullptr;
     float animationTime = 0.300f;

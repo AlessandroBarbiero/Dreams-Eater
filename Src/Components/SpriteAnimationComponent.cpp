@@ -19,7 +19,7 @@ void SpriteAnimationComponent::update(float deltaTime) {
     if (time > animationTime){
         time = fmod(time, animationTime);
         spriteIndex++;
-        if (!showingCompleteAnim) {
+        if (!showingCompleteAnim && !loopAnimation) {
             // Retrieve state/direction to show from the character
             auto charComponent = gameObject->getComponent<CharacterComponent>();
             State c_state = charComponent->getState();
@@ -41,13 +41,19 @@ void SpriteAnimationComponent::update(float deltaTime) {
 
 void SpriteAnimationComponent::endCompleteAnimation() {
     spriteIndex--;
-    showingCompleteAnim = false;
     animationTime = baseAnimationTime;
     if (callbackFunc != nullptr) {
         callbackFunc();
+    }
+    if (loopAnimation) {
+        time = 0;
+        spriteIndex = 0;
+    }
+    else{
+        showingCompleteAnim = false;
+        currentAnimation = State::Idle;
         callbackFunc = nullptr;
     }
-    currentAnimation = State::Idle;
 }
 
 float SpriteAnimationComponent::getAnimationTime() const {
@@ -193,6 +199,21 @@ bool SpriteAnimationComponent::displayOnce(State anim, const std::function<void(
 float SpriteAnimationComponent::getMinDuration()
 {
     return _minDuration;
+}
+
+//Show the animation passed, it can be displayed in loop setting the boolean value,
+//if you want to override a loop animation set urgent to true
+bool SpriteAnimationComponent::showFixedAnimation(std::vector<sre::Sprite> animVector, bool loop, bool urgent)
+{
+    if (!urgent && showingCompleteAnim == true) {
+        return false;
+    }
+    showingCompleteAnim = true;
+    loopAnimation = loop;
+    time = 0;
+    spriteIndex = 0;
+    sprites = animVector;
+    animationTime = baseAnimationTime;
 }
 
 // Change the direction the object is facing to in order to display the correct animation, set reload to true if you want to turn the current animation,
