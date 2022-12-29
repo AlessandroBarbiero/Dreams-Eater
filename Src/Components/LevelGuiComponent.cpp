@@ -130,10 +130,11 @@ void LevelGuiComponent::onGui() {
 
         bool* open = nullptr;
         ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
-        if (ImGui::CollapsingHeader("Minimap")) {
+        if (ImGui::CollapsingHeader("Level")) {
             ImGui::DragFloat("room scale ##", &scale, 0.1f, 0, 20);
-            ImGui::DragFloat("map scale ##", &mapScale, 0.1f, 0, 1);
             ImGui::Text("Number of enemies here: %d", num_enemies);
+            ImGui::Text("Difficulty: %d", level->difficulty);
+            ImGui::Text("Number of rooms: %d", level->roomEntered.size());
         }
         ImGui::End();
     }
