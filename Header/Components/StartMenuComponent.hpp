@@ -13,24 +13,35 @@ public:
 
 private:
 
-    const int menuFlags =
+    const int startMenuFlags =
         ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoScrollbar |
         ImGuiWindowFlags_NoMove;
 
+    const int settingsMenuFlags =
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove;
+
     const int cond = ImGuiCond_Always;
 
     float scaleWraith = 0.5;
+    float scaleCloseButton = 0.3;
 
     float lateralOffset = 11.0f;
     float textOffset = 30.0f;
+    float closeButtonOffset = 7.0f;
+    float settingsScale = 3;
     const char* loadingMessage = "Loading...";
 
+    ImVec2 closeButtonSize;
     ImVec2 textSize;
     ImVec2 itemSpacing;
-    ImVec2 menuPosition;
-    ImVec2 menuSize;   
+    ImVec2 startMenuPosition;
+    ImVec2 startMenuSize;   
+    ImVec2 settingsMenuPosition;
+    ImVec2 settingsMenuSize;
     ImVec2 wraithSize;
     ImVec2 initialCursorPosition;
     ImVec2 uv0;
@@ -47,6 +58,7 @@ private:
     std::shared_ptr<sre::Texture> paperTexture;
 
     std::shared_ptr<sre::Texture> wraithTexture;
+    std::shared_ptr<sre::Texture> closeTexture;
 
 
     void start();

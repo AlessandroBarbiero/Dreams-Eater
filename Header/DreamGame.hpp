@@ -75,6 +75,11 @@ private:
 
     void startGame();
 
+
+    int difficulty = 1;
+    char defaultName[64] = "DreamHunter";
+    char playerName[64] = "DreamHunter";
+
     std::shared_ptr<SideScrollingCamera> camera;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas_inside;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas_baseWraith;

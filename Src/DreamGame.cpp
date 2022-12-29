@@ -41,6 +41,7 @@ DreamGame::DreamGame()
     init();
     buildStartMenu();
 
+
     deathEvent = SDL_RegisterEvents(1);
     playEvent = SDL_RegisterEvents(2);
 
@@ -122,6 +123,7 @@ void DreamGame::play() {
     pSettings.speed = 15.0f;
     pSettings.knockback = 1.0f;
     pSettings.type = CharacterType::Wraith;
+    pSettings.name = playerName;
     std::cout << "Creating player" << std::endl;
     auto player = CharacterBuilder::createPlayer(pSettings);
 
@@ -206,7 +208,7 @@ void DreamGame::play() {
     
 
     LevelSettings testLevelSettings;
-    testLevelSettings.difficulty = 1;
+    testLevelSettings.difficulty = difficulty > 0 ? difficulty : 1;
     testLevelSettings.name = "TestLevel";
     testLevelSettings.rooms = 10;
     std::cout << "Creating level" << std::endl;
