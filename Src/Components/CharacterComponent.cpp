@@ -9,6 +9,7 @@
 #include "SpriteAnimationComponent.hpp"
 #include "PowerupComponent.hpp"
 #include "GuiHelper.hpp"
+#include <math.h>
 #define KNOCKBACK_SCALE 10
 
 std::shared_ptr<sre::SpriteAtlas> CharacterComponent::effectAtlas;
@@ -22,15 +23,18 @@ CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameO
     initSpecialEffectObject();
 
     heartTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Heart.png").withFilterSampling(false).build();
-    signTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "MessagePaper.png").withFilterSampling(false).build();
+    messagePaperTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "MessagePaper.png").withFilterSampling(false).build();
+    signTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "GreyPaper.png").withFilterSampling(false).build();
 
     spriteSize = gameObject->getComponent<SpriteComponent>()->getSprite().getSpriteSize();
 
+    
+
     ImGuiStyle& style = ImGui::GetStyle();
     itemSpacing = style.ItemSpacing;
-    auto winsize = sre::Renderer::instance->getWindowSize();
-    auto size = heartOffset + heartInRow * heartSize.x + (heartInRow - 1) * itemSpacing.x;
-    menuSize = ImVec2(size, size);
+    
+
+   
 
     uv0 = GuiHelper::getInstance()->uv0;
     uv1 = GuiHelper::getInstance()->uv1;
@@ -350,7 +354,7 @@ void CharacterComponent::onGui() {
         bool* open = nullptr;
         ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
         if (ImGui::CollapsingHeader(title.c_str())) {
-            ImGui::DragFloat(std::string("HP ##").append(gameObject->name).c_str(),          &hp, 0.1f, 0, 20);
+            ImGui::DragFloat(std::string("HP ##").append(gameObject->name).c_str(),          &hp, 0.1f, 0, 24);
             ImGui::DragFloat(std::string("Armor##").append(gameObject->name).c_str(),        &armor, 0.1f, 0, 5);
             ImGui::DragFloat(std::string("Damage##").append(gameObject->name).c_str(),       &damage, 0.1f, 0, 5);
             ImGui::DragFloat(std::string("Rate Of Fire##").append(gameObject->name).c_str(), &rateOfFire, 0.1f, 0.5f, 10);
@@ -378,35 +382,136 @@ void CharacterComponent::onGui() {
 
 void CharacterComponent::setPlayerGui() {
 
+    int hpInt = (int)hp;
+    auto decimal = hp - hpInt;
+
+    auto intDecimal = ceil(decimal);
+
+    auto widthHeartRow = 0.0f;
+    auto heightHeartRow = 0.0f;
+
+    auto scaleX = 0.05f;
+    auto scaleY = 0.05f;
+
+    
+    
+    //2 rows of hearts
+    if (hpInt + decimal > heartInRow) {
+
+        //width is 2 times the offset (distance from borders) + heartInRow times the heartSize and heartInRow - 1 times the spacing between each of them
+        widthHeartRow = heartOffset * 2 + heartInRow * heartSize.x + (heartInRow - 1) * itemSpacing.x;
+
+        //height is double the height + spacing + double the offset
+        heightHeartRow = heartSize.y * 2 + heartOffset * 2 + itemSpacing.y;
+    }
+    else {
+
+        if (hpInt + intDecimal >= 5) {
+            //width and heght are the same as before but we consider the actual number of hearts
+            widthHeartRow = heartOffset * 2 + (hpInt + intDecimal) * heartSize.x + (hpInt + intDecimal - 1) * itemSpacing.x;
+        }
+        else {
+            widthHeartRow = heartOffset * 2 + 5 * heartSize.x + 4 * itemSpacing.x;
+        }
+
+        heightHeartRow = heartOffset * 2 + heartSize.y;
+
+        
+
+    }
+
+    while (scaleX * signTexture->getWidth() < widthHeartRow) {
+        scaleX += 0.01f;
+    }
+
+    while (scaleY * signTexture->getHeight() < heightHeartRow) {
+        scaleY += 0.01f;
+    }
+
+    menuSize = ImVec2(scaleX * signTexture->getWidth(), scaleY * signTexture->getHeight());
+
+    /*if (hpInt + decimal > heartInRow) {
+        widthHeartRow = heartOffset * 2 + heartInRow * heartSize.x + (heartInRow - 1) * itemSpacing.x;
+        heightHeartRow = heartSize.y * 2 + heartOffset * 2 + itemSpacing.y;
+    }
+    else {
+        widthHeartRow = heartOffset * 2 + (hpInt + value) * heartSize.x + (hpInt + value - 1) * itemSpacing.x;
+        heightHeartRow = heartSize.y + heartOffset * 2;
+    }
+
+    auto scale = 0.1f;
+
+    while (scale * signTexture->getWidth() < widthHeartRow || scale * signTexture->getHeight() < heightHeartRow) {
+        scale += 0.01f;
+    }
+
+    menuSize = ImVec2(scale * signTexture->getWidth(), scale * signTexture->getHeight());*/
+
     ImGui::SetNextWindowSize(menuSize, ImGuiCond_Always);
-    ImGui::SetNextWindowPos(GuiHelper::getInstance()->baseVec, ImGuiCond_Always, guiPivot);
+    ImGui::SetNextWindowPos({heartOffset, heartOffset }, ImGuiCond_Always);
     ImGui::SetNextWindowBgAlpha(0.0f);
+    GuiHelper::getInstance()->setZeroPadding();
 
     bool* open = nullptr;
 
     ImGui::Begin("#player", open, flags);
-    
-    
-    int hpInt = (int)hp;
-    auto decimal = hp - hpInt;
 
-    for (int i = 0; i < hpInt && i <= maxHp; i++) {
+    //auto startingY = 0.0f;
+
+    ImGui::Image(signTexture->getNativeTexturePtr(), menuSize, uv0, uv1);
+
+    //if (hpInt + decimal < heartInRow) {
+    //    startingY = menuSize.y / 2.0f - heartSize.y / 2.0f;
+    //    
+    //}
+    //else if (hpInt + decimal > 2 * heartInRow) {
+    //    startingY = menuSize.y / 2.0f - itemSpacing.y - heartSize.y / 2.0f - heartSize.y;
+    //}
+    //else  {
+    //    startingY = menuSize.y / 2.0f - itemSpacing.y / 2.0f - heartSize.y;
+    //}
+
+    
+    ImGui::SetCursorPos({heartOffset, heartOffset });
+
+    for (int i = 0; i < hpInt && i < maxHp; i++) {
         ImGui::Image(heartTexture->getNativeTexturePtr(), heartSize, uv0, uv1,  RED);
-        if (i < heartInRow - 1 || i > heartInRow - 1)
+        if ((i+1) % heartInRow != 0)
             ImGui::SameLine();
+        else
+            ImGui::SetCursorPosX(heartOffset);
     }
-    if (decimal > 0.0 && hpInt < maxHp){
+
+    if (decimal > 0.0 && hpInt < maxHp) {
         ImGui::Image(heartTexture->getNativeTexturePtr(), heartSize, uv0, uv1, WHITE);
         ImGui::SameLine();
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() - heartSize.x - itemSpacing.x);
 
-        auto uv1Fill = ImVec2{ uv1.x * decimal, uv1.y};
-        auto fillSize = ImVec2{ heartSize.x * decimal, heartSize.y};
+        auto uv1Fill = ImVec2{ uv1.x * decimal, uv1.y };
+        auto fillSize = ImVec2{ heartSize.x * decimal, heartSize.y };
 
         ImGui::Image(heartTexture->getNativeTexturePtr(), fillSize, uv0, uv1Fill, RED);
+        ImGui::SameLine();
     }
+
+    
+
+    if (hpInt + intDecimal < defaultHp) {
+
+        ImGui::SetCursorPosX({ (hpInt + intDecimal) * heartSize.x + (hpInt + intDecimal) * itemSpacing.x + heartOffset });
+
+        for (int i = hpInt + 1 + intDecimal; i <= defaultHp; i++) {
+            ImGui::Image(heartTexture->getNativeTexturePtr(), heartSize, uv0, uv1, WHITE);
+            ImGui::SameLine();
+        }
+        
+        
+    }
+
+    
   
     ImGui::End();
+    ImGui::PopStyleVar();
 }
 
 void CharacterComponent::displayPowerupMessage(){
@@ -427,11 +532,11 @@ void CharacterComponent::displayPowerupMessage(){
 
     auto scale = 0.1f;
 
-    while (textSize.x + textOffset > signTexture->getWidth() * scale || textSize.y + textOffset > signTexture->getHeight() * scale) {
+    while (textSize.x + textOffset > messagePaperTexture->getWidth() * scale || textSize.y + textOffset > messagePaperTexture->getHeight() * scale) {
         scale += 0.1f;
     }
 
-    auto signSize = ImVec2{ signTexture->getWidth() * scale, signTexture->getHeight() * scale };
+    auto signSize = ImVec2{ messagePaperTexture->getWidth() * scale, messagePaperTexture->getHeight() * scale };
     
     auto powerupMessagePosition = ImVec2{ position.x - signSize.x / 2.0f , position.y - spriteSize.y / 2.0f - signSize.y / 1.3f};
 
@@ -440,9 +545,9 @@ void CharacterComponent::displayPowerupMessage(){
     ImGui::SetNextWindowBgAlpha(0.0f);
 
     ImGui::Begin("Sign", open, flags);
-    ImGui::Image(signTexture->getNativeTexturePtr(), signSize);
+    ImGui::Image(messagePaperTexture->getNativeTexturePtr(), signSize);
 
-    /*ImGui::GetWindowDrawList()->AddImageRounded(signTexture->getNativeTexturePtr(), powerupMessagePosition,
+    /*ImGui::GetWindowDrawList()->AddImageRounded(messagePaperTexture->getNativeTexturePtr(), powerupMessagePosition,
         { powerupMessagePosition.x + signSize.x, powerupMessagePosition.y + signSize.y }, uv0, uv1, IM_COL32(255, 255, 255, 255), 10.0);*/
     
 

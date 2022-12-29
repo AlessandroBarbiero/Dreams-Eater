@@ -10,7 +10,8 @@
 
 PlayerController::PlayerController(GameObject* gameObject) : Component(gameObject) { 
     
-    barTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Bar.png").withFilterSampling(false).build();;
+    barTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Bar.png").withFilterSampling(false).build();
+    signTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Bar.png").withFilterSampling(false).build();
 
     uv0 = GuiHelper::getInstance()->uv0;
     uv1 = GuiHelper::getInstance()->uv1;
@@ -181,6 +182,8 @@ void PlayerController::onGui() {
         ImGui::SetNextWindowPos(barPosition, ImGuiCond_Always);
         ImGui::SetNextWindowBgAlpha(0.0f);
 
+
+
         bool* open = nullptr;
 
         ImGui::Begin("SuperAttack", open, flags);
@@ -196,7 +199,7 @@ void PlayerController::onGui() {
         auto uv1Fill = ImVec2{ uv1.x * ratio, uv1.y };
         auto fillSize = ImVec2{ barSize.x * ratio, barSize.y };
 
-        ImVec4 color = { 0,ratio,0,1 };
+        ImVec4 color = { 0 ,ratio, 0, 0.5f + 0.5f* ratio };
 
         ImGui::Image(barTexture->getNativeTexturePtr(), fillSize, uv0, uv1Fill, color);
 

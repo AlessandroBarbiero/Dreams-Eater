@@ -77,7 +77,9 @@ private:
 	bool stun = false;
 	float stunTimeout = 0;
 
-	float hp		= 5.0f;
+	float defaultHp = 5.0f;
+
+	float hp		= defaultHp;
 	float armor		= 0;
 	float speed		= 5.0f;
 	float damage	= 1.5f;
@@ -118,13 +120,14 @@ private:
 	//==============GUI==============
 	std::shared_ptr<sre::Texture> heartTexture;
 	std::shared_ptr<sre::Texture> signTexture;
+	std::shared_ptr<sre::Texture> messagePaperTexture;
 
 	void setPlayerGui();
 	void displayPowerupMessage();
 	//void setEnemyGui();
 
 	ImVec2 guiPivot = { 0,0 };
-	ImVec2 heartSize = { 30,30 };
+	ImVec2 heartSize = { 30.0f,30.0f };
 	ImVec2 menuSize;
 	ImVec2 itemSpacing;
 	ImVec2 uv0;
@@ -137,8 +140,9 @@ private:
 	glm::vec2 spriteSize;
 
 	int heartInRow = 8;
-	float heartOffset = 20.0f;
+	float heartOffset = 10.0f;
 	float textOffset = 15.0f;
+	float widthHeartRow;
 
 	float messageTime = 3.0f;
 	float powerupMessageTimeOut = 0.0f;
