@@ -21,18 +21,22 @@ StartMenuComponent::StartMenuComponent(GameObject* gameObject) : Component(gameO
 
 	itemSpacing = ImGui::GetStyle().ItemSpacing;
 
-	//auto scaleWraith = 0.5f;
+	wraithSize = { (float)wraithTexture->getWidth() * scaleWraith, (float)wraithTexture->getHeight() * scaleWraith };
 
 	auto r = sre::Renderer::instance;
 	auto winsize = r->getWindowSize();
 	menuPosition = { (winsize.x - menuSize.x) / 2.0f, winsize.y / 2.0f };
+
+	uv0 = GuiHelper::getInstance()->uv0;
+	uv1 = GuiHelper::getInstance()->uv1;
+
+	//initialCursorPosition = 
 }
 
 void StartMenuComponent::onGui(){
-	wraithSize = { (float)wraithTexture->getWidth() * scaleWraith, (float)wraithTexture->getHeight() * scaleWraith };
+	
 
 	if (DreamGame::instance->doDebugDraw) {
-
 		bool* open = nullptr;
 		ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
 		if (ImGui::CollapsingHeader("Start")) {
@@ -42,9 +46,8 @@ void StartMenuComponent::onGui(){
 		}
 		ImGui::End();
 	}
+
 	GuiHelper::getInstance()->setZeroPadding();
-	static auto uv0 = GuiHelper::getInstance()->uv0;
-	static auto uv1 = GuiHelper::getInstance()->uv1;
 
 	bool* open = nullptr;
 
@@ -59,15 +62,28 @@ void StartMenuComponent::onGui(){
 	ImGui::Begin("StartMenu", open, menuFlags);
 
 	ImGui::Image(paperTexture.get()->getNativeTexturePtr(), menuSize, uv0, uv1);
-	
-	
-	//center buttons vertically
-	ImGui::SetCursorPos(ImVec2(GuiHelper::getInstance()->centerCursorX(buttonSize.x), (menuSize.y - NUM_BUTTONS *(buttonSize.y) -(NUM_BUTTONS - 1)*itemSpacing.y - buttonSize.y/2.0f)/2.0f));
-	
 
+	if (DreamGame::instance->gameState == GameState::Ready) {
+		start();
+	}
+	else if(DreamGame::instance->gameState == GameState::Settings){
+		settings();
+	}
+
+	ImGui::End();
+	ImGui::PopStyleVar();
+	ImGui::PopFont();
 	
-	if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Space))  || ImGui::ImageButton(playTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {
-			
+}
+
+
+void StartMenuComponent::start() {
+
+	ImGui::SetCursorPos(ImVec2(GuiHelper::getInstance()->centerCursorX(buttonSize.x), (menuSize.y - NUM_BUTTONS * (buttonSize.y) - (NUM_BUTTONS - 1) * itemSpacing.y - buttonSize.y / 2.0f) / 2.0f));
+
+
+	if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Space)) || ImGui::ImageButton(playTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {
+
 		DreamGame::instance->startGame();
 
 		ImGui::SetCursorPos({ GuiHelper::getInstance()->baseVec });
@@ -82,19 +98,26 @@ void StartMenuComponent::onGui(){
 	}
 	else {
 		ImGui::SetCursorPosX(GuiHelper::getInstance()->centerCursorX(buttonSize.x));
-		if (ImGui::ImageButton(settingsTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {}
+		if (ImGui::ImageButton(settingsTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {
+			DreamGame::instance->gameState = GameState::Settings;
+		}
 
-		ImGui::SetCursorPosX(GuiHelper::getInstance()->centerCursorX(buttonSize.x));
-		if (ImGui::ImageButton(historyTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {}
+		/*ImGui::SetCursorPosX(GuiHelper::getInstance()->centerCursorX(buttonSize.x));
+		if (ImGui::ImageButton(historyTexture.get()->getNativeTexturePtr(), buttonSize, uv0, uv1)) {}*/
 	}
 
+
 	
-    ImGui::End();
-	ImGui::PopStyleVar();
-	ImGui::PopFont();
+
 }
 
+void StartMenuComponent::settings() {
+	ImGui::SetCursorPos(GuiHelper::getInstance()->baseVec);
+	if (ImGui::Button("<-")) {
+		DreamGame::instance->gameState = GameState::Ready;
+	}
 
+}
 
 
 

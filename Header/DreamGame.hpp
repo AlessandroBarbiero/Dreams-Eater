@@ -16,7 +16,8 @@ class PhysicsComponent;
 enum class GameState {
     Ready,
     Running,
-    Pause
+    Pause,
+    Settings
 };
 
 class DreamGame : public b2ContactListener {

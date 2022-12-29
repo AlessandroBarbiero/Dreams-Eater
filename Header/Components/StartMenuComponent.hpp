@@ -10,6 +10,7 @@ public:
     void onGui() override;
 
 
+
 private:
 
     const int menuFlags =
@@ -31,11 +32,14 @@ private:
     ImVec2 menuPosition;
     ImVec2 menuSize;   
     ImVec2 wraithSize;
+    ImVec2 initialCursorPosition;
+    ImVec2 uv0;
+    ImVec2 uv1;
 
     const ImVec2 buttonSize = { 100, 50 };
 
    
-    const int NUM_BUTTONS = 3;
+    const int NUM_BUTTONS = 2;
 
     std::shared_ptr<sre::Texture> playTexture;
     std::shared_ptr<sre::Texture> historyTexture;
@@ -43,6 +47,12 @@ private:
     std::shared_ptr<sre::Texture> paperTexture;
 
     std::shared_ptr<sre::Texture> wraithTexture;
+
+
+    void start();
+    void settings();
+
+
 
 
 

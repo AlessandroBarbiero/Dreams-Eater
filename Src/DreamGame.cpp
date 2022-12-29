@@ -115,7 +115,7 @@ void DreamGame::init() {
 
 void DreamGame::play() {
 
-    
+    currentScene = &game;
 
     PlayerSettings pSettings;
     pSettings.position = glm::vec2(1,1);
@@ -226,7 +226,7 @@ void DreamGame::play() {
 
     gameState = GameState::Running;
 
-    currentScene = &game;
+    
 
 }
 
