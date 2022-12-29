@@ -286,7 +286,7 @@ void CharacterBuilder::transform(GameObject* character, CharacterType newType)
         if (newType == CharacterType::BrownWraith) {
             std::string spriteName = "Style4/";
             std::vector<sre::Sprite> superAnimationVector = getAnimationVector(spriteName, 5, getAttackAtlas(), Depth::Bullet);
-            playerController->overrideSuperAttack(15, 3, superAnimationVector, 5);
+            playerController->overrideSuperAttack(20, 3, superAnimationVector, 5);
         }
     }
     else if (character->tag == Tag::Enemy) {

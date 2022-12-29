@@ -290,6 +290,10 @@ void CharacterComponent::specialAttack(glm::vec2 direction, float dmg, const std
         specialShot->setPosition(position * physicsScale);
         specialShot->setRotation(glm::atan(direction.y, direction.x));
 
+        auto animComp = specialShot->addComponent<SpriteAnimationComponent>();
+        animComp->showFixedAnimation(bulletSprites);
+        animComp->setBaseAnimationTime(0.1f);
+
         auto shotPhy = specialShot->addComponent<PhysicsComponent>();
         shotPhy->initCircle(b2_dynamicBody, bulletRadius, position, 1);
         shotPhy->setLinearVelocity(direction * shotSpeed);
@@ -306,7 +310,6 @@ void CharacterComponent::specialAttack(glm::vec2 direction, float dmg, const std
         std::weak_ptr<BulletComponent> weakBullet = bullet;
         specialProj.push(weakBullet);
 
-        //TODO: use animation component to animate the attack
     };
     specialEffects->displayOnce(State::Charge, callback);
 }
