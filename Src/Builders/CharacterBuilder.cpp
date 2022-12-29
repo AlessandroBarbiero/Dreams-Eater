@@ -40,7 +40,6 @@ std::shared_ptr<sre::SpriteAtlas> CharacterBuilder::getAttackAtlas()
         std::string attackName = "LightEffect";
         attackAtlas = 
             sre::SpriteAtlas::create("Sprites/AttackAnimation/" + attackName + "/" + attackName + "_atlas.json", "Sprites/AttackAnimation/" + attackName + "/" + attackName + "_atlas.png");
-
     }
 
     return attackAtlas;

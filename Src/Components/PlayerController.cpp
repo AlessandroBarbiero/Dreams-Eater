@@ -59,11 +59,11 @@ void PlayerController::update(float deltaTime) {
         character->changeState(State::Idle);
     }
 
+    fireOnKeyPress();
+
     // If there is a super bullet registered
     if (superBullet.size() != 0)
         handleSuperAttack(deltaTime);
-
-    fireOnKeyPress();
 }
 
 
@@ -133,6 +133,8 @@ void PlayerController::fireOnKeyPress() {
         // If the animation cannot go any faster just spawn the bullets
         if (1 / character->rateOfFire < anim->getMinDuration())
             character->shoot(direction, bulletSprite);
+
+        lastDirection = direction;
 
         return;
     }

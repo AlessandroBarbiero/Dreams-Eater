@@ -29,6 +29,9 @@ protected:
     std::shared_ptr<CharacterComponent> character;
     std::shared_ptr<GameObject> player;
 
+    static std::shared_ptr<sre::SpriteAtlas> explosionsAtlas;
+    static std::shared_ptr<sre::SpriteAtlas> getExplosionsAtlas();
+
     glm::vec2 towardPlayer;
 
     friend class CharacterBuilder;

@@ -2,6 +2,7 @@
 
 #include "IEnemyController.hpp"
 #include "Component.hpp"
+#include <vector>
 
 //TODO: not implemented yet
 //
@@ -24,6 +25,9 @@ public:
 
 private:
 
+    void thunder();
+
+    std::vector<sre::Sprite> thunderAnimation;
     sre::Sprite bulletSprite;
     float idealDistance = 600.0f;
 };

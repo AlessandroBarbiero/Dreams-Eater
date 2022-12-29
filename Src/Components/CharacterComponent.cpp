@@ -248,19 +248,20 @@ void CharacterComponent::shoot(glm::vec2 direction, const sre::Sprite& bulletSpr
     else
         shot->tag = Tag::Bullet;
 
-    glm::vec2 position = gameObject->getPosition() / physicsScale + direction * (radius * gameObject->getScale() + damage);
-    shot->setPosition(position * physicsScale);
-    shot->setRotation(glm::atan(direction.y, direction.x));
     auto spriteComp = shot->addComponent<SpriteComponent>();
     spriteComp->setSprite(bulletSprite);
+    float bulletRadius = bulletSprite.getSpriteSize().x / (2 * physicsScale);
+
+    glm::vec2 position = gameObject->getPosition() / physicsScale + direction * (radius * gameObject->getScale() + bulletRadius*damage);
+    shot->setPosition(position * physicsScale);
+    shot->setRotation(glm::atan(direction.y, direction.x));
 
     auto shotPhy = shot->addComponent<PhysicsComponent>();
-    float radius = bulletSprite.getSpriteSize().x / (2 * physicsScale);
-    shotPhy->initCircle(b2_dynamicBody, radius, position, 1);
+    shotPhy->initCircle(b2_dynamicBody, bulletRadius, position, 1);
     shotPhy->setLinearVelocity(direction * shotSpeed);
     shotPhy->setSensor(true);
 
-    shot->setScale({ damage });
+    shot->setScale(damage);
 
     auto bullet = shot->addComponent<BulletComponent>();
     bullet->startingPosition = shot->getPosition();
@@ -273,7 +274,7 @@ void CharacterComponent::shoot(glm::vec2 direction, const sre::Sprite& bulletSpr
 }
 
 
-void CharacterComponent::specialAttack(glm::vec2 direction, float dmg, const std::vector<sre::Sprite> bulletSprites, float imageScale)
+void CharacterComponent::specialAttack(glm::vec2 direction, float dmg, const std::vector<sre::Sprite> bulletSprites, float imageScale, bool displayEffect, bool rotateBullet)
 {
 
     std::function<void()> callback = [=]() {
@@ -295,7 +296,8 @@ void CharacterComponent::specialAttack(glm::vec2 direction, float dmg, const std
 
         glm::vec2 position = gameObject->getPosition() / physicsScale + direction * (radius * gameObject->getScale() + bulletRadius * imageScale);
         specialShot->setPosition(position * physicsScale);
-        specialShot->setRotation(glm::atan(direction.y, direction.x));
+        if (rotateBullet)
+            specialShot->setRotation(glm::atan(direction.y, direction.x));
 
         auto animComp = specialShot->addComponent<SpriteAnimationComponent>();
         animComp->showFixedAnimation(bulletSprites);
@@ -318,7 +320,10 @@ void CharacterComponent::specialAttack(glm::vec2 direction, float dmg, const std
         specialProj.push(weakBullet);
 
     };
-    specialEffects->displayOnce(State::Charge, callback);
+    if (displayEffect)
+        specialEffects->displayOnce(State::Charge, callback);
+    else
+        callback();
 }
 
 void CharacterComponent::startShotCooldown() {
