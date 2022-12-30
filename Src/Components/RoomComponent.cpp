@@ -365,7 +365,6 @@ void RoomComponent::buildFloor() {
 	std::string floorString = TileSetFloorToString.at(tileSetFloor);
 	auto spriteFloor = game->spriteAtlas_inside->get(floorString + ".png");
 	glm::vec2 spriteFloorSize = spriteFloor.getSpriteSize();
-	float scale = 0.9*6.0f; // Scaled by 0.9 to fit size of room, then by an even number
 	
 	
 	std::string wallString = TileSetWallsToString.at(tileSetWalls);
@@ -380,7 +379,8 @@ void RoomComponent::buildFloor() {
 	auto horizontal = roomSize.x * wallLength;
 	auto vertical = roomSize.y * wallLength;
 
-	scale = horizontal / (spriteFloorSize.x*6);
+	// Scaled to fit width of room
+	float scale = horizontal / (spriteFloorSize.x*6);
 	spriteFloorSize *= scale;
 
 	auto floorSize = glm::vec2(horizontal / spriteFloorSize.x, vertical / spriteFloorSize.y);
@@ -390,6 +390,13 @@ void RoomComponent::buildFloor() {
 			auto position = bottomLeft + glm::vec2(x * spriteFloorSize.x + spriteFloorSize.x/2, y * spriteFloorSize.y + spriteFloorSize.y/2);
 			go->addChild(spawnFloor(spriteFloor, position, scale).get());
 		}
+	}
+	// Black sprites to cover overflowing floor. Sprites can only overflow at the top.
+	spriteFloor.setColor({ 0,0,0,1 });
+	glm::vec2 topLeft = { -(roomSizePixels.x / 2.0f), (roomSizePixels.y / 2.0f) };
+	for (int x = 0; x < floorSize.x; x++) {
+		auto position = topLeft + glm::vec2(x * spriteFloorSize.x + spriteFloorSize.x / 2, spriteFloorSize.y / 2);
+		go->addChild(spawnFloor(spriteFloor, position, scale).get());
 	}
 }
 
