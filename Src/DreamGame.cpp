@@ -45,7 +45,7 @@ DreamGame::DreamGame()
     deathEvent = SDL_RegisterEvents(1);
     playEvent = SDL_RegisterEvents(2);
 
-    GuiHelper::getInstance()->setupImGuiStyle(GuiStyle::Dark);
+    GuiHelper::getInstance()->setupImGuiStyle();
     GuiHelper::getInstance()->setupFont();
 
     // setup callback functions
@@ -87,12 +87,11 @@ void DreamGame::buildStartMenu() {
     guiAtlas = SpriteAtlas::createSingleSprite(background, "background");
 
     auto backgroundSprite = guiAtlas->get("background");
+    //start->setScale(windowSize.y / backgroundSprite.getSpriteSize().y);
+    //start->setScale(1.0f);
     auto spriteComponent = start->addComponent<SpriteComponent>();
     spriteComponent->setSprite(backgroundSprite);
     
-
-    /*auto end = endMenu.createGameObject();
-    end->addComponent<EndMenuComponent>();*/
 }
 
 void DreamGame::init() {
@@ -126,6 +125,12 @@ void DreamGame::play() {
     pSettings.knockback = 1.0f;
     pSettings.type = CharacterType::Wraith;
     pSettings.name = playerName;
+
+    Controls controls;
+    insertKeys(controls);
+
+    pSettings.keybinds = controls;
+    
     std::cout << "Creating player" << std::endl;
     player = CharacterBuilder::createPlayer(pSettings);
 
@@ -236,6 +241,54 @@ void DreamGame::startGame() {
     SDL_Event event;
     event.user.type = DreamGame::instance->playEvent;
     SDL_PushEvent(&event);
+
+}
+
+void DreamGame::insertKeys(Controls& c) {
+    if (StringToKeys.at(possibleMoveKeys[selectedMoveKey]) == Keys::ASWD) {
+        c.up = SDLK_w;
+        c.down = SDLK_s;
+        c.left = SDLK_a;
+        c.right = SDLK_d;
+    }
+    else if (StringToKeys.at(possibleMoveKeys[selectedMoveKey]) == Keys::ARROWS) {
+        c.up = SDLK_UP;
+        c.down = SDLK_DOWN;
+        c.left = SDLK_LEFT;
+        c.right = SDLK_RIGHT;
+    }
+    else if (StringToKeys.at(possibleMoveKeys[selectedMoveKey]) == Keys::JKIL) {
+        c.up =   SDLK_i;
+        c.down = SDLK_k;
+        c.left = SDLK_j;
+        c.right = SDLK_l;
+    }
+
+    if (StringToKeys.at(possibleShootKeys[selectedShootKey]) == Keys::ASWD) {
+        c.shootUp = SDLK_w;
+        c.shootDown = SDLK_s;
+        c.shootLeft = SDLK_a;
+        c.shootRight = SDLK_d;
+    }
+    else if (StringToKeys.at(possibleShootKeys[selectedShootKey]) == Keys::ARROWS) {
+        c.shootUp = SDLK_UP;
+        c.shootDown = SDLK_DOWN;
+        c.shootLeft = SDLK_LEFT;
+        c.shootRight = SDLK_RIGHT;
+    }
+    else if (StringToKeys.at(possibleShootKeys[selectedShootKey]) == Keys::JKIL) {
+        c.shootUp = SDLK_i;
+        c.shootDown = SDLK_k;
+        c.shootLeft  = SDLK_j;
+        c.shootRight = SDLK_l;
+    }
+
+    if (StringToKeys.at(possibleSuperShootKeys[selectedSuperShootKey]) == Keys::SPACE) {
+        c.shot = SDLK_SPACE;
+    }
+    else if (StringToKeys.at(possibleSuperShootKeys[selectedSuperShootKey]) == Keys::Q) {
+        c.shot = SDLK_q;
+    }
 
 }
 
@@ -412,9 +465,10 @@ void DreamGame::onKey(SDL_Event& event) {
             break;
 
         case SDLK_p:
-            if (gameState != GameState::Pause)
+            
+            if (gameState == GameState::Running)
                 pause();
-            else
+            else if(gameState == GameState::Pause)
                 resume();
             break;
         }

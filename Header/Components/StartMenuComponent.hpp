@@ -10,7 +10,6 @@ public:
     void onGui() override;
 
 
-
 private:
 
 
@@ -27,19 +26,26 @@ private:
     const int settingsMenuFlags =
         ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoScrollbar |
         ImGuiWindowFlags_NoMove;
 
     const int cond = ImGuiCond_Always;
 
     float scaleWraith = 0.5;
-    float scaleCloseButton = 0.3;
-    float settingsScale = 3.0;
+    float scaleCloseButton = 0.4;
+    float settingsScale = 1.0;
 
     float lateralOffset = 11.0f;
-    float textOffset = 30.0f;
-    float closeButtonOffset = 7.0f;
+    float textOffset = 10.0f;
+    float internalOffset = 5.0f;
+
+    float scaleButton = 0.65f;
+
+    float scaleStartX = 0.4f;
+    float scaleStartY = 0.6f;
     
     const char* loadingMessage = "Loading...";
+    const char* keybinds = "KEYBINDS";
 
     ImVec2 closeButtonSize;
     ImVec2 textSize;
@@ -53,7 +59,10 @@ private:
     ImVec2 uv0;
     ImVec2 uv1;
 
-    const ImVec2 buttonSize = { 100, 50 };
+    float borderBlack = 3.0f;
+    float borderWhite = 3.0f;
+
+     ImVec2 buttonSize = { 150, 50 };
 
    
     const int NUM_BUTTONS = 2;
