@@ -151,7 +151,7 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 		case SpawnRoom:
 			break;
 		case EnemyRoom:
-			random = (rand() % 3) + 1;
+			random = (rand() % 3) + difficulty;
 			random *= roomSizeMultiplier;
 			for (int i = 0; i < random; i++) {
 				int randomEnemy = rand() % regularEnemySettings.size();
@@ -192,7 +192,7 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 			boss = std::shared_ptr<GameObject>(enemy);//is there a better way?
 			newRoom->roomObjects.push_back(enemy);
 
-			random = (rand() % 2) + 1;
+			random = (rand() % 2) + difficulty;
 			random *= roomSizeMultiplier;
 			for (int i = 0; i < random; i++) {
 				int randomEnemy = rand() % regularEnemySettings.size();
