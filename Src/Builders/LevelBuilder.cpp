@@ -8,7 +8,7 @@ std::pair<int, int> operator+(const std::pair<int, int>& lhs, const std::pair<in
 }
 
 std::shared_ptr<Level> LevelBuilder::createLevel(LevelSettings settings) {
-    std::cout << "Building new level" << std::endl;
+    //std::cout << "Building new level" << std::endl;
     std::shared_ptr<Level> level = std::make_shared<Level>();
 
     level->name = settings.name;
@@ -300,7 +300,7 @@ std::vector<Door> LevelBuilder::generateDoors(std::shared_ptr<RoomSettings> room
         // Remove from possible positions
         possible[pos] = possible[possibleLast - 1];
         possibleLast--;
-        if (possibleLast == -1) {
+        if (possibleLast == 0) {
             //std::cout << "No possible positions left: generated " << generated << " of " << doors << std::endl;
             break;
         }
@@ -586,8 +586,8 @@ RoomSize LevelBuilder::expandRoom(std::map<std::pair<int, int>, std::shared_ptr<
             case 3:
                 // Try right
                 if (right == roomMap.end()) {
-                    auto rightUp = roomMap.find(pos + std::make_pair(-1, 1));
-                    auto rightDown = roomMap.find(pos + std::make_pair(-1, -1));
+                    auto rightUp = roomMap.find(pos + std::make_pair(1, 1));
+                    auto rightDown = roomMap.find(pos + std::make_pair(1, -1));
                     if (up == roomMap.end() && down == roomMap.end()) {
                         if (rightUp == roomMap.end() && rightDown == roomMap.end()) {
                             int temp = rand() % 2;
