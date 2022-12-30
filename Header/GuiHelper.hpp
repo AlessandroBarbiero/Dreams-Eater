@@ -3,11 +3,6 @@
 
 #include "sre/SDLRenderer.hpp"
 
-enum class GuiStyle {
-    Dark,
-    Light
-};
-
 
 class GuiHelper {
 
@@ -18,7 +13,7 @@ public:
 
 private:
 
-    void setupImGuiStyle(GuiStyle);
+    void setupImGuiStyle();
     float centerCursorX(float width);
     void setupFont();
     void setupDebugGui();
@@ -35,7 +30,6 @@ private:
     ImFont* fontFunny20;
     ImFont* fontFunny30;
 
-    GuiStyle guiStyle;
 
     const ImVec2 debugWindowSize = { 300,150 };
     const ImVec4 BLACK = ImVec4(0, 0, 0, 1);

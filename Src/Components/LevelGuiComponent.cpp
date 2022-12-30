@@ -18,7 +18,7 @@ LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObj
     signTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Sign.png").withFilterSampling(false).build();
     barTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Bar.png").withFilterSampling(false).build();
     
-    barSize = { (float)barTexture->getWidth(), (float)barTexture->getHeight() };
+    barSize = { (float)barTexture->getWidth(), (float)barTexture->getHeight() * 0.5f};
     
     menuSize = { mapTexture->getWidth() * mapScale, mapTexture->getHeight() * mapScale };
     menuPosition = { sre::Renderer::instance->getWindowSize().x - menuSize.x - windowOffset,windowOffset };
@@ -56,6 +56,7 @@ void LevelGuiComponent::drawRoom(std::shared_ptr<RoomSettings> roomSettings, ImV
 
     auto halfSize = ImVec2{ size.x / 2.0f, size.y / 2.0f };
     auto center = ImVec2{ topLeft.x + halfSize.x, topLeft.y + halfSize.y };
+
     iconSize = { iconLength * scale, iconLength * scale};
 
     auto uv0 = GuiHelper::getInstance()->uv0;
@@ -172,15 +173,22 @@ void LevelGuiComponent::drawRoom(std::shared_ptr<RoomSettings> roomSettings, ImV
 void LevelGuiComponent::showBoss(std::shared_ptr<GameObject> boss){
 
     auto bossComponent = boss->getComponent<CharacterComponent>();
-    static auto file = CharacterTypeToString.at(bossComponent->type);
-    static auto bossStatsTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + file + ".png").withFilterSampling(false).build();
+    /*static auto file = CharacterTypeToString.at(bossComponent->type);
+    static auto bossStatsTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + file + ".png").withFilterSampling(false).build();*/
 
     bool* open = nullptr;
     
     if (bossComponent->hp > 0.0) {
+
+    auto maxLife = bossComponent->defaultHp;
+
+    auto uv1Fill = ImVec2{ uv1.x * bossComponent->hp / maxLife, uv1.y };
+    auto fillSize = ImVec2{ barSize.x * bossComponent->hp / maxLife, barSize.y };
+
+    ImVec4 barColor = { 1, 0, 0, 1 };
         
     
-    ImGui::SetNextWindowSize(sizeBossMenu, ImGuiCond_Always);
+    /*ImGui::SetNextWindowSize(sizeBossMenu, ImGuiCond_Always);
     ImGui::SetNextWindowPos(bossPositionMenu, ImGuiCond_Always);
     ImGui::SetNextWindowBgAlpha(0.0f);
     GuiHelper::getInstance()->setZeroPadding();
@@ -201,12 +209,7 @@ void LevelGuiComponent::showBoss(std::shared_ptr<GameObject> boss){
 
     ImGui::SameLine();
 
-    auto maxLife = bossComponent->defaultHp;
-
-    auto uv1Fill = ImVec2{ uv1.x * bossComponent->hp / maxLife, uv1.y };
-    auto fillSize = ImVec2{ barSize.x * bossComponent->hp / maxLife, barSize.y };
-
-    ImVec4 barColor = { 1, 0, 0, 1 };
+    
 
     ImGui::SetCursorPosX(offset / 2.0f + size.x + itemSpacing.x);
 
@@ -215,12 +218,9 @@ void LevelGuiComponent::showBoss(std::shared_ptr<GameObject> boss){
     ImGui::PopStyleVar();
     ImGui::PopFont();
 
-    ImGui::End();
+    ImGui::End();*/
 
     auto position = DreamGame::instance->camera->getWindowCoordinates(glm::vec3(boss->getPosition(), 0.0));
-
-    
-
     auto menuPos = ImVec2{ position.x - barSize.x / 2.0f, position.y - bossTexture->getHeight() / 5.0f };
     ImGui::SetNextWindowSize(barSize, ImGuiCond_Always);
     ImGui::SetNextWindowPos(menuPos, ImGuiCond_Always);
@@ -250,18 +250,11 @@ void LevelGuiComponent::onGui() {
 
     if (DreamGame::instance->doDebugDraw) {
 
-        int num_enemies = 0;
-        for (auto& elem : level->roomObjects[level->currentRoomIndex]) {
-            if (elem->tag == Tag::Enemy) {
-                num_enemies += 1;
-            }
-        }
 
         bool* open = nullptr;
         ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
         if (ImGui::CollapsingHeader("Level")) {
-            ImGui::DragFloat("room scale ##", &scale, 0.1f, 0, 20);
-            ImGui::Text("Number of enemies here: %d", num_enemies);
+            ImGui::DragFloat("room scale in minimap##", &scale, 0.1f, 0, 20);
             ImGui::Text("Difficulty: %d", level->difficulty);
             ImGui::Text("Number of rooms: %d", level->roomEntered.size());
         }

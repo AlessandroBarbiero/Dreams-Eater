@@ -10,6 +10,7 @@
 #include "Scene.hpp"
 #include "Level.hpp"
 #include "LevelGuiComponent.hpp"
+#include "CharacterBuilder.hpp"
 
 
 class PhysicsComponent;
@@ -19,6 +20,30 @@ enum class GameState {
     Running,
     Pause,
     Settings
+};
+
+enum class Keys {
+    ASWD,
+    ARROWS,
+    JKIL,
+    SPACE,
+    Q
+};
+
+const std::unordered_map<Keys, char*> KeysToString{
+    {Keys::ASWD  ,	    "ASWD"    },
+    {Keys::ARROWS,	    "ARROWS"  },
+    {Keys::SPACE ,	    "SPACE"   },
+    {Keys::Q     ,	    "Q"       },
+    {Keys::JKIL  ,	    "JKIL"    },
+};
+
+const std::unordered_map<std::string, Keys> StringToKeys{
+    {"ASWD"  ,    Keys::ASWD,	 },
+    {"ARROWS",    Keys::ARROWS,	 },
+    {"SPACE" ,    Keys::SPACE,	 },
+    {"Q"     ,    Keys::Q,	     },
+    {"JKIL"  ,    Keys::JKIL,	 },
 };
 
 class DreamGame : public b2ContactListener {
@@ -40,7 +65,6 @@ public:
 
     static constexpr float32 timeStep = 1.0f / 60.0f;
     const float physicsScale = 100;
-
 
     bool doDebugDraw = false;
 
@@ -76,6 +100,8 @@ private:
 
     void startGame();
 
+    void insertKeys(Controls&);
+
 
     int difficulty = 1;
     char defaultName[64] = "DreamHunter";
@@ -87,14 +113,23 @@ private:
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas_inside;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas_baseWraith;
 
-    std::shared_ptr<sre::SpriteAtlas> guiAtlas;
-
-    //std::string playerName = "";
-    
+    std::shared_ptr<sre::SpriteAtlas> guiAtlas;    
     
     Scene startMenu;
     Scene game;
     Scene pauseMenu;
+
+    int lengthShootKeys = 3;
+
+    char* possibleMoveKeys[3] = { KeysToString.at(Keys::ASWD),  KeysToString.at(Keys::ARROWS), KeysToString.at(Keys::JKIL) };
+    char* possibleShootKeys[3] = { KeysToString.at(Keys::ASWD),  KeysToString.at(Keys::ARROWS), KeysToString.at(Keys::JKIL) };
+    char* possibleSuperShootKeys[2] = { KeysToString.at(Keys::Q),  KeysToString.at(Keys::SPACE) };
+
+    int selectedMoveKey = 0;
+    int selectedShootKey = 1;
+    int selectedSuperShootKey = 0;
+    
+    
 
 
     //std::vector<std::shared_ptr<GameObject>> sceneObjects;

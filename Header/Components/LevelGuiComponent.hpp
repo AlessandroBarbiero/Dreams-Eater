@@ -29,7 +29,8 @@ private:
         ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoResize |
         ImGuiWindowFlags_NoScrollbar |
-        ImGuiWindowFlags_NoMove;
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoInputs;
 
     int cond = ImGuiCond_Always;
 
@@ -65,7 +66,7 @@ private:
 
     //squares are double of this
     float doorLength = 4.0f; 
-    float borderThickness = 1.0f;
+    float borderThickness = 3.0f;
 
     float scaleBossMenu = 0.3f;
     float minScale = 6.0f;;
