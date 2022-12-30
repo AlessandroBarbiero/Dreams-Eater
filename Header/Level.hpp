@@ -26,6 +26,11 @@ public:
 
 	void loadRoom(int room, DoorPosition enteredAt);
 
+	void unloadLevel();
+
+	std::shared_ptr<Level> nextLevel = nullptr;
+	bool finished = false;
 private:
+	std::shared_ptr<GameObject> createPortal(glm::vec2 position);
 
 };

@@ -9,6 +9,8 @@ public:
     explicit RoomComponent(GameObject *gameObject);
     virtual ~RoomComponent();
 
+    void update(float deltaTime) override;
+
     void setRoomSize(glm::vec2);
     glm::vec2 getRoomSize();
     glm::vec2 getRoomSizeInPixels();
@@ -16,9 +18,15 @@ public:
     void buildWalls();
     void buildFloor();
 
+    void unlockDoor(DoorPosition doorPosition);
+    void lockDoor(DoorPosition doorPosition);
+    void unlockDoor(GameObject* doorPosition);
+    void lockDoor(GameObject* doorPosition);
+
     RoomType roomType;
 
     std::map<DoorPosition, glm::vec2> doorEntrances;
+    bool doorsLocked = true;
 
     void onGui() override;
 
@@ -32,6 +40,7 @@ private:
 
     void DoorsToPositions(std::vector<Door> doors, int(&skips)[4][2]); // Pairs are ((Top, Bottom),(Left, Right))
     std::vector<Door> doors;
+    std::map<DoorPosition, GameObject*> doorMap;
 
     TileSetWalls tileSetWalls;
     TileSetFloor tileSetFloor;

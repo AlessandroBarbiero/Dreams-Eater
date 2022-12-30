@@ -53,6 +53,7 @@ public:
 	float getShotSpeed()	{ return shotSpeed ; };
 	float getKnockback()	{ return knockback ; };
 
+	std::function<void(GameObject*)> onDeath = [](GameObject*){};
 
 private:
 

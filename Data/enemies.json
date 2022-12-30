@@ -49,6 +49,18 @@
 			"range": 100,
 			"shotSpeed": 10,
 			"scale": 1.5
+		},
+		{
+			"name": "Witch",
+			"type": "Witch",
+			"speed": 2,
+			"knockback": 0,
+			"damage": 1,
+			"hp": 50,
+			"rateOfFire": 1,
+			"range": 6,
+			"shotSpeed": 5,
+			"scale": 1
 		}
 	]
 }

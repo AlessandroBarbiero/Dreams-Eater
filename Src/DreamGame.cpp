@@ -103,6 +103,8 @@ void DreamGame::init() {
 
     this->level.reset();
     camera.reset();
+    player.reset();
+    levelGuiComp.reset();
     game.cleanSceneObjects();
     camera.reset();
     physicsComponentLookup.clear();
@@ -125,7 +127,7 @@ void DreamGame::play() {
     pSettings.type = CharacterType::Wraith;
     pSettings.name = playerName;
     std::cout << "Creating player" << std::endl;
-    auto player = CharacterBuilder::createPlayer(pSettings);
+    player = CharacterBuilder::createPlayer(pSettings);
 
     // TODO: Remove me from here
     //PowerupBuilder* pBuilder = PowerupBuilder::getInstance();
@@ -204,17 +206,17 @@ void DreamGame::play() {
     */
 
     auto levelGui = currentScene->createGameObject();
-    auto guiComp = levelGui->addComponent<LevelGuiComponent>();
+    levelGuiComp = levelGui->addComponent<LevelGuiComponent>();
     
 
     LevelSettings testLevelSettings;
     testLevelSettings.difficulty = difficulty > 0 ? difficulty : 1;
     testLevelSettings.name = "TestLevel";
-    testLevelSettings.rooms = 10;
+    testLevelSettings.rooms = 5;
     std::cout << "Creating level" << std::endl;
     level = LevelBuilder::createLevel(testLevelSettings);
 
-    guiComp->setLevel(level);
+    levelGuiComp->setLevel(level);
     //guiComp->setPlayer(player);
 
     level->player = player;
@@ -227,8 +229,6 @@ void DreamGame::play() {
     camera->getCamera().setOrthographicProjection(level->currentRoom->getComponent<RoomComponent>()->getRoomSizeInPixels().x / 2.0f, -1, 1);
 
     gameState = GameState::Running;
-
-    
 
 }
 
@@ -260,6 +260,30 @@ void DreamGame::update(float time) {
             sceneObjects->at(i)->update(time);
         }
 
+        if (level != nullptr && level->finished) {
+            level->nextLevel->player = player;
+
+            level->unloadLevel();
+
+            level = level->nextLevel;
+            levelGuiComp->setLevel(level);
+            level->loadLevel();
+           /*
+            sceneObjects->push_back(player);
+            auto levelGui = currentScene->createGameObject();
+            auto guiComp = levelGui->addComponent<LevelGuiComponent>();
+            guiComp->setLevel(level);
+
+
+            auto camObj = game.createGameObject();
+            camObj->name = "Camera";
+            camera = camObj->addComponent<SideScrollingCamera>();
+            camera->setFollowObject(player, glm::vec2(0, 0));
+           
+           camera->getCamera().setOrthographicProjection(level->currentRoom->getComponent<RoomComponent>()->getRoomSizeInPixels().x / 2.0f, -1, 1);
+           */
+        }
+
         // Remove elements marked for deletion
         auto toErase = std::remove_if(sceneObjects->begin(), sceneObjects->end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
         sceneObjects->erase(toErase, sceneObjects->end());
@@ -270,6 +294,7 @@ void DreamGame::update(float time) {
             toErase = std::remove_if(roomObjects->begin(), roomObjects->end(), [](std::shared_ptr<GameObject> x) {return x->destroyed; });
             roomObjects->erase(toErase, roomObjects->end());
         }
+
     }
 }
 

@@ -32,7 +32,8 @@ enum DoorPosition {
 	LeftBottom,
 	Right,
 	RightTop,
-	RightBottom
+	RightBottom,
+	Center
 };
 
 enum RoomType {
@@ -50,7 +51,7 @@ enum RoomSize {
 };
 
 struct Door {
-	bool locked = false;
+	bool locked = true;
 	DoorPosition position;
 	int destinationRoom;
 	DoorPosition destinationPosition;

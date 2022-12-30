@@ -24,6 +24,20 @@ RoomComponent::~RoomComponent() {
 	*/
 }
 
+
+void RoomComponent::update(float deltaTime) {
+	
+	if (doorsLocked) {
+		auto enemyLeft = std::find_if(roomObjects.begin(), roomObjects.end(), [](std::shared_ptr<GameObject> go) {return go->tag == Tag::Enemy;});
+		if (enemyLeft == roomObjects.end()) {
+			doorsLocked = false;
+			for (auto door : doorMap) {
+				unlockDoor(door.second);
+			}
+		}
+	}
+}
+
 glm::vec2 RoomComponent::getRoomSize() {
 	return roomSize;
 }
@@ -282,41 +296,49 @@ void RoomComponent::buildWalls() {
 
 	int tblr[4] = { 0,0,0,0 };
 	glm::vec2 entryPosition = {0, 0};
+	sre::Sprite doorSprite;
 	for (auto &d : doors) {
 		switch (d.position) {
 			case Top:
 			case TopLeft:
 			case TopRight:
 				position = topLeft + glm::vec2(skipTop[tblr[0]] * wallLength + offsetLength, -offsetWidth);
-				entryPosition = position + glm::vec2(0, -wallLength * 2);
+				entryPosition = position + glm::vec2(0, -wallLength);
+				doorSprite = spriteWallHorizontalTop;
 				tblr[0]++;
 				break;
 			case Bottom:
 			case BottomLeft:
 			case BottomRight:
 				position = bottomLeft + glm::vec2(skipBottom[tblr[1]] * wallLength + offsetLength, offsetWidth);
-				entryPosition = position + glm::vec2(0, wallLength * 2);
+				entryPosition = position + glm::vec2(0, wallLength);
+				doorSprite = spriteWallHorizontalBottom;
 				tblr[1]++;
 				break;
 			case Left:
 			case LeftTop:
 			case LeftBottom:
 				position = bottomLeft + glm::vec2(offsetWidth, skipLeft[tblr[2]] * wallLength + offsetLength);
-				entryPosition = position + glm::vec2(wallLength * 2, 0);
+				entryPosition = position + glm::vec2(wallLength, 0);
+				doorSprite = spriteWallVerticalLeft;
 				tblr[2]++;
 				break;
 			case Right:
 			case RightTop:
 			case RightBottom:
 				position = bottomRight + glm::vec2(-offsetWidth, skipRight[tblr[3]] * wallLength + offsetLength);
-				entryPosition = position + glm::vec2(-wallLength * 2, 0);
+				entryPosition = position + glm::vec2(-wallLength, 0);
+				doorSprite = spriteWallVerticalRight;
 				tblr[3]++;
 				break;
 		}
-		auto spawnedDoor = spawnDoor(spriteDoor, position, d).get();
+
+		auto spawnedDoor = spawnDoor(doorSprite, position, d).get();
 		go->addChild(spawnedDoor);
+		doorMap[d.position] = spawnedDoor;
 		doorEntrances[d.position] = entryPosition;
 	}
+	doorEntrances[Center] = { 0, 0 };
 
 	//getGameObject()->setPosition(glm::vec2( (roomSize.x-1)* spriteWallHorizontalBottom.getSpriteSize().x / 2, (roomSize.y-1)* spriteWallVerticalLeft.getSpriteSize().y / 2));
 	// Collision
@@ -419,27 +441,65 @@ std::shared_ptr<GameObject> RoomComponent::spawnDoor(sre::Sprite spriteDoor, glm
 	
 	go->setPosition(pos);
 	sprite->setSprite(spriteDoor);
-	
-	glm::vec2 s{ spriteDoor.getSpriteSize().x * spriteDoor.getScale().x / 2, spriteDoor.getSpriteSize().y * spriteDoor.getScale().y / 2 };
+	glm::vec2 s;
+	if (spriteDoor.getSpriteSize().x < spriteDoor.getSpriteSize().y) {
+		s = { (spriteDoor.getSpriteSize().x+20) * spriteDoor.getScale().x / 2, spriteDoor.getSpriteSize().y * spriteDoor.getScale().y / 2 };
+	}
+	else {
+		s = { spriteDoor.getSpriteSize().x * spriteDoor.getScale().x / 2, (spriteDoor.getSpriteSize().y + 20) * spriteDoor.getScale().y / 2 };
+	}
 
 	auto phys = go->addComponent<PhysicsComponent>();
 
 	phys->initBox(b2_staticBody, s / game->physicsScale, { go->getPosition().x / game->physicsScale, go->getPosition().y / game->physicsScale }, 1);
 
-	go->setScale(5);
 	auto doorComponent = go->addComponent<DoorComponent>();
 	doorComponent->door = door;
 	doorComponent->level = level;
 	doorComponent->locked = door.locked;
 	doorComponent->destinationRoomId = door.destinationRoom;
 
-	if (!door.locked) {
-		phys->setSensor(true);
+	phys->setSensor(true);
+	if (door.locked) {
+		lockDoor(go.get());
+	}
+	else {
+		unlockDoor(go.get());
 	}
 	return go;
 }
 
+void RoomComponent::unlockDoor(DoorPosition doorPosition) {
+	auto door = doorMap.at(doorPosition);
+	unlockDoor(door);
+}
 
+void RoomComponent::unlockDoor(GameObject* door) {
+	auto spriteComponent = door->getComponent<SpriteComponent>();
+	auto sprite = spriteComponent->getSprite();
+	auto color = sprite.getColor();
+	color[3] = 0;
+	sprite.setColor(color);
+	spriteComponent->setSprite(sprite);
+
+	door->getComponent<DoorComponent>()->locked = false;
+}
+
+void RoomComponent::lockDoor(DoorPosition doorPosition) {
+	auto door = doorMap.at(doorPosition);
+	unlockDoor(door);
+}
+
+void RoomComponent::lockDoor(GameObject* door) {
+	auto spriteComponent = door->getComponent<SpriteComponent>();
+	auto sprite = spriteComponent->getSprite();
+	auto color = sprite.getColor();
+	color[3] = 1;
+	sprite.setColor(color);
+	spriteComponent->setSprite(sprite);
+
+	door->getComponent<DoorComponent>()->locked = true;
+}
 
 void RoomComponent::onGui() {
 

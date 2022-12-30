@@ -62,7 +62,7 @@ std::shared_ptr<GameObject> PowerupBuilder::createSinglePowerupObject(PowerupTyp
 
     auto powerupPhysics = powerupObj->addComponent<PhysicsComponent>();
     float radius = (sprite.getSpriteSize().x / 2.0f) / physicsScale;
-    powerupPhysics->initCircle(b2_dynamicBody, radius, powerupObj->getPosition(), 1);
+    powerupPhysics->initCircle(b2_dynamicBody, radius, powerupObj->getPosition() / physicsScale, 1);
     powerupPhysics->fixRotation();
     powerupPhysics->setSensor(true);
 
