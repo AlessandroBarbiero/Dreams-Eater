@@ -138,6 +138,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
     auto playerCharacter = player->addComponent<CharacterComponent>();
     playerCharacter->type = type;
     playerCharacter->radius = radius;
+    playerCharacter->defaultHp = settings.hp;
     playerCharacter->hp = settings.hp;
     playerCharacter->speed = settings.speed;
     playerCharacter->armor = settings.armor;
@@ -244,6 +245,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
 
     enemyCharacter->type = type;
     enemyCharacter->radius = radius;
+    enemyCharacter->defaultHp = settings.hp;
     enemyCharacter->hp = settings.hp;
     enemyCharacter->armor = settings.armor;
     enemyCharacter->speed = settings.speed;

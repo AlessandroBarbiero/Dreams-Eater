@@ -132,7 +132,6 @@ private:
 	ImVec2 itemSpacing;
 	ImVec2 uv0;
 	ImVec2 uv1;
-	//ImVec2 powerupMessageSize = {100.0f, 100.0f};
 
 	ImVec4 RED = {1,0,0,1};
 	ImVec4 WHITE = {1,1,1,1};
@@ -141,13 +140,12 @@ private:
 
 	int heartInRow = 8;
 	float heartOffset = 10.0f;
+	float menuOffset = 10.0f;
 	float textOffset = 15.0f;
 	float widthHeartRow;
 
 	float messageTime = 3.0f;
 	float powerupMessageTimeOut = 0.0f;
-
-	
 
 	int flags =
 		ImGuiWindowFlags_NoTitleBar |
@@ -164,6 +162,7 @@ private:
 	friend class Powerup;
 	friend class PowerupBuilder;
 	friend class Level;
+	friend class LevelGuiComponent;
 };
 
 // Cannot include it at the beginning of the file because they are mutually referenciate each other

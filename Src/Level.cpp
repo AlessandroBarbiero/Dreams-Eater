@@ -173,6 +173,9 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 			eSettings.position = glm::vec2(roomSize.x / 2, roomSize.y / 2) - roomSize/2.0f;
 			eSettings.player = player;
 			auto enemy = CharacterBuilder::createEnemy(eSettings);
+
+			boss = std::shared_ptr<GameObject>(enemy);//is there a better way?
+
 			newRoom->roomObjects.push_back(enemy);
 
 			random = (rand() % 2) + 1;
