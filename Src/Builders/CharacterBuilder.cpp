@@ -131,7 +131,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createPlayer(PlayerSettings settin
 
     auto playerPhysics = player->addComponent<PhysicsComponent>();
     float radius = R_TO_SPRITE_RATIO*(sprite.getSpriteSize().x / 2.0f) / physicsScale;
-    playerPhysics->initCircle(b2_dynamicBody, radius, player->getPosition(), 1);
+    playerPhysics->initCircle(b2_dynamicBody, radius, player->getPosition() / physicsScale, 1);
     playerPhysics->getBody()->SetLinearDamping(5.0f);
     playerPhysics->fixRotation();
 
@@ -237,7 +237,7 @@ std::shared_ptr<GameObject> CharacterBuilder::createEnemy(EnemySettings settings
 
     auto physics = enemy->addComponent<PhysicsComponent>();
     float radius = R_TO_SPRITE_RATIO*(sprite.getSpriteSize().x * sprite.getScale().x / 2) / physicsScale;
-    physics->initCircle(b2_dynamicBody, radius, enemy->getPosition(), 1);
+    physics->initCircle(b2_dynamicBody, radius, enemy->getPosition() / physicsScale, 1);
     physics->getBody()->SetLinearDamping(5.0f);
     physics->fixRotation();
 

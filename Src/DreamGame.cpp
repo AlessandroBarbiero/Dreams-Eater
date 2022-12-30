@@ -120,7 +120,7 @@ void DreamGame::play() {
     currentScene = &game;
 
     PlayerSettings pSettings;
-    pSettings.position = glm::vec2(1,1);
+    pSettings.position = glm::vec2(0,0);
     pSettings.speed = 15.0f;
     pSettings.knockback = 1.0f;
     pSettings.type = CharacterType::Wraith;

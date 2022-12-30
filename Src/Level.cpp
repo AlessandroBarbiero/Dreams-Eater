@@ -128,7 +128,7 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 	}
 	else {
 		// Create room contents
-		auto roomSize = newRoom->getRoomSizeInPixels() / DreamGame::instance->physicsScale;
+		auto roomSize = newRoom->getRoomSizeInPixels();
 		//std::cout << "roomSize: (" << roomSize.x << ", " << roomSize.y << ")" << std::endl;
 		int random = 0;
 		int roomSizeMultiplier = 1;
@@ -157,7 +157,7 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 				int randomEnemy = rand() % regularEnemySettings.size();
 				eSettings = regularEnemySettings[randomEnemy];
 				eSettings.name = eSettings.name + std::to_string(i);
-				eSettings.position = glm::vec2(rand() % (int)(roomSize.x - 2), rand() % (int)(roomSize.y - 2)) - glm::vec2(roomSize.x-2, roomSize.y-2)/2.0f;
+				eSettings.position = glm::vec2(rand() % (int)(roomSize.x - 200), rand() % (int)(roomSize.y - 200)) - glm::vec2(roomSize.x-200, roomSize.y-200)/2.0f;
 				eSettings.player = player;
 				auto enemy = CharacterBuilder::createEnemy(eSettings);
 				// Chance to drop powerup
@@ -198,15 +198,15 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 				int randomEnemy = rand() % regularEnemySettings.size();
 				eSettings = regularEnemySettings[randomEnemy];
 				eSettings.name = eSettings.name + std::to_string(i);
-				eSettings.position = glm::vec2(rand() % (int)(roomSize.x - 2), rand() % (int)(roomSize.y - 2)) - glm::vec2(roomSize.x - 2, roomSize.y - 2) / 2.0f;
+				eSettings.position = glm::vec2(rand() % (int)(roomSize.x - 200), rand() % (int)(roomSize.y - 200)) - glm::vec2(roomSize.x - 200, roomSize.y - 200) / 2.0f;
 				eSettings.player = player;
 				auto enemy = CharacterBuilder::createEnemy(eSettings);
 				// Chance to drop powerup
-				enemy->getComponent<CharacterComponent>()->onDeath = [pBuilder, newRoom](GameObject* self) {
+				enemy->getComponent<CharacterComponent>()->onDeath = [pBuilder](GameObject* self) {
 					int random = rand() % 100;
 					if (random < 10) {
 						random = rand() % 4;
-						newRoom->roomObjects.push_back(pBuilder->createSinglePowerupObject(static_cast<PowerupType>(random), self->getPosition()));
+						DreamGame::instance->level->currentRoom->getComponent<RoomComponent>()->roomObjects.push_back(pBuilder->createSinglePowerupObject(static_cast<PowerupType>(random), self->getPosition()));
 					}
 				};
 				newRoom->roomObjects.push_back(enemy);
@@ -217,13 +217,10 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 	}
 	roomEntered[room] = true;
 
-	// TODO: Calculate player door entry
 	auto phys = player->getComponent<PhysicsComponent>();
 	auto enterPos = newRoom->doorEntrances[enteredAt];
 	enterPos = enterPos / DreamGame::instance->physicsScale;
 	phys->getBody()->SetTransform({enterPos.x, enterPos.y} , 0);
-	//auto roomSize = newRoom->getRoomSizeInPixels() / DreamGame::instance->physicsScale;
-	//phys->getBody()->SetTransform({ roomSize.x / 4 - roomSize.x / 2.0f, roomSize.y / 4 - roomSize.y / 2.0f }, 0) ;
 
 }
 
@@ -246,8 +243,8 @@ std::shared_ptr<GameObject> Level::createPortal(glm::vec2 position) {
 
 	auto spriteComp = go->addComponent<SpriteComponent>();
 	auto sprite = game->spriteAtlas_baseWraith->get("Spells-Effect.png");
-	//Set the Enemy sprite to be on top of the background but behind the player
-	sprite.setOrderInBatch(Depth::Enemy);
+
+	sprite.setOrderInBatch(Depth::Object);
 	sprite.setScale({ 6,6 });
 	spriteComp->setSprite(sprite);
 
