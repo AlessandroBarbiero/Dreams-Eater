@@ -20,6 +20,7 @@ public:
 private:
 
     void drawRoom(std::shared_ptr<RoomSettings>, ImVec2, ImVec2, ImVec2);
+    void showBoss(std::shared_ptr<GameObject> boss);
 
     std::shared_ptr<Level> level;
     //std::shared_ptr<GameObject> player;
@@ -45,7 +46,8 @@ private:
     float internalOffsetPercentage = 0.02f;
 
     ImVec2 iconSize;
-    ImVec2 buttonSize = { 200, 100 };
+
+    ImVec2 size = { 40.0,40.0 };
 
     ImU32 borderColor = IM_COL32(0, 0, 0, 255);
     ImU32 currentRoomColor = IM_COL32(255, 212, 92, 255);
@@ -53,9 +55,19 @@ private:
     ImU32 doorColor = IM_COL32(255, 0, 0, 255);
     ImU32 roomColor;
 
-    float doorRadius = 2.0f;
-    float borderThickness = 2.0f;
+    ImVec2 uv0;
+    ImVec2 uv1;
+    float rounding = 5.0f;
     
+    ImVec2 sizeBossMenu;
+    ImVec2 itemSpacing;
+    ImVec2 bossPositionMenu;
+
+    //squares are double of this
+    float doorLength = 4.0f; 
+    float borderThickness = 1.0f;
+
+    float scaleBossMenu = 0.3f;
     float minScale = 6.0f;;
     float scale = 7.0f;
     float scaleDecrement = 0.7;
@@ -67,5 +79,12 @@ private:
     std::shared_ptr<sre::Texture> bossTexture;
     std::shared_ptr<sre::Texture> powerupTexture;
     std::shared_ptr<sre::Texture> spawnTexture;
+    std::shared_ptr<sre::Texture> signTexture;
+    std::shared_ptr<sre::Texture> barTexture;
+
+    ImVec2 barSize;
+
+    
+
 
 };

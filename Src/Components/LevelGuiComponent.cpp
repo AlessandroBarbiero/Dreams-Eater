@@ -3,6 +3,8 @@
 #include "DreamGame.hpp";
 #include "GuiHelper.hpp"
 #include "RoomComponent.hpp"
+#include "CharacterComponent.hpp"
+
 
 LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObject) {
 
@@ -12,6 +14,11 @@ LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObj
     bossTexture = sre::Texture::create().withFile(path + "FinalBoss.png").withFilterSampling(false).build();
     powerupTexture = sre::Texture::create().withFile(path + "boost.png").withFilterSampling(false).build();
     spawnTexture = sre::Texture::create().withFile(path + "home.png").withFilterSampling(false).build();
+
+    signTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Sign.png").withFilterSampling(false).build();
+    barTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Bar.png").withFilterSampling(false).build();
+    
+    barSize = { (float)barTexture->getWidth(), (float)barTexture->getHeight() };
     
     menuSize = { mapTexture->getWidth() * mapScale, mapTexture->getHeight() * mapScale };
     menuPosition = { sre::Renderer::instance->getWindowSize().x - menuSize.x - windowOffset,windowOffset };
@@ -20,6 +27,17 @@ LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObj
 
     mapPosition = { sre::Renderer::instance->getWindowSize().x - menuSize.x - windowOffset + internalOffset.x, menuPosition.y + internalOffset.y};
     mapSize = { mapTexture->getWidth() * mapScale - 2 * internalOffset.x, mapTexture->getHeight() * mapScale - 2 * internalOffset.y  };
+
+    sizeBossMenu = { (float)signTexture->getWidth() * scaleBossMenu, (float)signTexture->getHeight() * scaleBossMenu };
+    auto r = sre::Renderer::instance;
+    bossPositionMenu = { (float) r->getWindowSize().x - sizeBossMenu.x , r->getWindowSize().y - sizeBossMenu.y };
+
+    ImGuiStyle& style = ImGui::GetStyle();
+    itemSpacing = style.ItemSpacing;
+
+    uv0 = GuiHelper::getInstance()->uv0;
+    uv1 = GuiHelper::getInstance()->uv1;
+    
     }
 
 //LevelGuiComponent::~LevelGuiComponent(){
@@ -44,7 +62,11 @@ void LevelGuiComponent::drawRoom(std::shared_ptr<RoomSettings> roomSettings, ImV
     auto uv1 = GuiHelper::getInstance()->uv1;
 
     ImGui::GetWindowDrawList()->AddRectFilled(topLeft, bottomRight, borderColor);
-    ImGui::GetWindowDrawList()->AddRectFilled({ topLeft.x + borderThickness, topLeft.y + borderThickness }, { bottomRight.x - borderThickness, bottomRight.y - borderThickness }, roomColor);
+
+    ImVec2 topLeftInternal = {topLeft.x + borderThickness, topLeft.y + borderThickness };
+    ImVec2 bottomRightInternal = { bottomRight.x - borderThickness, bottomRight.y - borderThickness };
+
+    ImGui::GetWindowDrawList()->AddRectFilled(topLeftInternal, bottomRightInternal, roomColor);
 
     ImGui::SetCursorScreenPos(ImVec2{center.x - iconSize.x / 2.0f, center.y - iconSize.x / 2.0f });
     switch (roomSettings->roomType) {
@@ -61,68 +83,175 @@ void LevelGuiComponent::drawRoom(std::shared_ptr<RoomSettings> roomSettings, ImV
             break;
     }
 
-    
+    //center = ImVec2{ ( topLeft.x - bottomRight.x ) / 2.0f, (topLeft.y - bottomRight.y) / 2.0f };
+
+    //halfSize = ImVec2{ halfSize.x - borderThickness, halfSize.y -  borderThickness };
+
 
     for (auto& door : roomSettings->doors) {
-        auto point = center;
+        auto topLeftDoor = center;
+        auto bottomRightDoor = center;
         switch (door.position) {
         case Top:
-            point.y -= halfSize.y;
+            topLeftDoor.y -= halfSize.y - doorLength;
+            topLeftDoor.x -= doorLength;
+            bottomRightDoor.y -= halfSize.y + doorLength;
+            bottomRightDoor.x += doorLength;
             break;
         case TopLeft:
-            point.y -= halfSize.y;
-            point.x -= halfSize.x / 2.0f;
+            topLeftDoor.y -= halfSize.y - doorLength;
+            topLeftDoor.x -= halfSize.x / 2.0f - doorLength;
+            bottomRightDoor.y -= halfSize.y + doorLength;
+            bottomRightDoor.x -= halfSize.x / 2.0f + doorLength;
             break;
         case TopRight:
-            point.y -= halfSize.y;
-            point.x += halfSize.x / 2.0f;
+            topLeftDoor.y -= halfSize.y - doorLength;
+            topLeftDoor.x += halfSize.x / 2.0f - doorLength;
+            bottomRightDoor.y -= halfSize.y + doorLength;
+            bottomRightDoor.x += halfSize.x / 2.0f + doorLength;
             break;
         case Bottom:
-            point.y += halfSize.y;
+            topLeftDoor.y += halfSize.y - doorLength;
+            topLeftDoor.x -= doorLength;
+            bottomRightDoor.y += halfSize.y + doorLength;
+            bottomRightDoor.x += doorLength;
             break;
         case BottomLeft:
-            point.y += halfSize.y;
-            point.x -= halfSize.x / 2.0f;
+            topLeftDoor.y += halfSize.y - doorLength;
+            topLeftDoor.x -= halfSize.x / 2.0f - doorLength;
+            bottomRightDoor.y += halfSize.y + doorLength;
+            bottomRightDoor.x -= halfSize.x / 2.0f + doorLength;
             break;
         case BottomRight:
-            point.y += halfSize.y;
-            point.x += halfSize.x / 2.0f;
+            topLeftDoor.y += halfSize.y - doorLength;
+            topLeftDoor.x += halfSize.x / 2.0f - doorLength;
+            bottomRightDoor.y += halfSize.y + doorLength;
+            bottomRightDoor.x += halfSize.x / 2.0f + doorLength;
             break;
         case Left:
-            point.x -= halfSize.x;
+            topLeftDoor.x -= halfSize.x - doorLength;
+            topLeftDoor.y -= doorLength;
+            bottomRightDoor.x -= halfSize.x + doorLength;
+            bottomRightDoor.y += doorLength;
             break;
         case LeftTop:
-            point.x -= halfSize.x;
-            point.y -= halfSize.y / 2.0f;
+            topLeftDoor.x -= halfSize.x - doorLength;
+            topLeftDoor.y -= halfSize.y / 2.0f - doorLength;
+            bottomRightDoor.x -= halfSize.x + doorLength;
+            bottomRightDoor.y -= halfSize.y / 2.0f + doorLength;
             break;
         case LeftBottom:
-            point.x -= halfSize.x;
-            point.y += halfSize.y / 2.0f;
+            topLeftDoor.x -= halfSize.x - doorLength;
+            topLeftDoor.y += halfSize.y / 2.0f - doorLength;
+            bottomRightDoor.x -= halfSize.x + doorLength;
+            bottomRightDoor.y += halfSize.y / 2.0f + doorLength;
             break;
         case Right:
-            point.x += halfSize.x;
+            topLeftDoor.x += halfSize.x - doorLength;
+            topLeftDoor.y -= doorLength;
+            bottomRightDoor.x += halfSize.x + doorLength;
+            bottomRightDoor.y += doorLength;
             break;
         case RightTop:
-            point.x += halfSize.x;
-            point.y -= halfSize.y / 2.0f;
+            topLeftDoor.x += halfSize.x - doorLength;
+            topLeftDoor.y -= halfSize.y / 2.0f - doorLength;
+            bottomRightDoor.x += halfSize.x + doorLength;
+            bottomRightDoor.y -= halfSize.y / 2.0f + doorLength;
             break;
         case RightBottom:
-            point.x += halfSize.x;
-            point.y += halfSize.y / 2.0f;
+            topLeftDoor.x += halfSize.x - doorLength;
+            topLeftDoor.y += halfSize.y / 2.0f - doorLength;
+            bottomRightDoor.x += halfSize.x + doorLength;
+            bottomRightDoor.y += halfSize.y / 2.0f + doorLength;
             break;
         }
-        ImGui::GetWindowDrawList()->AddCircleFilled(point, doorRadius, doorColor);
+        ImGui::GetWindowDrawList()->AddRectFilled(topLeftDoor, bottomRightDoor, doorColor);;
     }
 }
 
+void LevelGuiComponent::showBoss(std::shared_ptr<GameObject> boss){
+
+    auto bossComponent = boss->getComponent<CharacterComponent>();
+    static auto file = CharacterTypeToString.at(bossComponent->type);
+    static auto bossStatsTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + file + ".png").withFilterSampling(false).build();
+
+    bool* open = nullptr;
+    
+    if (bossComponent->hp > 0.0) {
+        
+    
+    ImGui::SetNextWindowSize(sizeBossMenu, ImGuiCond_Always);
+    ImGui::SetNextWindowPos(bossPositionMenu, ImGuiCond_Always);
+    ImGui::SetNextWindowBgAlpha(0.0f);
+    GuiHelper::getInstance()->setZeroPadding();
+    ImGui::Begin("Boss", open, menuFlags);
+    ImGui::PushFont(GuiHelper::getInstance()->fontFunny20);
+
+    ImGui::GetWindowDrawList()->AddImageRounded(signTexture->getNativeTexturePtr(), bossPositionMenu,
+        { bossPositionMenu.x + sizeBossMenu.x, bossPositionMenu.y + sizeBossMenu.y }, uv0, uv1, IM_COL32(255, 255, 255, 255), rounding);
+
+    auto offset = sizeBossMenu.x - barSize.x - size.x - itemSpacing.x * 2.0f;
+
+    ImGui::SetCursorPos({offset / 2.0f , sizeBossMenu.y / 2.0f - size.y / 2.0f});
+
+    ImGui::Image(bossStatsTexture->getNativeTexturePtr(), size,uv0,uv1);
+    ImGui::SameLine();
+
+    ImGui::Image(barTexture->getNativeTexturePtr(), barSize, uv0, uv1);
+
+    ImGui::SameLine();
+
+    auto maxLife = bossComponent->defaultHp;
+
+    auto uv1Fill = ImVec2{ uv1.x * bossComponent->hp / maxLife, uv1.y };
+    auto fillSize = ImVec2{ barSize.x * bossComponent->hp / maxLife, barSize.y };
+
+    ImVec4 barColor = { 1, 0, 0, 1 };
+
+    ImGui::SetCursorPosX(offset / 2.0f + size.x + itemSpacing.x);
+
+    ImGui::Image(barTexture->getNativeTexturePtr(), fillSize, uv0, uv1Fill, barColor);
+
+    ImGui::PopStyleVar();
+    ImGui::PopFont();
+
+    ImGui::End();
+
+    auto position = DreamGame::instance->camera->getWindowCoordinates(glm::vec3(boss->getPosition(), 0.0));
+
+    
+
+    auto menuPos = ImVec2{ position.x - barSize.x / 2.0f, position.y - bossTexture->getHeight() / 5.0f };
+    ImGui::SetNextWindowSize(barSize, ImGuiCond_Always);
+    ImGui::SetNextWindowPos(menuPos, ImGuiCond_Always);
+    ImGui::SetNextWindowBgAlpha(0.0f);
+    GuiHelper::getInstance()->setZeroPadding();
+    ImGui::Begin("Boss2", open, menuFlags);
+
+    ImGui::Image(barTexture->getNativeTexturePtr(), barSize, uv0, uv1);
+
+    ImGui::SameLine();
+
+    ImGui::SetCursorPosX(0.0);
+
+    ImGui::Image(barTexture->getNativeTexturePtr(), fillSize, uv0, uv1Fill, barColor);
+
+    ImGui::PopStyleVar();
+
+    ImGui::End();
+
+    }
+
+}
+
+
 void LevelGuiComponent::onGui() {
+
 
     if (DreamGame::instance->doDebugDraw) {
 
-        auto room = level->currentRoom;
-        auto roomComp = room->getComponent<RoomComponent>();
         int num_enemies = 0;
-        for (auto& elem : roomComp->roomObjects) {
+        for (auto& elem : level->roomObjects[level->currentRoomIndex]) {
             if (elem->tag == Tag::Enemy) {
                 num_enemies += 1;
             }
@@ -139,6 +268,9 @@ void LevelGuiComponent::onGui() {
         ImGui::End();
     }
 
+    if (level->roomSettings[level->currentRoomIndex]->roomType == RoomType::BossRoom) {
+        showBoss(level->boss);
+    }
     
     
     GuiHelper::getInstance()->setZeroPadding();
@@ -248,5 +380,5 @@ void LevelGuiComponent::onGui() {
 
     ImGui::End();
     ImGui::PopStyleVar();
-
 }
+

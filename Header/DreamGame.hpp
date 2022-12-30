@@ -120,6 +120,7 @@ private:
     friend class EndMenuComponent;
 
     friend class CharacterComponent;
+    friend class LevelGuiComponent;
     
 
 };

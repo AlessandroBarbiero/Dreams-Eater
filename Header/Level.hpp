@@ -21,6 +21,7 @@ public:
 	std::vector<EnemySettings> bossEnemySettings;
 
 	std::shared_ptr<GameObject> player;
+	std::shared_ptr<GameObject> boss;
 
 	void loadLevel();
 

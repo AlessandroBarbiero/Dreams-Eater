@@ -187,6 +187,8 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 			enemy->getComponent<CharacterComponent>()->onDeath = [this](GameObject* self) {
 				DreamGame::instance->level->currentRoom->getComponent<RoomComponent>()->roomObjects.push_back(createPortal(self->getPosition()));
 			};
+
+			boss = std::shared_ptr<GameObject>(enemy);//is there a better way?
 			newRoom->roomObjects.push_back(enemy);
 
 			random = (rand() % 2) + 1;

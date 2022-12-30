@@ -15,6 +15,7 @@ public:
     void update(float deltaTime) override;
     void setBulletSprites(sre::SpriteAtlas* atlas);
     void overrideSuperAttack(float dmg, float cooldown, const std::vector<sre::Sprite> bulletSprites, float imageScale);
+    glm::vec2 getLastDirection();
 
     void resetKeys() override;
 
@@ -74,14 +75,20 @@ private:
     std::shared_ptr<sre::Texture> barTexture;
     std::shared_ptr<sre::Texture> signTexture;
 
-    ImVec2 heartSize = { 30,30 };
+    ImVec2 signSize;
     ImVec2 barSize;
-    ImVec2 barPosition;
+    ImVec2 menuPosition;
     ImVec2 uv0;
     ImVec2 uv1;
     ImVec2 itemSpacing;
+    ImVec2 textSize;
 
-    
+    float scaleSign = 0.3;
+    float startText;
+    float rounding = 5.0f;
+    float scaleOffset = 1.2;
+
+    char* superAttackMessage = "SUPER ATTACK READY";
 
 
     friend class CharacterBuilder;

@@ -9,6 +9,7 @@
 #include "SpriteAnimationComponent.hpp"
 #include "PowerupComponent.hpp"
 #include "GuiHelper.hpp"
+#include "PlayerController.hpp"
 #include <math.h>
 #define KNOCKBACK_SCALE 10
 
@@ -33,8 +34,6 @@ CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameO
     ImGuiStyle& style = ImGui::GetStyle();
     itemSpacing = style.ItemSpacing;
     
-
-   
 
     uv0 = GuiHelper::getInstance()->uv0;
     uv1 = GuiHelper::getInstance()->uv1;
@@ -278,10 +277,15 @@ void CharacterComponent::shoot(glm::vec2 direction, const sre::Sprite& bulletSpr
 }
 
 
-void CharacterComponent::specialAttack(glm::vec2 direction, float dmg, const std::vector<sre::Sprite> bulletSprites, float imageScale, bool displayEffect, bool rotateBullet)
+void CharacterComponent::specialAttack(glm::vec2 givenDirection, float dmg, const std::vector<sre::Sprite> bulletSprites, float imageScale, bool displayEffect, bool rotateBullet)
 {
 
     std::function<void()> callback = [=]() {
+        glm::vec2 direction;
+        if (gameObject->tag == Tag::Player)
+            direction = gameObject->getComponent<PlayerController>()->getLastDirection();
+        else
+            direction = givenDirection;
         auto game = DreamGame::instance;
         auto physicsScale = game->physicsScale;
 
@@ -369,6 +373,7 @@ void CharacterComponent::onGui() {
             ImGui::DragFloat(std::string("Rate Of Fire##").append(gameObject->name).c_str(), &rateOfFire, 0.1f, 0.5f, 10);
             ImGui::DragFloat(std::string("Shoot Speed##").append(gameObject->name).c_str(),  &shotSpeed, 0.1f, 0, 10);
             ImGui::DragFloat(std::string("Knockback##").append(gameObject->name).c_str(),    &knockback, 0.1f, 0, 10);
+            
             ImGui::Text("Scale % .2f", gameObject->getScale());
 
             if (ImGui::Button(std::string("Scale+##").append(gameObject->name).c_str(), { 100,25 })) {
@@ -378,10 +383,10 @@ void CharacterComponent::onGui() {
                 gameObject->setScale(gameObject->getScale() - 0.1f);
             }
         }
-        if (powerupMessageTimeOut > 0) {
             if (ImGui::CollapsingHeader(titleGui.c_str())) {
                 ImGui::DragFloat(std::string("TextOffset##").append(gameObject->name).c_str(), &textOffset, 1.0f, 10, 100);
-            }
+                ImGui::DragFloat(std::string("HeartOffsets##").append(gameObject->name).c_str(), &heartOffset, 1.0f, 10, 100);
+                ImGui::DragInt(std::string("HeartInRow##").append(gameObject->name).c_str(), &heartInRow, 0.1f, 1, 10);
         }
         ImGui::End();
     }
@@ -394,39 +399,31 @@ void CharacterComponent::setPlayerGui() {
     int hpInt = (int)hp;
     auto decimal = hp - hpInt;
 
-    auto intDecimal = ceil(decimal);
-
-    auto widthHeartRow = 0.0f;
-    auto heightHeartRow = 0.0f;
+    int intDecimal = ceil(decimal);
 
     auto scaleX = 0.05f;
     auto scaleY = 0.05f;
 
-    
-    
-    //2 rows of hearts
-    if (hpInt + decimal > heartInRow) {
+    int rows = hpInt > maxHp ? (maxHp + intDecimal) / heartInRow + 1 : (hpInt + intDecimal) / heartInRow + 1;
 
+    rows = rows > ceil(maxHp / heartInRow) ? ceil(maxHp / heartInRow) : rows;
+
+    auto widthHeartRow = 0.0f;
+    auto heightHeartRow = heartSize.y * rows + heartOffset * 2 + itemSpacing.y * (rows - 1);
+
+    
+    if (hpInt + decimal > heartInRow) {
         //width is 2 times the offset (distance from borders) + heartInRow times the heartSize and heartInRow - 1 times the spacing between each of them
         widthHeartRow = heartOffset * 2 + heartInRow * heartSize.x + (heartInRow - 1) * itemSpacing.x;
-
-        //height is double the height + spacing + double the offset
-        heightHeartRow = heartSize.y * 2 + heartOffset * 2 + itemSpacing.y;
     }
     else {
-
-        if (hpInt + intDecimal >= 5) {
+        if (hpInt + intDecimal >= defaultHp) {
             //width and heght are the same as before but we consider the actual number of hearts
             widthHeartRow = heartOffset * 2 + (hpInt + intDecimal) * heartSize.x + (hpInt + intDecimal - 1) * itemSpacing.x;
         }
         else {
-            widthHeartRow = heartOffset * 2 + 5 * heartSize.x + 4 * itemSpacing.x;
+            widthHeartRow = heartOffset * 2 + defaultHp * heartSize.x + (defaultHp - 1) * itemSpacing.x;
         }
-
-        heightHeartRow = heartOffset * 2 + heartSize.y;
-
-        
-
     }
 
     while (scaleX * signTexture->getWidth() < widthHeartRow) {
@@ -439,25 +436,8 @@ void CharacterComponent::setPlayerGui() {
 
     menuSize = ImVec2(scaleX * signTexture->getWidth(), scaleY * signTexture->getHeight());
 
-    /*if (hpInt + decimal > heartInRow) {
-        widthHeartRow = heartOffset * 2 + heartInRow * heartSize.x + (heartInRow - 1) * itemSpacing.x;
-        heightHeartRow = heartSize.y * 2 + heartOffset * 2 + itemSpacing.y;
-    }
-    else {
-        widthHeartRow = heartOffset * 2 + (hpInt + value) * heartSize.x + (hpInt + value - 1) * itemSpacing.x;
-        heightHeartRow = heartSize.y + heartOffset * 2;
-    }
-
-    auto scale = 0.1f;
-
-    while (scale * signTexture->getWidth() < widthHeartRow || scale * signTexture->getHeight() < heightHeartRow) {
-        scale += 0.01f;
-    }
-
-    menuSize = ImVec2(scale * signTexture->getWidth(), scale * signTexture->getHeight());*/
-
     ImGui::SetNextWindowSize(menuSize, ImGuiCond_Always);
-    ImGui::SetNextWindowPos({heartOffset, heartOffset }, ImGuiCond_Always);
+    ImGui::SetNextWindowPos({ menuOffset, menuOffset }, ImGuiCond_Always);
     ImGui::SetNextWindowBgAlpha(0.0f);
     GuiHelper::getInstance()->setZeroPadding();
 
@@ -465,22 +445,8 @@ void CharacterComponent::setPlayerGui() {
 
     ImGui::Begin("#player", open, flags);
 
-    //auto startingY = 0.0f;
-
     ImGui::Image(signTexture->getNativeTexturePtr(), menuSize, uv0, uv1);
 
-    //if (hpInt + decimal < heartInRow) {
-    //    startingY = menuSize.y / 2.0f - heartSize.y / 2.0f;
-    //    
-    //}
-    //else if (hpInt + decimal > 2 * heartInRow) {
-    //    startingY = menuSize.y / 2.0f - itemSpacing.y - heartSize.y / 2.0f - heartSize.y;
-    //}
-    //else  {
-    //    startingY = menuSize.y / 2.0f - itemSpacing.y / 2.0f - heartSize.y;
-    //}
-
-    
     ImGui::SetCursorPos({heartOffset, heartOffset });
 
     for (int i = 0; i < hpInt && i < maxHp; i++) {
@@ -556,8 +522,7 @@ void CharacterComponent::displayPowerupMessage(){
     ImGui::Begin("Sign", open, flags);
     ImGui::Image(messagePaperTexture->getNativeTexturePtr(), signSize);
 
-    /*ImGui::GetWindowDrawList()->AddImageRounded(messagePaperTexture->getNativeTexturePtr(), powerupMessagePosition,
-        { powerupMessagePosition.x + signSize.x, powerupMessagePosition.y + signSize.y }, uv0, uv1, IM_COL32(255, 255, 255, 255), 10.0);*/
+    
     
 
     ImGui::End();
