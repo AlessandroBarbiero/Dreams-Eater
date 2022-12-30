@@ -18,11 +18,11 @@ void DoorComponent::update(float deltaTime) {
 void DoorComponent::onCollisionStart(PhysicsComponent* comp) {
 	if (comp->getGameObject()->tag == Tag::Player) {
 		if (!locked) {
-			std::cout << "Entered door to room" << destinationRoomId << std::endl;
+			//std::cout << "Entered door to room" << destinationRoomId << std::endl;
 			load = true;
 		}
 		else {
-			std::cout << "Touched locked door to room" << destinationRoomId << std::endl;
+			//std::cout << "Touched locked door to room" << destinationRoomId << std::endl;
 		}
 	}
 }

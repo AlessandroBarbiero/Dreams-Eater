@@ -129,7 +129,7 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 	else {
 		// Create room contents
 		auto roomSize = newRoom->getRoomSizeInPixels() / DreamGame::instance->physicsScale;
-		std::cout << "roomSize: (" << roomSize.x << ", " << roomSize.y << ")" << std::endl;
+		//std::cout << "roomSize: (" << roomSize.x << ", " << roomSize.y << ")" << std::endl;
 		int random = 0;
 		int roomSizeMultiplier = 1;
 		switch (roomSettings[room]->roomSize)
