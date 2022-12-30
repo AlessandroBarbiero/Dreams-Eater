@@ -29,6 +29,8 @@ private:
     ImFont* fontSettings30;
     ImFont* fontFunny20;
     ImFont* fontFunny30;
+    ImFont* fontFunny35;
+    ImFont* fontFunny40;
 
 
     const ImVec2 debugWindowSize = { 300,150 };

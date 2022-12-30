@@ -31,18 +31,19 @@ private:
 
     const int cond = ImGuiCond_Always;
 
-    float scaleWraith = 0.5;
+    float scaleWraith = 0.4;
     float scaleCloseButton = 0.4;
-    float settingsScale = 1.0;
+    float settingsScaleX = 2.5;
+    float settingsScaleY = 1.2;
 
     float lateralOffset = 11.0f;
-    float textOffset = 10.0f;
-    float internalOffset = 5.0f;
+    float textOffset = 2.0f;
+    float internalOffset = 10.0f;
 
-    float scaleButton = 0.65f;
+    float scaleButton = 0.5f;
 
-    float scaleStartX = 0.4f;
-    float scaleStartY = 0.6f;
+    float scaleStartX = 1.3f;
+    float scaleStartY = 0.95f;
     
     const char* loadingMessage = "Loading...";
     const char* keybinds = "KEYBINDS";
@@ -62,7 +63,7 @@ private:
     float borderBlack = 3.0f;
     float borderWhite = 3.0f;
 
-     ImVec2 buttonSize = { 150, 50 };
+    ImVec2 buttonSize = { 150, 50 };
 
    
     const int NUM_BUTTONS = 2;
@@ -70,11 +71,11 @@ private:
     std::shared_ptr<sre::Texture> playTexture;
     std::shared_ptr<sre::Texture> historyTexture;
     std::shared_ptr<sre::Texture> settingsTexture;
-    std::shared_ptr<sre::Texture> paperTexture;
 
     std::shared_ptr<sre::Texture> wraithTexture;
     std::shared_ptr<sre::Texture> closeTexture;
-    std::shared_ptr<sre::Texture> settingsPaperTexture;
+
+    ImVec4 backgroundColor = ImVec4(0.9, 0.8, 0.6, 1.0f);
 
 
 
