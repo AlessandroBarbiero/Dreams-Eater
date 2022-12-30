@@ -268,7 +268,7 @@ void LevelGuiComponent::onGui() {
         ImGui::End();
     }
 
-    if (level->roomSettings[level->currentRoomIndex]->roomType == RoomType::BossRoom) {
+    if (level->roomSettings[level->currentRoomIndex]->roomType == RoomType::BossRoom && level->boss != nullptr) {
         showBoss(level->boss);
     }
     

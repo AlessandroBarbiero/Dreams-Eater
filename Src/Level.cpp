@@ -183,9 +183,10 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 			eSettings.position = glm::vec2(roomSize.x / 2, roomSize.y / 2) - roomSize/2.0f;
 			eSettings.player = player;
 			auto enemy = CharacterBuilder::createEnemy(eSettings);
-			// Drop portal to next level
+			// Drop portal to next level and clean up pointers
 			enemy->getComponent<CharacterComponent>()->onDeath = [this](GameObject* self) {
 				DreamGame::instance->level->currentRoom->getComponent<RoomComponent>()->roomObjects.push_back(createPortal(self->getPosition()));
+				this->boss.reset();
 			};
 
 			boss = std::shared_ptr<GameObject>(enemy);//is there a better way?
