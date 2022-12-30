@@ -18,6 +18,8 @@ void GuiHelper::setupFont() {
 	fontName = GUI_PATH + "/Funny.ttf";
 	fontFunny20 = fonts->AddFontFromFileTTF(fontName.c_str(), 20);
 	fontFunny30 = fonts->AddFontFromFileTTF(fontName.c_str(), 30);
+	fontFunny35 = fonts->AddFontFromFileTTF(fontName.c_str(), 35);
+	fontFunny40 = fonts->AddFontFromFileTTF(fontName.c_str(), 40);
 
 }
 
@@ -111,8 +113,8 @@ void GuiHelper::setupImGuiStyle()
 	style.Colors[ImGuiCol_CheckMark] = ImVec4(0.2313725501298904f, 0.6470588445663452f, 0.364705890417099f, 1.0f);
 	style.Colors[ImGuiCol_SliderGrab] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-	style.Colors[ImGuiCol_Button] = ImVec4(0.3098039329051971f, 0.3294117748737335f, 0.3607843220233917f, 0.0f);
-	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	style.Colors[ImGuiCol_Button] = ImVec4(0.05f, 0.05f, 0.05f, 1.0f); 
+	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 	style.Colors[ImGuiCol_ButtonActive] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	style.Colors[ImGuiCol_Header] = ImVec4(0.3098039329051971f, 0.3294117748737335f, 0.3607843220233917f, 1.0f);
 	style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.407843142747879f, 0.4274509847164154f, 0.4509803950786591f, 1.0f);

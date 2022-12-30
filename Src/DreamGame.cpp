@@ -87,8 +87,7 @@ void DreamGame::buildStartMenu() {
     guiAtlas = SpriteAtlas::createSingleSprite(background, "background");
 
     auto backgroundSprite = guiAtlas->get("background");
-    //start->setScale(windowSize.y / backgroundSprite.getSpriteSize().y);
-    //start->setScale(1.0f);
+    start->setScale(1.1f);
     auto spriteComponent = start->addComponent<SpriteComponent>();
     spriteComponent->setSprite(backgroundSprite);
     
