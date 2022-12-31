@@ -66,6 +66,10 @@ private:
 
     //===================GUI===================
 
+    void showInitialMessage();
+    void showSuperAttackBar();
+
+
     int flags =
         ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoResize |
@@ -74,21 +78,33 @@ private:
 
     std::shared_ptr<sre::Texture> barTexture;
     std::shared_ptr<sre::Texture> signTexture;
+    std::shared_ptr<sre::Texture> messagePaperTexture;
 
     ImVec2 signSize;
+    ImVec2 messageSize;
     ImVec2 barSize;
     ImVec2 menuPosition;
+    ImVec2 messagePosition;
     ImVec2 uv0;
     ImVec2 uv1;
     ImVec2 itemSpacing;
     ImVec2 textSize;
+
+    bool gone = false;
 
     float scaleSign = 0.3;
     float startText;
     float rounding = 5.0f;
     float scaleOffset = 1.2;
 
-    char* superAttackMessage = "SUPER ATTACK READY";
+    std::string superAttackMessage;
+
+    float initialMessageTimer = 7.0f;
+
+    glm::vec2 spriteSize;
+
+    char* initialMessage1 = "A swarm of enemies has come to haunt your dreams.";
+    char* initialMessage2 = "Can you give some freedom to your thoughts?";
 
 
     friend class CharacterBuilder;

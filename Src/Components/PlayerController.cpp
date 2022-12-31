@@ -12,18 +12,26 @@ PlayerController::PlayerController(GameObject* gameObject) : Component(gameObjec
     
     barTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Bar.png").withFilterSampling(false).build();
     signTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Sign.png").withFilterSampling(false).build();
+    messagePaperTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "MessagePaper.png").withFilterSampling(false).build();
 
     uv0 = GuiHelper::getInstance()->uv0;
     uv1 = GuiHelper::getInstance()->uv1;
 
     barSize = { (float)barTexture->getWidth(), (float)barTexture->getHeight() };
     signSize = { (float)signTexture->getWidth() * scaleSign, (float)signTexture->getHeight() * scaleSign};
+
+    auto scale = 0.95f;
+    messageSize = { (float)messagePaperTexture->getWidth() * scale, (float)messagePaperTexture->getHeight() * scale };
     
     ImGuiStyle& style = ImGui::GetStyle();
     itemSpacing = style.ItemSpacing;
 
     auto r = sre::Renderer::instance;
     menuPosition = { 0.0f, r->getWindowSize().y - signSize.y };
+
+    spriteSize = gameObject->getComponent<SpriteComponent>()->getSprite().getSpriteSize();
+
+    
 }
 
 void PlayerController::update(float deltaTime) {
@@ -65,6 +73,15 @@ void PlayerController::update(float deltaTime) {
     // If there is a super bullet registered
     if (superBullet.size() != 0)
         handleSuperAttack(deltaTime);
+
+    if (initialMessageTimer > 0.0) {
+        initialMessageTimer -= deltaTime;
+    }
+
+    //Once the player is out of the room,the message will never appear again
+    if (!gone)
+        gone = DreamGame::instance->level->startRoom != DreamGame::instance->level->currentRoomIndex;
+
 }
 
 
@@ -160,8 +177,6 @@ void PlayerController::handleSuperAttack(float deltaTime)
     }
 }
 
-
-
 void PlayerController::setBulletSprites(sre::SpriteAtlas* atlas)
 {
     bulletSprite = atlas->get("Bullet.png");
@@ -182,6 +197,103 @@ glm::vec2 PlayerController::getLastDirection()
     return lastDirection;
 }
 
+void PlayerController::showInitialMessage(){
+    bool* open = nullptr;
+
+    GuiHelper::getInstance()->setZeroPadding();
+    ImGui::PushFont(GuiHelper::getInstance()->fontFunny35);
+
+    auto position = DreamGame::instance->camera->getWindowCoordinates(glm::vec3(gameObject->getPosition(), 0.0));
+
+    messagePosition = ImVec2{ position.x - messageSize.x / 2.0f , position.y + spriteSize.y / 5.0f + messageSize.y / 1.3f };
+
+    ImGui::SetNextWindowPos(messagePosition, ImGuiCond_Always);
+    ImGui::SetNextWindowSize(messageSize, ImGuiCond_Always);
+    ImGui::SetNextWindowBgAlpha(0.0f);
+
+    auto textSize1 = ImGui::CalcTextSize(initialMessage1);
+    auto textSize2 = ImGui::CalcTextSize(initialMessage2);
+
+    ImGui::Begin("Sign", open, flags);
+    ImGui::Image(messagePaperTexture->getNativeTexturePtr(), messageSize);
+    
+    auto offset = (messageSize.y - textSize1.y - textSize2.y) / 2.0f;
+    
+    ImGui::SetCursorPos({ GuiHelper::getInstance()->centerCursorX(textSize1.x), offset  });
+    ImGui::Text(initialMessage1);
+    
+    ImGui::SetCursorPos({ GuiHelper::getInstance()->centerCursorX(textSize2.x),messageSize.y - offset - textSize2.y });
+    ImGui::Text(initialMessage2);
+
+
+    ImGui::PopFont();
+    ImGui::PopStyleVar();
+    ImGui::End();
+
+    
+
+}
+
+void PlayerController::showSuperAttackBar(){
+    bool* open = nullptr;
+    auto ratio = (float)superCooldownTimer / superCooldown;
+
+    ImGui::SetNextWindowSize(signSize, ImGuiCond_Always);
+    ImGui::SetNextWindowPos(menuPosition, ImGuiCond_Always);
+    ImGui::SetNextWindowBgAlpha(0.0f);
+    GuiHelper::getInstance()->setZeroPadding();
+    ImGui::Begin("SuperAttack", open, flags);
+    ImGui::PushFont(GuiHelper::getInstance()->fontFunny20);
+
+    superAttackMessage = "Press " + SuperAttackToString.at(keySuperShot);
+    textSize = ImGui::CalcTextSize(superAttackMessage.c_str());
+
+    ImGui::GetWindowDrawList()->AddImageRounded(signTexture->getNativeTexturePtr(), menuPosition,
+        { menuPosition.x + signSize.x, menuPosition.y + signSize.y }, uv0, uv1, IM_COL32(255, 255, 255, 255), rounding);
+
+    if (ratio > 0.99) {
+
+        auto offset = (signSize.y - barSize.y - itemSpacing.y - textSize.y) / scaleOffset;
+
+        ImGui::SetCursorPos({ GuiHelper::getInstance()->centerCursorX(textSize.x), offset / 2.0f });
+
+        auto color = ImVec4(0, 0, 0, 1);
+
+        ImGui::TextColored(color, superAttackMessage.c_str());
+
+        ImGui::SetCursorPosY(signSize.y - offset / 2.0f - barSize.y);
+    }
+
+    else {
+        ImGui::SetCursorPosY(signSize.y / 2.0f - barSize.y / 2.0f);
+    }
+
+    ImGui::SetCursorPosX(signSize.x / 2.0f - barSize.x / 2.0f);
+
+
+    ImGui::Image(barTexture->getNativeTexturePtr(), barSize, uv0, uv1);
+
+    ImGui::SameLine();
+
+    auto uv1Fill = ImVec2{ uv1.x * ratio, uv1.y };
+    auto fillSize = ImVec2{ barSize.x * ratio, barSize.y };
+
+    ImVec4 barColor = { 0, ratio, 0, 0.5f + 0.5f * ratio };
+
+    ImGui::SetCursorPosX(signSize.x / 2.0f - barSize.x / 2.0f);
+
+    ImGui::Image(barTexture->getNativeTexturePtr(), fillSize, uv0, uv1Fill, barColor);
+
+    ImGui::PopStyleVar();
+    ImGui::PopFont();
+
+    ImGui::End();
+}
+
+
+
+
+
 
 void PlayerController::onGui() {
 
@@ -197,61 +309,17 @@ void PlayerController::onGui() {
         ImGui::End();
     }
 
+    
+
+    if (initialMessageTimer > 0.0 && !gone) {
+        showInitialMessage();
+    }
+
 
     if (superCooldownTimer > 0.0) {
-        bool* open = nullptr;
-        auto ratio = (float)superCooldownTimer / superCooldown;
 
-        ImGui::SetNextWindowSize(signSize, ImGuiCond_Always);
-        ImGui::SetNextWindowPos(menuPosition, ImGuiCond_Always);
-        ImGui::SetNextWindowBgAlpha(0.0f);
-        GuiHelper::getInstance()->setZeroPadding();
-        ImGui::Begin("SuperAttack", open, flags);
-        ImGui::PushFont(GuiHelper::getInstance()->fontFunny20);
-        textSize = ImGui::CalcTextSize(superAttackMessage);
+        showSuperAttackBar();
 
-        ImGui::GetWindowDrawList()->AddImageRounded(signTexture->getNativeTexturePtr(), menuPosition,
-            { menuPosition.x + signSize.x, menuPosition.y + signSize.y }, uv0, uv1, IM_COL32(255, 255, 255, 255), rounding);
-
-        if (ratio > 0.99) {
-            
-            auto offset = (signSize.y - barSize.y - itemSpacing.y - textSize.y) / scaleOffset;
-
-            ImGui::SetCursorPos({ GuiHelper::getInstance()->centerCursorX(textSize.x), offset / 2.0f });
-
-            auto color = ImVec4(0, 0, 0, 1);
-
-            ImGui::TextColored(color, superAttackMessage);
-
-            ImGui::SetCursorPosY(signSize.y - offset / 2.0f - barSize.y);
-        }
-
-        else {
-            ImGui::SetCursorPosY(signSize.y / 2.0f - barSize.y / 2.0f);
-        }
-        
-        ImGui::SetCursorPosX(signSize.x / 2.0f - barSize.x / 2.0f);
-
-
-        ImGui::Image(barTexture->getNativeTexturePtr(), barSize, uv0, uv1);
-
-        ImGui::SameLine();
-
-        auto uv1Fill = ImVec2{ uv1.x * ratio, uv1.y };
-        auto fillSize = ImVec2{ barSize.x * ratio, barSize.y };
-
-        ImVec4 barColor = { 0, ratio, 0, 0.5f + 0.5f * ratio };
-
-        ImGui::SetCursorPosX(signSize.x / 2.0f - barSize.x / 2.0f);
-
-        ImGui::Image(barTexture->getNativeTexturePtr(), fillSize, uv0, uv1Fill, barColor);
-
-        ImGui::PopStyleVar();
-        ImGui::PopFont();
-        
-        ImGui::End();
-
-        
     }
     
 

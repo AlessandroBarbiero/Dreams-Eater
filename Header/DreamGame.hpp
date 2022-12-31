@@ -17,9 +17,27 @@ class PhysicsComponent;
 
 enum class GameState {
     Ready,
+    Settings,
     Running,
     Pause,
-    Settings
+};
+
+enum class Difficulty {
+    EASY = 1,
+    MEDIUM = 3,
+    HARD = 5
+};
+
+const std::unordered_map<Difficulty, char*> DifficultyToString{
+    {Difficulty::EASY  ,	    "EASY"    },
+    {Difficulty::MEDIUM,	    "MEDIUM"  },
+    {Difficulty::HARD ,	        "HARD"    }
+};  
+
+const std::unordered_map<std::string, Difficulty> StringToDifficulty{
+    {"EASY"   , Difficulty::EASY  	    },
+    {"MEDIUM" , Difficulty::MEDIUM	    },
+    {"HARD"   , Difficulty::HARD    	}
 };
 
 enum class Keys {
@@ -44,6 +62,13 @@ const std::unordered_map<std::string, Keys> StringToKeys{
     {"SPACE" ,    Keys::SPACE,	 },
     {"Q"     ,    Keys::Q,	     },
     {"JKIL"  ,    Keys::JKIL,	 },
+};
+
+
+
+const std::unordered_map<SDL_Keycode, std::string> SuperAttackToString{
+    {SDLK_q,        "Q"},
+    {SDLK_SPACE,    "SPACE"}
 };
 
 class DreamGame : public b2ContactListener {
@@ -102,8 +127,6 @@ private:
 
     void insertKeys(Controls&);
 
-
-    int difficulty = 1;
     char defaultName[64] = "DreamHunter";
     char playerName[64] = "DreamHunter";
 
@@ -123,17 +146,15 @@ private:
 
     char* possibleMoveKeys[3] = { KeysToString.at(Keys::ASWD),  KeysToString.at(Keys::ARROWS), KeysToString.at(Keys::JKIL) };
     char* possibleShootKeys[3] = { KeysToString.at(Keys::ASWD),  KeysToString.at(Keys::ARROWS), KeysToString.at(Keys::JKIL) };
-    char* possibleSuperShootKeys[2] = { KeysToString.at(Keys::Q),  KeysToString.at(Keys::SPACE) };
+    char* possibleSuperShootKeys[2] = { KeysToString.at(Keys::SPACE), KeysToString.at(Keys::Q)};
+
+    char* difficulties[3] = { DifficultyToString.at(Difficulty::EASY),  DifficultyToString.at(Difficulty::MEDIUM), DifficultyToString.at(Difficulty::HARD) };
 
     int selectedMoveKey = 0;
     int selectedShootKey = 1;
     int selectedSuperShootKey = 0;
+    int selectedDifficulty = 0;
     
-    
-
-
-    //std::vector<std::shared_ptr<GameObject>> sceneObjects;
-
     void updatePhysics();
     b2World* world = nullptr;
 

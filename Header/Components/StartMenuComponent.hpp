@@ -52,9 +52,11 @@ private:
     ImVec2 textSize;
     ImVec2 itemSpacing;
     ImVec2 startMenuPosition;
-    ImVec2 startMenuSize;   
+    ImVec2 startMenuSize;
     ImVec2 settingsMenuPosition;
     ImVec2 settingsMenuSize;
+    ImVec2 internalStartMenuPosition;
+    ImVec2 internalStartMenuSize;
     ImVec2 wraithSize;
     ImVec2 initialCursorPosition;
     ImVec2 uv0;
@@ -63,14 +65,13 @@ private:
     float borderBlack = 3.0f;
     float borderWhite = 3.0f;
 
+    float startingButtonY;
+    
+
     ImVec2 buttonSize = { 150, 50 };
 
    
     const int NUM_BUTTONS = 2;
-
-    std::shared_ptr<sre::Texture> playTexture;
-    std::shared_ptr<sre::Texture> historyTexture;
-    std::shared_ptr<sre::Texture> settingsTexture;
 
     std::shared_ptr<sre::Texture> wraithTexture;
     std::shared_ptr<sre::Texture> closeTexture;

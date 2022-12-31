@@ -28,7 +28,7 @@ void GuiHelper::setupDebugGui(){
 
 	int flags = ImGuiWindowFlags_AlwaysAutoResize;
 
-	ImGui::SetNextWindowPos(ImVec2{sre::Renderer::instance->getWindowSize().x/2.0f - debugWindowSize.x/2.0f, 0}, ImGuiCond_Always);
+	ImGui::SetNextWindowPos(debugPosition, ImGuiCond_Always);
 	ImGui::SetNextWindowSize(debugWindowSize, ImGuiCond_Always);
 	bool* open = nullptr;
 	ImGui::Begin(DEBUG_NAME, open, flags);
@@ -38,15 +38,8 @@ void GuiHelper::setupDebugGui(){
 
 float GuiHelper::centerCursorX(float width) {
 
-	ImGuiStyle& style = ImGui::GetStyle();
-
-	float size = width + style.FramePadding.x * 2.0f;
-
-	float avail = ImGui::GetContentRegionAvail().x;
-
-	float off = (avail - size) * 0.5;
-
-	return ImGui::GetCursorPosX() + off;
+	float off = (ImGui::GetContentRegionAvail().x - width) * 0.5;
+	return off;
 }
 
 void GuiHelper::setZeroPadding() {
@@ -113,9 +106,9 @@ void GuiHelper::setupImGuiStyle()
 	style.Colors[ImGuiCol_CheckMark] = ImVec4(0.2313725501298904f, 0.6470588445663452f, 0.364705890417099f, 1.0f);
 	style.Colors[ImGuiCol_SliderGrab] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-	style.Colors[ImGuiCol_Button] = ImVec4(0.05f, 0.05f, 0.05f, 1.0f); 
-	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-	style.Colors[ImGuiCol_ButtonActive] = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	style.Colors[ImGuiCol_Button] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f); 
+	style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.1f, 0.1f, 0.1f, 1.0f);
+	style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 	style.Colors[ImGuiCol_Header] = ImVec4(0.3098039329051971f, 0.3294117748737335f, 0.3607843220233917f, 1.0f);
 	style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.407843142747879f, 0.4274509847164154f, 0.4509803950786591f, 1.0f);
 	style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.407843142747879f, 0.4274509847164154f, 0.4509803950786591f, 1.0f);

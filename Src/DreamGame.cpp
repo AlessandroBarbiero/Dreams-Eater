@@ -133,90 +133,13 @@ void DreamGame::play() {
     std::cout << "Creating player" << std::endl;
     player = CharacterBuilder::createPlayer(pSettings);
 
-    // TODO: Remove me from here
-    //PowerupBuilder* pBuilder = PowerupBuilder::getInstance();
-    //pBuilder->createSinglePowerupObject(PowerupType::Fire,  { 5,5 });
-    //pBuilder->createSinglePowerupObject(PowerupType::Water, { 0,5 });
-    //pBuilder->createSinglePowerupObject(PowerupType::Earth, { 5,0 });
-    //pBuilder->createSinglePowerupObject(PowerupType::Ice,   { 8,8 });
-
-    /*
-    EnemySettings eSettings;
-    eSettings.position = glm::vec2(10, 10);
-    eSettings.player = player;
-    eSettings.speed = 2.0f;
-    eSettings.knockback = 1.0f;
-    CharacterBuilder::createEnemy(eSettings);
-    */
-
-    // Test room
-    /*
-    auto testRoom = createGameObject();
-    testRoom->name = "testRoom";
-    auto roomPhys = testRoom->addComponent<PhysicsComponent>();
-    auto room = testRoom->addComponent<RoomComponent>();
-    room->setRoomSize(glm::vec2(8, 8));
-    room->buildFloor();
-    room->buildWalls();
-
-    std::shared_ptr<RoomSettings> rSettings = make_shared<RoomSettings>();
-    rSettings->name = "TestRoom";
-    rSettings->position = { 0,0 };
-    rSettings->size = { 7,7 };
-    */
-
-
-    /*rSettings.tileSetFloor = BricksFloor;
-    rSettings.tileSetWalls = BricksWalls;
-    rSettings.tileSetFloor = ShogiFloor;
-    rSettings.tileSetWalls = ShogiWalls;
-    rSettings.tileSetFloor = StoneFloor;
-    rSettings.tileSetWalls = StoneWalls;
-    rSettings.tileSetFloor = LightWoodFloor;
-    rSettings.tileSetWalls = LightWoodWalls;*/
-
-    /*
-    rSettings->tileSetFloor = WoodFloor;
-    rSettings->tileSetWalls = WoodWalls;
-
-    rSettings->roomType = EnemyRoom;
-
-    rSettings->doors.push_back(Door{ false, Left, 1 });
-    //auto testRoom = RoomBuilder::createRoom(rSettings);
-
-    level = make_shared<Level>();
-
-    level->name = "test";
-    level->difficulty = 1;
-    level->player = player;
-
-    level->roomSettings.push_back(rSettings);
-    level->roomEntered.push_back(false);
-    level->roomObjects.push_back({});
-
-    rSettings->name = "Room1";
-    rSettings->roomType = BossRoom;
-    rSettings->doors.clear();
-    rSettings->doors.push_back(Door{ false, Right, 0 });
-    level->roomSettings.push_back(rSettings);
-    level->roomEntered.push_back(false);
-    level->roomObjects.push_back({});
-
-    level->rooms = 2;
-    level->startRoom = 0;
-    
-    //level->loadRoom(0);
-    //level->loadRoom(1);
-    */
-
     auto levelGui = currentScene->createGameObject();
     levelGuiComp = levelGui->addComponent<LevelGuiComponent>();
     
-
     LevelSettings testLevelSettings;
-    testLevelSettings.difficulty = difficulty > 0 ? difficulty : 1;
+    testLevelSettings.difficulty = (int)StringToDifficulty.at(difficulties[selectedDifficulty]);
     testLevelSettings.name = "TestLevel";
-    testLevelSettings.rooms = 5;
+    testLevelSettings.rooms = 3;
     std::cout << "Creating level" << std::endl;
     level = LevelBuilder::createLevel(testLevelSettings);
 

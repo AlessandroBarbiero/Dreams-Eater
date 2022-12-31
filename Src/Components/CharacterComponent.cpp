@@ -513,7 +513,7 @@ void CharacterComponent::displayPowerupMessage(){
 
     auto signSize = ImVec2{ messagePaperTexture->getWidth() * scale, messagePaperTexture->getHeight() * scale };
     
-    auto powerupMessagePosition = ImVec2{ position.x - signSize.x / 2.0f , position.y - spriteSize.y / 2.0f - signSize.y / 1.3f};
+    auto powerupMessagePosition = ImVec2{ position.x - signSize.x / 2.0f , position.y - spriteSize.y / 5.0f - signSize.y / 1.3f};
 
     ImGui::SetNextWindowPos(powerupMessagePosition, ImGuiCond_Always);
     ImGui::SetNextWindowSize(signSize, ImGuiCond_Always);
@@ -524,14 +524,6 @@ void CharacterComponent::displayPowerupMessage(){
 
     
     
-
-    ImGui::End();
-    ImGui::SetNextWindowPos(powerupMessagePosition, ImGuiCond_Always);
-    ImGui::SetNextWindowSize(signSize, ImGuiCond_Always);
-    ImGui::SetNextWindowBgAlpha(0.0f);
-
-    
-    ImGui::Begin("Text", open, flags);
     ImGui::SetCursorPos({ ImGui::GetWindowSize().x / 2.0f - textSize.x / 2.0f, ImGui::GetWindowSize().y / 2.0f - textSize.y / 2.0f });
     ImGui::TextColored(GuiHelper::getInstance()->BLACK, message.c_str());
     ImGui::End();

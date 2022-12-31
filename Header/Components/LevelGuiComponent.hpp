@@ -15,12 +15,14 @@ public:
 
     void onGui() override;
     void setLevel(std::shared_ptr<Level>);
-    //void setPlayer(std::shared_ptr<GameObject>); not needed right now
+    
 
 private:
 
     void drawRoom(std::shared_ptr<RoomSettings>, ImVec2, ImVec2, ImVec2);
     void showBoss(std::shared_ptr<GameObject> boss);
+    void showLevelInfo();
+    void drawMinimap();
 
     std::shared_ptr<Level> level;
     //std::shared_ptr<GameObject> player;
@@ -33,6 +35,11 @@ private:
         ImGuiWindowFlags_NoInputs;
 
     int cond = ImGuiCond_Always;
+
+
+    ImVec2 levelInfoPosition;
+    ImVec2 levelInfoSize = { 250.0f, 50.0f };;
+
 
     //menuPosition and size refer to the background image
     ImVec2 menuPosition;
@@ -68,7 +75,7 @@ private:
     float doorLength = 4.0f; 
     float borderThickness = 3.0f;
 
-    float scaleBossMenu = 0.3f;
+    float levelInfoScale = 0.3f;
     float minScale = 6.0f;;
     float scale = 7.0f;
     float scaleDecrement = 0.7;
@@ -80,7 +87,7 @@ private:
     std::shared_ptr<sre::Texture> bossTexture;
     std::shared_ptr<sre::Texture> powerupTexture;
     std::shared_ptr<sre::Texture> spawnTexture;
-    std::shared_ptr<sre::Texture> signTexture;
+    std::shared_ptr<sre::Texture> levelInfoTexture;
     std::shared_ptr<sre::Texture> barTexture;
 
     ImVec2 barSize;
