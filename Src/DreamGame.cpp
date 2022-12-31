@@ -108,6 +108,8 @@ void DreamGame::init() {
     physicsComponentLookup.clear();
     initPhysics();
 
+    countEnemiesKilled = 0;
+
     auto camObj = game.createGameObject();
     camObj->name = "Camera";
     camera = camObj->addComponent<SideScrollingCamera>();
@@ -329,13 +331,12 @@ void DreamGame::resume(){
     pauseMenu.cleanSceneObjects();
     gameState = GameState::Running;
 
+    //forget movements/shooting that were being executed before
     for (auto& go : *(currentScene->getSceneObjects())) {
         for (auto& comp : go->getComponents()) {
             comp->resetKeys();
         }
     }
-
-
 }
 
 void DreamGame::onKey(SDL_Event& event) {
@@ -360,8 +361,10 @@ void DreamGame::onKey(SDL_Event& event) {
             }
             break;*/
         case SDLK_r:
-            init();
-            play();
+            if(gameState==GameState::Running){
+                init();
+                play();
+            }
             break;
         case SDLK_t:
             for each (std::shared_ptr<GameObject> obj in *(currentScene->getSceneObjects()))

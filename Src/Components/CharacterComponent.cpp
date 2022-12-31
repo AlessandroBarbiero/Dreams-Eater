@@ -199,6 +199,7 @@ void CharacterComponent::die() {
     if (gameObject->tag == Tag::Player)
         DreamGame::instance->gameOver();
     else if (gameObject->tag == Tag::Enemy) {
+        DreamGame::instance->countEnemiesKilled++;
         onDeath(getGameObject());
         onDeath = nullptr;
     }

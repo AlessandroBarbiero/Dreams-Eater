@@ -142,6 +142,8 @@ private:
     Scene game;
     Scene pauseMenu;
 
+    int countEnemiesKilled = 0;
+
     int lengthShootKeys = 3;
 
     char* possibleMoveKeys[3] = { KeysToString.at(Keys::ASWD),  KeysToString.at(Keys::ARROWS), KeysToString.at(Keys::JKIL) };

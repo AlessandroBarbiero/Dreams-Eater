@@ -104,13 +104,12 @@ void StartMenuComponent::start() {
 	ImGui::SetNextWindowPos(internalStartMenuPosition, cond);
 	ImGui::SetNextWindowSize(internalStartMenuSize, cond);
 
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, backgroundColor);
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, GuiHelper::getInstance()->backgroundColor);
 	ImGui::Begin("StartMenuIn", open, startMenuFlags);
-
 
 	ImGui::SetCursorPos(ImVec2(GuiHelper::getInstance()->centerCursorX(buttonSize.x), startingButtonY));
 	
-	//text isIM_COL32_WHITE so that it is visible in grey buttons
+	//text is white so that it is visible in grey buttons
 	ImGui::PushStyleColor(ImGuiCol_Text,IM_COL32_WHITE);
 	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4{0.05f,0.05f,0.05f,1.0f});
 	ImGui::PushFont(GuiHelper::getInstance()->fontFunny35);
@@ -121,10 +120,7 @@ void StartMenuComponent::start() {
 		//redraw background to cover buttons
 		ImGui::GetWindowDrawList()->AddRectFilled(internalStartMenuPosition,
 			{ internalStartMenuPosition.x + internalStartMenuSize.x,internalStartMenuPosition.y + internalStartMenuSize.y },
-			IM_COL32(backgroundColor.x * 255, backgroundColor.y * 255, backgroundColor.z * 255, backgroundColor.w * 255)); 
-
-		/*auto offset = 20.0f;*/
-		//ImGui::SetCursorPos({ GuiHelper::getInstance()->centerCursorX(wraithSize.x) + offset, 0.0f });
+			IM_COL32(GuiHelper::getInstance()->backgroundColor.x * 255, GuiHelper::getInstance()->backgroundColor.y * 255, GuiHelper::getInstance()->backgroundColor.z * 255, GuiHelper::getInstance()->backgroundColor.w * 255)); 
 
 		ImGui::SetCursorPos({ internalStartMenuSize.x / 2.0f - wraithSize.x / 2.0f, 0.0f });
 		ImGui::Image(wraithTexture->getNativeTexturePtr(), wraithSize, uv0, uv1, GuiHelper::getInstance()->BLACK);
@@ -182,7 +178,7 @@ void StartMenuComponent::settings() {
 	ImGui::SetNextWindowPos({ settingsMenuPosition.x + borderWhite + borderBlack, settingsMenuPosition.y + borderWhite + borderBlack }, cond);
 	ImGui::SetNextWindowSize({ settingsMenuSize.x - 2* (borderWhite +  borderBlack), settingsMenuSize.y - 2 * (borderWhite + borderBlack) }, cond);
 	GuiHelper::getInstance()->setZeroPadding();
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, backgroundColor);
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, GuiHelper::getInstance()->backgroundColor);
 	ImGui::Begin("Settings", open, settingsMenuFlags);
 
 	ImGui::SetCursorPos({ settingsMenuSize.x - closeButtonSize.x - internalOffset * settingsScaleX - 3 * ( borderWhite + borderBlack), internalOffset * settingsScaleY + borderWhite + borderBlack });

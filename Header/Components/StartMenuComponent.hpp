@@ -76,11 +76,4 @@ private:
     std::shared_ptr<sre::Texture> wraithTexture;
     std::shared_ptr<sre::Texture> closeTexture;
 
-    ImVec4 backgroundColor = ImVec4(0.9, 0.8, 0.6, 1.0f);
-
-
-
-
-
-
 };

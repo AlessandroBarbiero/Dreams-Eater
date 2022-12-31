@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.hpp"
+#include "CharacterComponent.hpp"
 
 
 class PauseMenuComponent : public Component {
@@ -10,6 +11,10 @@ public:
     void onGui() override;
 
 private:
+
+    std::shared_ptr<CharacterComponent> playerCharacter;
+    std::string playerName;
+
     int menuFlags =
         ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoResize |
@@ -18,9 +23,15 @@ private:
 
     int cond = ImGuiCond_Always;
 
+    ImVec2 itemSpacing;
+    float buttonPositionX;
+    ImVec2 internalMenuPosition;
+    ImVec2 internalMenuSize;
     ImVec2 menuPosition;
-    ImVec2 menuSize = { 220, 120 };
-    ImVec2 buttonSize = { 200, 100 };
+    ImVec2 menuSize;
+    ImVec2 buttonSize = { 120, 60 };
 
-    std::shared_ptr<sre::Texture> resumeTexture;
+    float verticalButtonOffset = 10.0f;
+    float borderWhite = 10.0f;
+    float borderBlack = 10.0f;
 };

@@ -127,7 +127,6 @@ private:
 	void displayPowerupMessage();
 	//void setEnemyGui();
 
-	ImVec2 guiPivot = { 0,0 };
 	ImVec2 heartSize = { 30.0f,30.0f };
 	ImVec2 menuSize;
 	ImVec2 itemSpacing;
@@ -153,6 +152,7 @@ private:
 		ImGuiWindowFlags_NoResize |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoScrollbar;
+
 
 
 	//==============================

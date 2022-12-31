@@ -78,7 +78,7 @@ void PlayerController::update(float deltaTime) {
         initialMessageTimer -= deltaTime;
     }
 
-    //Once the player is out of the room,the message will never appear again
+    //Check if the player has exited the first startingRoom in the first level
     if (!gone)
         gone = DreamGame::instance->level->startRoom != DreamGame::instance->level->currentRoomIndex;
 
@@ -311,16 +311,14 @@ void PlayerController::onGui() {
 
     
 
-    if (initialMessageTimer > 0.0 && !gone) {
-        showInitialMessage();
-    }
+    if (initialMessageTimer > 0.0 && !gone) 
+            showInitialMessage();
+    
 
 
-    if (superCooldownTimer > 0.0) {
-
-        showSuperAttackBar();
-
-    }
+    if (superCooldownTimer > 0.0)
+            showSuperAttackBar();
+    
     
 
 }

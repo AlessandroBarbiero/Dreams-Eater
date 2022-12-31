@@ -104,7 +104,7 @@ private:
     glm::vec2 spriteSize;
 
     char* initialMessage1 = "A swarm of enemies has come to haunt your dreams.";
-    char* initialMessage2 = "Can you give some freedom to your thoughts?";
+    char* initialMessage2 = "Can you send them away?";
 
 
     friend class CharacterBuilder;
