@@ -75,7 +75,6 @@ class DreamGame : public b2ContactListener {
 public:
     DreamGame();
 
-    //std::shared_ptr<GameObject> createGameObject(); -> Objects are created inside the scene, not here
     std::shared_ptr<GameObject> reactivateGameObject(std::shared_ptr<GameObject> obj);
 
     static const glm::vec2 windowSize;
@@ -101,6 +100,7 @@ public:
 
 private:
     GameState gameState = GameState::Ready;
+
     sre::SDLRenderer r;
 
     void init();
@@ -127,8 +127,8 @@ private:
 
     void insertKeys(Controls&);
 
-    char defaultName[64] = "DreamHunter";
-    char playerName[64] = "DreamHunter";
+    char defaultName[24] = "DreamHunter";
+    char playerName[24] = "DreamHunter";
 
     std::shared_ptr<GameObject> player;
     std::shared_ptr<LevelGuiComponent> levelGuiComp;

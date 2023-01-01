@@ -353,7 +353,7 @@ void CharacterComponent::showEffect(State effect, float animTime) {
 
 void CharacterComponent::onGui() {
     if (gameObject->tag == Tag::Player) {
-        setPlayerGui();
+        showLife();
         if (powerupMessageTimeOut > 0) {
             displayPowerupMessage();
         }
@@ -395,7 +395,7 @@ void CharacterComponent::onGui() {
 
 
 
-void CharacterComponent::setPlayerGui() {
+void CharacterComponent::showLife() {
 
     int hpInt = (int)hp;
     auto decimal = hp - hpInt;

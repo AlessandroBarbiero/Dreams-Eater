@@ -19,6 +19,8 @@ private:
     void setupDebugGui();
     void setZeroPadding();
 
+    void drawBackgroundRectangles(ImVec2 topLeft, ImVec2 bottomRight, float border);
+
 
     const char* DEBUG_NAME = "DEBUG";
     const std::string GUI_PATH = "Sprites/Gui/";

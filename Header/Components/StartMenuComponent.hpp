@@ -12,8 +12,6 @@ public:
 
 private:
 
-
-
     void start();
     void settings();
 
@@ -62,13 +60,14 @@ private:
     ImVec2 uv0;
     ImVec2 uv1;
 
+    float baseSize = 240.0f;
     float borderBlack = 3.0f;
     float borderWhite = 3.0f;
 
     float startingButtonY;
     
 
-    ImVec2 buttonSize = { 150, 50 };
+    ImVec2 buttonSize = { 150.0f, 60.0f };;
 
    
     const int NUM_BUTTONS = 2;

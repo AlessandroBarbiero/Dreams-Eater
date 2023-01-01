@@ -123,7 +123,7 @@ private:
 	std::shared_ptr<sre::Texture> signTexture;
 	std::shared_ptr<sre::Texture> messagePaperTexture;
 
-	void setPlayerGui();
+	void showLife();
 	void displayPowerupMessage();
 	//void setEnemyGui();
 

@@ -5,8 +5,6 @@
 
 StartMenuComponent::StartMenuComponent(GameObject* gameObject) : Component(gameObject) {
 
-	//load wraith and close setting button textures
-
 	auto path = GuiHelper::getInstance()->GUI_PATH;
 
 	wraithTexture = sre::Texture::create().withFile(path + "Wraith.png").withFilterSampling(false).build();
@@ -16,9 +14,7 @@ StartMenuComponent::StartMenuComponent(GameObject* gameObject) : Component(gameO
 	auto r = sre::Renderer::instance;
 	auto winsize = r->getWindowSize();
 
-	auto base = 240.0f;
-
-	startMenuSize = { base * scaleStartX, base * scaleStartY };
+	startMenuSize = { baseSize * scaleStartX, baseSize * scaleStartY };
 	startMenuPosition = { (winsize.x - startMenuSize.x) / 2.0f, winsize.y / 2.0f };
 
 	settingsMenuSize = { startMenuSize.x * settingsScaleX , startMenuSize.y * settingsScaleY};
@@ -48,23 +44,6 @@ StartMenuComponent::StartMenuComponent(GameObject* gameObject) : Component(gameO
 
 void StartMenuComponent::onGui(){
 
-	/*if (DreamGame::instance->doDebugDraw) {
-		bool* open = nullptr;
-		ImGui::Begin(GuiHelper::getInstance()->DEBUG_NAME, open);
-		if (ImGui::CollapsingHeader("Start")) {
-			ImGui::DragFloat("scalePaperX", &scaleStartX, 0.1f, 0, 100);
-			ImGui::DragFloat("scalePaperY", &scaleStartY, 0.1f, 0, 100);
-			ImGui::DragFloat("text", &textOffset, 0.1f, 0, 100);
-			//ImGui::DragFloat("sett", &settingsScale, 0.05f, 0, 100);
-			ImGui::DragFloat("scale Button", &scaleButton, 0.05f, 0, 100);
-			ImGui::DragFloat("BorderWhite", &borderWhite, 0.05f, 0, 100);
-			ImGui::DragFloat("BorderBlack", &borderBlack, 0.05f, 0, 100);
-	
-		}
-		ImGui::End();
-	}*/
-
-
 	if (DreamGame::instance->gameState == GameState::Ready) {
 		start();
 	}
@@ -89,12 +68,7 @@ void StartMenuComponent::start() {
 	auto topLeft = startMenuPosition;
 	auto bottomRight = ImVec2{ startMenuPosition.x + startMenuSize.x, startMenuPosition.y + startMenuSize.y };
 
-	ImGui::GetWindowDrawList()->AddRectFilled(topLeft, bottomRight,IM_COL32_WHITE );
-
-	topLeft = ImVec2{ startMenuPosition.x + borderWhite, startMenuPosition.y + borderWhite };
-	bottomRight = ImVec2{ startMenuPosition.x + startMenuSize.x - borderWhite, startMenuPosition.y + startMenuSize.y - borderWhite };
-
-	ImGui::GetWindowDrawList()->AddRectFilled(topLeft, bottomRight, IM_COL32_BLACK);
+	GuiHelper::getInstance()->drawBackgroundRectangles(topLeft, bottomRight,borderWhite);
 	
 	ImGui::PopStyleVar();
 	ImGui::End();
@@ -122,13 +96,12 @@ void StartMenuComponent::start() {
 			{ internalStartMenuPosition.x + internalStartMenuSize.x,internalStartMenuPosition.y + internalStartMenuSize.y },
 			IM_COL32(GuiHelper::getInstance()->backgroundColor.x * 255, GuiHelper::getInstance()->backgroundColor.y * 255, GuiHelper::getInstance()->backgroundColor.z * 255, GuiHelper::getInstance()->backgroundColor.w * 255)); 
 
-		ImGui::SetCursorPos({ internalStartMenuSize.x / 2.0f - wraithSize.x / 2.0f, 0.0f });
+		ImGui::SetCursorPos({ GuiHelper::getInstance()->centerCursorX(wraithSize.x), 0.0f });
 		ImGui::Image(wraithTexture->getNativeTexturePtr(), wraithSize, uv0, uv1, GuiHelper::getInstance()->BLACK);
 
 
-		/*offset = 15.0f;*/
 		textSize = ImGui::CalcTextSize(loadingMessage);
-		ImGui::SetCursorPos({ internalStartMenuSize.x / 2.0f - textSize.x / 2.0f, wraithSize.y});
+		ImGui::SetCursorPos({ GuiHelper::getInstance()->centerCursorX(textSize.x), wraithSize.y});
 		ImGui::TextColored(GuiHelper::getInstance()->BLACK, loadingMessage);
 		
 
@@ -164,13 +137,7 @@ void StartMenuComponent::settings() {
 	auto topLeft = settingsMenuPosition;
 	auto bottomRight = ImVec2{ settingsMenuPosition.x + settingsMenuSize.x, settingsMenuPosition.y + settingsMenuSize.y };
 
-	ImGui::GetWindowDrawList()->AddRectFilled(topLeft, bottomRight, IM_COL32(255, 255, 255, 255));
-
-
-	topLeft = ImVec2{ settingsMenuPosition.x + borderWhite, settingsMenuPosition.y + borderWhite };
-	bottomRight = ImVec2{ settingsMenuPosition.x + settingsMenuSize.x - borderWhite, settingsMenuPosition.y + settingsMenuSize.y - borderWhite };
-
-	ImGui::GetWindowDrawList()->AddRectFilled(topLeft, bottomRight, IM_COL32(0, 0, 0, 255));
+	GuiHelper::getInstance()->drawBackgroundRectangles(topLeft, bottomRight, borderWhite);
 
 	ImGui::PopStyleVar();
 	ImGui::End();
@@ -190,9 +157,8 @@ void StartMenuComponent::settings() {
 		DreamGame::instance->gameState = GameState::Ready;
 	}
 
-	ImGui::PopStyleColor(1);
+	ImGui::PopStyleColor();
 
-	//set button color to transparent so that it's not visible
 	ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	// increase padding and inner spacing

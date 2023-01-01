@@ -14,6 +14,7 @@
 #include "PauseMenuComponent.hpp"
 #include "GuiHelper.hpp"
 #include "LevelGuiComponent.hpp"
+#include <sre/Inspector.hpp>
 
 
 using namespace std;
@@ -218,7 +219,6 @@ void DreamGame::insertKeys(Controls& c) {
 
 void DreamGame::gameOver() {
     gameState = GameState::Ready;
-    //init();
 
     SDL_Event event;
     event.user.type = deathEvent;
@@ -227,8 +227,8 @@ void DreamGame::gameOver() {
 }
 
 void DreamGame::update(float time) {
-    auto b = false;
-    if (gameState == GameState::Running || gameState == GameState::Ready) {
+
+    if (gameState == GameState::Running) {
         updatePhysics();
 
         auto sceneObjects = currentScene->getSceneObjects();
@@ -245,20 +245,6 @@ void DreamGame::update(float time) {
             level = level->nextLevel;
             levelGuiComp->setLevel(level);
             level->loadLevel();
-           /*
-            sceneObjects->push_back(player);
-            auto levelGui = currentScene->createGameObject();
-            auto guiComp = levelGui->addComponent<LevelGuiComponent>();
-            guiComp->setLevel(level);
-
-
-            auto camObj = game.createGameObject();
-            camObj->name = "Camera";
-            camera = camObj->addComponent<SideScrollingCamera>();
-            camera->setFollowObject(player, glm::vec2(0, 0));
-           
-           camera->getCamera().setOrthographicProjection(level->currentRoom->getComponent<RoomComponent>()->getRoomSizeInPixels().x / 2.0f, -1, 1);
-           */
         }
 
         // Remove elements marked for deletion
@@ -277,6 +263,8 @@ void DreamGame::update(float time) {
 
 void DreamGame::render() {
 
+    
+
     auto rp = RenderPass::create()
         .withCamera(camera->getCamera())
         .build();
@@ -292,6 +280,10 @@ void DreamGame::render() {
     rp.draw(sb);
 
     if (doDebugDraw) {
+
+        static Inspector profiler;
+        profiler.update();
+        profiler.gui(false);
 
         world->DrawDebugData();
         rp.drawLines(debugDraw.getLines());

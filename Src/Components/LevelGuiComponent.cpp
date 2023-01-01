@@ -15,7 +15,6 @@ LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObj
     powerupTexture = sre::Texture::create().withFile(path + "boost.png").withFilterSampling(false).build();
     spawnTexture = sre::Texture::create().withFile(path + "home.png").withFilterSampling(false).build();
 
-    //levelInfoTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Sign.png").withFilterSampling(false).build();
     barTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Bar.png").withFilterSampling(false).build();
     
     barSize = { (float)barTexture->getWidth(), (float)barTexture->getHeight() * 0.5f};
@@ -28,15 +27,11 @@ LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObj
     mapPosition = { sre::Renderer::instance->getWindowSize().x - menuSize.x - windowOffset + internalOffset.x, menuPosition.y + internalOffset.y};
     mapSize = { mapTexture->getWidth() * mapScale - 2 * internalOffset.x, mapTexture->getHeight() * mapScale - 2 * internalOffset.y  };
 
-    
-    
-
     ImGuiStyle& style = ImGui::GetStyle();
     itemSpacing = style.ItemSpacing;
 
     uv0 = GuiHelper::getInstance()->uv0;
     uv1 = GuiHelper::getInstance()->uv1;
-
 
     auto r = sre::Renderer::instance;
     
@@ -66,6 +61,8 @@ void LevelGuiComponent::onGui() {
         ImGui::End();
     }
 
+    drawMinimap();
+
     if (level->roomSettings[level->currentRoomIndex]->roomType == RoomType::BossRoom && level->boss != nullptr) {
         showBoss(level->boss);
     }
@@ -73,7 +70,7 @@ void LevelGuiComponent::onGui() {
 
     showLevelInfo();
 
-    drawMinimap();
+    
 
 }
 
@@ -86,32 +83,30 @@ void LevelGuiComponent::showBoss(std::shared_ptr<GameObject> boss){
     
     if (bossComponent->hp > 0.0) {
 
-    auto maxLife = bossComponent->defaultHp;
+        auto maxLife = bossComponent->defaultHp;
 
-    auto uv1Fill = ImVec2{ uv1.x * bossComponent->hp / maxLife, uv1.y };
-    auto fillSize = ImVec2{ barSize.x * bossComponent->hp / maxLife, barSize.y };
+        auto uv1Fill = ImVec2{ uv1.x * bossComponent->hp / maxLife, uv1.y };
+        auto fillSize = ImVec2{ barSize.x * bossComponent->hp / maxLife, barSize.y };
+  
+        auto position = DreamGame::instance->camera->getWindowCoordinates(glm::vec3(boss->getPosition(), 0.0));
+        auto menuPos = ImVec2{ position.x - barSize.x / 2.0f, position.y - bossTexture->getHeight() / 5.0f };
+        ImGui::SetNextWindowSize(barSize, ImGuiCond_Always);
+        ImGui::SetNextWindowPos(menuPos, ImGuiCond_Always);
+        ImGui::SetNextWindowBgAlpha(0.0f);
+        GuiHelper::getInstance()->setZeroPadding();
+        ImGui::Begin("Boss", open, menuFlags);
 
-    ImVec4 barColor = { 1, 0, 0, 1 };
-        
-    auto position = DreamGame::instance->camera->getWindowCoordinates(glm::vec3(boss->getPosition(), 0.0));
-    auto menuPos = ImVec2{ position.x - barSize.x / 2.0f, position.y - bossTexture->getHeight() / 5.0f };
-    ImGui::SetNextWindowSize(barSize, ImGuiCond_Always);
-    ImGui::SetNextWindowPos(menuPos, ImGuiCond_Always);
-    ImGui::SetNextWindowBgAlpha(0.0f);
-    GuiHelper::getInstance()->setZeroPadding();
-    ImGui::Begin("Boss", open, menuFlags);
+        ImGui::Image(barTexture->getNativeTexturePtr(), barSize, uv0, uv1);
 
-    ImGui::Image(barTexture->getNativeTexturePtr(), barSize, uv0, uv1);
+        ImGui::SameLine();
 
-    ImGui::SameLine();
+        ImGui::SetCursorPosX(0.0);
 
-    ImGui::SetCursorPosX(0.0);
+        ImGui::Image(barTexture->getNativeTexturePtr(), fillSize, uv0, uv1Fill, barColor);
 
-    ImGui::Image(barTexture->getNativeTexturePtr(), fillSize, uv0, uv1Fill, barColor);
+        ImGui::PopStyleVar();
 
-    ImGui::PopStyleVar();
-
-    ImGui::End();
+        ImGui::End();
 
     }
 

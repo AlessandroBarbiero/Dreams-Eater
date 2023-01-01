@@ -48,11 +48,21 @@ void GuiHelper::setZeroPadding() {
 }
 
 
+void GuiHelper::drawBackgroundRectangles(ImVec2 topLeft, ImVec2 bottomRight, float border) {
+
+	ImGui::GetWindowDrawList()->AddRectFilled(topLeft, bottomRight, IM_COL32_WHITE);
+
+	topLeft = ImVec2{ topLeft.x + border, topLeft.y + border };
+
+	bottomRight = ImVec2{ bottomRight.x  - border, bottomRight.y - border };
+
+	ImGui::GetWindowDrawList()->AddRectFilled(topLeft, bottomRight, IM_COL32_BLACK);
+
+}
+
+
  GuiHelper* GuiHelper::getInstance()
 {
-	 // I don't know the reason but it is not working with the way we are creating singleton in the other classes, so i did this.
-	 // We should standardize everything eventually
-
 	if (instance == nullptr)
 		instance = new GuiHelper();
 	return instance;

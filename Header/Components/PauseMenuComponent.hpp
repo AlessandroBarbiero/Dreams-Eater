@@ -28,7 +28,7 @@ private:
     ImVec2 internalMenuPosition;
     ImVec2 internalMenuSize;
     ImVec2 menuPosition;
-    ImVec2 menuSize;
+    ImVec2 menuSize = { 400, 210 };;
     ImVec2 buttonSize = { 120, 60 };
 
     float verticalButtonOffset = 10.0f;

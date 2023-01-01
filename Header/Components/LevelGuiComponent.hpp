@@ -25,7 +25,6 @@ private:
     void drawMinimap();
 
     std::shared_ptr<Level> level;
-    //std::shared_ptr<GameObject> player;
 
     int menuFlags =
         ImGuiWindowFlags_NoTitleBar |
@@ -38,14 +37,14 @@ private:
 
 
     ImVec2 levelInfoPosition;
-    ImVec2 levelInfoSize = { 250.0f, 50.0f };;
+    ImVec2 levelInfoSize = { 250.0f, 50.0f };
+
+    ImVec4 barColor = { 1, 0, 0, 1 };
 
 
-    //menuPosition and size refer to the background image
     ImVec2 menuPosition;
     ImVec2 menuSize;
 
-    //mapPosition and size refer to the actual minimap
     ImVec2 mapPosition;
     ImVec2 mapSize;
 
