@@ -69,10 +69,11 @@ void Level::loadLevel() {
 		bossEnemySettings.push_back(enemy);
 	}
 
-	loadRoom(0, Center);
+	// DoorPosition doesn't matter since the third parameter is true, so just Top as default
+	loadRoom(0, Top, true);
 }
 
-void Level::loadRoom(int room, DoorPosition enteredAt) {
+void Level::loadRoom(int room, DoorPosition enteredAt, bool enterAtCenter) {
 	if (currentRoom != nullptr) {
 		// Save currentRoom
 		std::cout << "Saving room" << std::endl;
@@ -85,18 +86,6 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 			auto phys = go->getComponent<PhysicsComponent>();
 			if (phys != nullptr) {
 				auto shape = phys->fixture->GetShape();
-				//phys->lastShape = shape->c
-				/*
-				if (phys->shapeType == b2Shape::e_circle) {
-					phys->circle = dynamic_cast<b2CircleShape*>(shape);
-				}
-				else if (phys->shapeType == b2Shape::e_polygon) {
-					phys->polygon = dynamic_cast<b2PolygonShape*>(shape);
-				}
-				*/
-				//DreamGame::instance->deregisterPhysicsComponent(phys.get());
-				//DreamGame::instance->world->DestroyBody(phys->getBody());
-				//phys->~PhysicsComponent();
 				phys->pause();
 				if (phys->getBody() != nullptr) {
 					//std::cout << "Body still exists" << std::endl;
@@ -218,8 +207,14 @@ void Level::loadRoom(int room, DoorPosition enteredAt) {
 	roomEntered[room] = true;
 
 	auto phys = player->getComponent<PhysicsComponent>();
-	auto enterPos = newRoom->doorEntrances[enteredAt];
-	enterPos = enterPos / DreamGame::instance->physicsScale;
+	glm::vec2 enterPos;
+	if (enterAtCenter) {
+		// Overrides enteredAt
+		enterPos = { 0, 0 };
+	}
+	else {
+		enterPos = newRoom->doorEntrances[enteredAt] / DreamGame::instance->physicsScale;
+	}
 	phys->getBody()->SetTransform({enterPos.x, enterPos.y} , 0);
 
 }
