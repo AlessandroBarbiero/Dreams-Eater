@@ -28,7 +28,7 @@ void Witch::attack()
     if (Thundercount > 100) {
         if (glm::length(towardPlayer) < 600) {
             //STAB
-            anim->displayCompleteAnimation(State::Attack1);
+            anim->displayCompleteAnimation(State::Attack1, 1 / character->getRateOfFire(), [this]() {physics->addImpulse(towardPlayer); });
         }
         else {
             //SHOOT

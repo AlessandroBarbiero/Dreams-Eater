@@ -16,7 +16,7 @@ void SimpleMelee::attack()
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
     if (glm::length(towardPlayer) < 600) {
-        anim->displayCompleteAnimation(State::Attack, 1 / character->getRateOfFire());
+        anim->displayCompleteAnimation(State::Attack, 1.0f, [this]() {physics->addImpulse(towardPlayer); });
     }
 
     anim->setFacingDirection(vectorToDirection(direction), true);
