@@ -11,6 +11,7 @@
 #include "GuiHelper.hpp"
 #include "PlayerController.hpp"
 #include <math.h>
+#include "CharacterBuilder.hpp"
 #define KNOCKBACK_SCALE 10
 
 std::shared_ptr<sre::SpriteAtlas> CharacterComponent::effectAtlas;
@@ -23,18 +24,16 @@ CharacterComponent::CharacterComponent(GameObject* gameObject) : Component(gameO
 
     initSpecialEffectObject();
 
+    //GUI
     heartTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Heart.png").withFilterSampling(false).build();
     messagePaperTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "MessagePaper.png").withFilterSampling(false).build();
     signTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "GreyPaper.png").withFilterSampling(false).build();
 
     spriteSize = gameObject->getComponent<SpriteComponent>()->getSprite().getSpriteSize();
 
-    
-
     ImGuiStyle& style = ImGui::GetStyle();
     itemSpacing = style.ItemSpacing;
     
-
     uv0 = GuiHelper::getInstance()->uv0;
     uv1 = GuiHelper::getInstance()->uv1;
 
@@ -50,34 +49,10 @@ void CharacterComponent::initSpecialEffectObject() {
     // The special effect should be visible only when necessary
     specialEffects->deactivate();
 
-    // Load the hit animation from memory
-    std::vector<sre::Sprite> hitAnim(11);
-    std::string spriteName = "Hit/";
-    for (int i = 0; i < hitAnim.size(); i++) {
-        hitAnim[i] = CharacterComponent::effectAtlas->get(spriteName + std::to_string(i) + ".png");
-        hitAnim[i].setOrderInBatch(Depth::Effect);
-    }
-
-    std::vector<sre::Sprite> victoryAnim(16);
-    spriteName = "Victory/";
-    for (int i = 0; i < victoryAnim.size(); i++) {
-        victoryAnim[i] = CharacterComponent::effectAtlas->get(spriteName + std::to_string(i) + ".png");
-        victoryAnim[i].setOrderInBatch(Depth::Effect);
-    }
-
-    std::vector<sre::Sprite> itemAnim(9);
-    spriteName = "Item/";
-    for (int i = 0; i < itemAnim.size(); i++) {
-        itemAnim[i] = CharacterComponent::effectAtlas->get(spriteName + std::to_string(i) + ".png");
-        itemAnim[i].setOrderInBatch(Depth::Effect);
-    }
-
-    std::vector<sre::Sprite> chargeAnim(12);
-    spriteName = "Charge/";
-    for (int i = 0; i < chargeAnim.size(); i++) {
-        chargeAnim[i] = CharacterComponent::effectAtlas->get(spriteName + std::to_string(i) + ".png");
-        chargeAnim[i].setOrderInBatch(Depth::Effect);
-    }
+    static std::vector<sre::Sprite> hitAnim = CharacterBuilder::getAnimationVector("Hit/", 11, CharacterComponent::effectAtlas, Depth::Effect);
+    static std::vector<sre::Sprite> victoryAnim = CharacterBuilder::getAnimationVector("Victory/", 16, CharacterComponent::effectAtlas, Depth::Effect);
+    static std::vector<sre::Sprite> itemAnim = CharacterBuilder::getAnimationVector("Item/", 9, CharacterComponent::effectAtlas, Depth::Effect);
+    static std::vector<sre::Sprite> chargeAnim = CharacterBuilder::getAnimationVector("Charge/", 12, CharacterComponent::effectAtlas, Depth::Effect);
 
     specialEffects->addAnimationSequence(State::Victory,    Direction::RIGHT,       victoryAnim);
     specialEffects->addAnimationSequence(State::Victory,    Direction::LEFT,        victoryAnim);
