@@ -35,7 +35,7 @@ public:
     void renderSprite(sre::SpriteBatch::SpriteBatchBuilder& spriteBatchBuilder);
     void update(float deltaTime);
 
-    const glm::vec2 &getPosition() const;
+    glm::vec2 &getPosition();
 
     void setPosition(const glm::vec2 &position);
 
@@ -63,6 +63,7 @@ private:
     GameObject() = default;
     std::vector<std::shared_ptr<Component>> components;
 
+    glm::vec2 worldPosition;
     glm::vec2 position;
     float rotation;     // In radians
     float scale = 1;
