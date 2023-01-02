@@ -17,5 +17,4 @@ public:
     void movement() override;
 
 private:
-    bool isAttacking = false;
 };

@@ -28,6 +28,4 @@ private:
     std::vector<sre::Sprite> thunderAnimation;
     sre::Sprite bulletSprite;
     float idealDistance = 600.0f;
-
-    bool isAttacking = false;
 };

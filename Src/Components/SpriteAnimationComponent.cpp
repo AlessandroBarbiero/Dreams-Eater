@@ -201,6 +201,11 @@ float SpriteAnimationComponent::getMinDuration()
     return _minDuration;
 }
 
+State SpriteAnimationComponent::getState() 
+{
+    return currentAnimation;
+}
+
 //Show the animation passed, it can be displayed in loop setting the boolean value,
 //if you want to override a loop animation set urgent to true
 bool SpriteAnimationComponent::showFixedAnimation(std::vector<sre::Sprite> animVector, bool loop, bool urgent)

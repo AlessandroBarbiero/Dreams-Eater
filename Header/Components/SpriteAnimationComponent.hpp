@@ -20,6 +20,7 @@ public:
     float getBaseAnimationTime() const;
     void setAnimationTime(float animationTime);
     void setBaseAnimationTime(float animationTime);
+    State getState();
 
     void addAnimationSequence(State state, Direction direction, std::vector<sre::Sprite> animation);
     void resetTime();

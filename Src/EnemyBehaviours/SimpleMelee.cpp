@@ -16,10 +16,9 @@ void SimpleMelee::attack()
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
     if (glm::length(towardPlayer) < 600) {
-        if (!isAttacking) {
-            physics->addForce((towardPlayer));
-            anim->displayCompleteAnimation(State::Attack, 1.0f, [this]() {isAttacking = false; physics->addForce(-(towardPlayer));});
-            isAttacking = true;
+        if (anim->getState() != State::Attack) {
+            physics->addForce(towardPlayer);
+            anim->displayCompleteAnimation(State::Attack, 1.0f, [this]() {});
         }
     }
 
@@ -29,7 +28,8 @@ void SimpleMelee::attack()
 
 void SimpleMelee::movement()
 {
-    if (isAttacking) {
+    auto anim = gameObject->getComponent<SpriteAnimationComponent>();
+    if (anim->getState() == State::Attack) {
         return;
     }
     float distance = glm::length(towardPlayer);
