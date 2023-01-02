@@ -20,11 +20,14 @@ enum class CharacterType {
 	BrownWraith,
 	PurpleWraith,
 	Slime,
-	Ninja,
+	Witch
+
+	//These Characters are ready to be added but not currently used in the game
+	/*Ninja,
 	SamuraiHeavy,
 	SamuraiLight,
-	BigTroll,
-	Witch
+	BigTroll,*/
+
 };
 
 const std::unordered_map<CharacterType, char*> CharacterTypeToString{
@@ -35,11 +38,13 @@ const std::unordered_map<CharacterType, char*> CharacterTypeToString{
 	{CharacterType::BrownWraith,	"BrownWraith"	},
 	{CharacterType::PurpleWraith,	"PurpleWraith"	},
 	{CharacterType::Slime,			"Slime"			},
-	{CharacterType::Ninja,			"Ninja"			},
+	{CharacterType::Witch,			"Witch"			}
+
+	/*{CharacterType::Ninja,			"Ninja"			},
 	{CharacterType::SamuraiHeavy,	"SamuraiHeavy"	},
 	{CharacterType::SamuraiLight,	"SamuraiLight"	},
-	{CharacterType::BigTroll,		"BigTroll"		},
-	{CharacterType::Witch,			"Witch"			}
+	{CharacterType::BigTroll,		"BigTroll"		},*/
+
 
 };
 
@@ -51,11 +56,11 @@ const std::unordered_map <std::string, CharacterType> CharacterStringToType{
 	{"BrownWraith",		CharacterType::BrownWraith	},
 	{"PurpleWraith",	CharacterType::PurpleWraith	},
 	{"Slime",			CharacterType::Slime			},
-	{"Ninja",			CharacterType::Ninja			},
+	{"Witch",			CharacterType::Witch			}
+	/*{"Ninja",			CharacterType::Ninja			},
 	{"SamuraiHeavy",	CharacterType::SamuraiHeavy	},
 	{"SamuraiLight",	CharacterType::SamuraiLight	},
-	{"BigTroll",		CharacterType::BigTroll		},
-	{"Witch",			CharacterType::Witch			}
+	{"BigTroll",		CharacterType::BigTroll		},*/
 
 };
 
@@ -67,7 +72,7 @@ const std::unordered_map<CharacterType, std::function<std::shared_ptr<IEnemyCont
 	{CharacterType::FireWizard,		[](GameObject* obj) {	return obj->addComponent<Wizard>();	}	},
 	{CharacterType::IceWizard,		[](GameObject* obj) {	return obj->addComponent<Wizard>();	}	},
 	{CharacterType::Witch,			[](GameObject* obj) {	return obj->addComponent<Witch>();	}	},
-	{CharacterType::BigTroll,		[](GameObject* obj) {	return obj->addComponent<BigTroll>();	}	},
+	/*{CharacterType::BigTroll,		[](GameObject* obj) {	return obj->addComponent<BigTroll>();	}	},*/
 
 };
 
