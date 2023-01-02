@@ -20,7 +20,7 @@ StartMenuComponent::StartMenuComponent(GameObject* gameObject) : Component(gameO
 	settingsMenuSize = { startMenuSize.x * settingsScaleX , startMenuSize.y * settingsScaleY};
 	settingsMenuPosition = { (winsize.x - settingsMenuSize.x) / 2.0f, winsize.y / 2.0f };
 
-	wraithSize = { 520 * scaleWraith, 420 * scaleWraith}; //hardocoded sprite dimension
+	wraithSize = { 520 * scaleWraith, 420 * scaleWraith}; //hardcoded sprite dimensions
 	closeButtonSize = { (float)closeTexture->getWidth() * scaleCloseButton, (float)closeTexture->getHeight() * scaleCloseButton };
 
 	buttonSize = { 302.0f * scaleButton, 120.0f * scaleButton };
@@ -195,7 +195,7 @@ void StartMenuComponent::settings() {
 
 	ImGui::Combo("Super Shoot", &DreamGame::instance->selectedSuperShootKey, DreamGame::instance->possibleSuperShootKeys, IM_ARRAYSIZE(DreamGame::instance->possibleSuperShootKeys));
 	
-	//placed here to have smoother end 
+	//placed here to have some space below the last combo
 	ImGui::SetCursorPosY(ImGui::GetCursorPosY()+5.0f);
 	ImGui::TextColored(ImVec4(0.0f, 0.0f, 0.0f, 0.0f), "");
 

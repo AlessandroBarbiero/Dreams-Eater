@@ -10,11 +10,11 @@ LevelGuiComponent::LevelGuiComponent(GameObject* gameObject) : Component(gameObj
 
     auto path = GuiHelper::getInstance()->GUI_PATH;
 
+    //load textures
     mapTexture = sre::Texture::create().withFile(path + "map.png").withFilterSampling(false).build();
     bossTexture = sre::Texture::create().withFile(path + "FinalBoss.png").withFilterSampling(false).build();
     powerupTexture = sre::Texture::create().withFile(path + "boost.png").withFilterSampling(false).build();
     spawnTexture = sre::Texture::create().withFile(path + "home.png").withFilterSampling(false).build();
-
     barTexture = sre::Texture::create().withFile(GuiHelper::getInstance()->GUI_PATH + "Bar.png").withFilterSampling(false).build();
     
     barSize = { (float)barTexture->getWidth(), (float)barTexture->getHeight() * 0.5f};

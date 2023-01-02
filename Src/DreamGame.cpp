@@ -220,6 +220,8 @@ void DreamGame::insertKeys(Controls& c) {
 void DreamGame::gameOver() {
     gameState = GameState::Ready;
 
+
+    //Create and push an event so that everything is resetted after the update 
     SDL_Event event;
     event.user.type = deathEvent;
     SDL_PushEvent(&event);
@@ -264,7 +266,6 @@ void DreamGame::update(float time) {
 void DreamGame::render() {
 
     
-
     auto rp = RenderPass::create()
         .withCamera(camera->getCamera())
         .build();
@@ -312,6 +313,7 @@ void DreamGame::pause() {
     auto pause = pauseMenu.createGameObject();
     pause->addComponent<PauseMenuComponent>();
 
+    //Append game sceneObjects to Pause scene so that they are visible. They are not updated since the game is in pause state.
     gameState = GameState::Pause;
     pauseMenu.appendSceneObjects(*currentScene->getSceneObjects());
     currentScene = &pauseMenu;

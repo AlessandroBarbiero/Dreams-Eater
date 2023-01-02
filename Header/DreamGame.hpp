@@ -125,6 +125,7 @@ private:
 
     void startGame();
 
+    //Setup player control based on selected keybinds
     void insertKeys(Controls&);
 
     char defaultName[24] = "DreamHunter";

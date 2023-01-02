@@ -11,16 +11,21 @@ public:
 
     explicit LevelGuiComponent(GameObject* gameObject);
 
-    //~LevelGuiComponent();
 
     void onGui() override;
+
+    //Set the current level
     void setLevel(std::shared_ptr<Level>);
     
 
 private:
 
+    //Draw Room and Doors given topLeft and bottomRight vertices and room size.
     void drawRoom(std::shared_ptr<RoomSettings>, ImVec2, ImVec2, ImVec2);
+
+    //Show Boss health in a bar hovering over it.
     void showBoss(std::shared_ptr<GameObject> boss);
+
     void showLevelInfo();
     void drawMinimap();
 
@@ -90,8 +95,4 @@ private:
     std::shared_ptr<sre::Texture> barTexture;
 
     ImVec2 barSize;
-
-    
-
-
 };

@@ -13,12 +13,22 @@ public:
 
 private:
 
+    //Setup custom GUI style
     void setupImGuiStyle();
+
+    //Center the cursor given the width of an element based on the available space
     float centerCursorX(float width);
+
+    //Load all fonts needed
     void setupFont();
+
+    //Setup debug gui flags, position and size. All components can append content
     void setupDebugGui();
+
+    //Remove padding in current window
     void setZeroPadding();
 
+    //Draw a white and a black rectangles given vertices and the distance between them
     void drawBackgroundRectangles(ImVec2 topLeft, ImVec2 bottomRight, float border);
 
 
