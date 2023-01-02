@@ -135,7 +135,6 @@ private:
     std::shared_ptr<LevelGuiComponent> levelGuiComp;
     std::shared_ptr<SideScrollingCamera> camera;
     std::shared_ptr<sre::SpriteAtlas> spriteAtlas_inside;
-    std::shared_ptr<sre::SpriteAtlas> spriteAtlas_baseWraith;
 
     std::shared_ptr<sre::SpriteAtlas> guiAtlas;    
     

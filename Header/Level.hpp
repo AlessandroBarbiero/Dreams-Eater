@@ -3,6 +3,7 @@
 #include "GameObject.hpp"
 #include "RoomBuilder.hpp"
 #include "CharacterBuilder.hpp"
+#include "sre/SpriteAtlas.hpp"
 
 class Level {
 public:
@@ -40,5 +41,11 @@ public:
 	bool finished = false;
 private:
 	std::shared_ptr<GameObject> createPortal(glm::vec2 position);
+
+	// Used for portal to next level
+	static std::shared_ptr<sre::SpriteAtlas> getPurpleWraithAtlas() {
+		static std::shared_ptr<sre::SpriteAtlas> spriteAtlas_purpleWraith = sre::SpriteAtlas::create("Sprites/Characters/PurpleWraith/PurpleWraith_atlas.json", "Sprites/Characters/PurpleWraith/PurpleWraith_atlas.png");
+		return spriteAtlas_purpleWraith;
+	}
 
 };

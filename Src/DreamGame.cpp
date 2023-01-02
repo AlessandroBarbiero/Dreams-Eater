@@ -34,7 +34,6 @@ DreamGame::DreamGame()
         .withSdlWindowFlags(SDL_WINDOW_OPENGL);
 
     spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");
-    spriteAtlas_baseWraith = SpriteAtlas::create("Sprites/Wraith/Wraith_purple_atlas.json", "Sprites/Wraith/Wraith_purple_atlas.png");
 
     time_t t;   // random seed based on time
     srand((unsigned)time(&t));

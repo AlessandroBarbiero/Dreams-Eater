@@ -211,8 +211,6 @@ void RoomComponent::buildWalls() {
 	auto spriteWallTopRight = game->spriteAtlas_inside->get(wallString + "TopRight.png");
 	auto spriteWallBottomLeft = game->spriteAtlas_inside->get(wallString + "BottomLeft.png");
 	auto spriteWallBottomRight = game->spriteAtlas_inside->get(wallString + "BottomRight.png");
-
-	auto spriteDoor = game->spriteAtlas_baseWraith->get("Spells-Effect.png");
 	
 	// Offsets are used for positioning
 	int wallWidth = spriteWallHorizontalBottom.getSpriteSize().y;

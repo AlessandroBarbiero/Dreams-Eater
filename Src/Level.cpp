@@ -152,7 +152,7 @@ void Level::loadRoom(int room, DoorPosition enteredAt, bool enterAtCenter) {
 				// Chance to drop powerup
 				enemy->getComponent<CharacterComponent>()->onDeath = [pBuilder](GameObject* self) {
 					int random = rand() % 100;
-					if (random < 10) {
+					if (random < 5) {
 						random = rand() % 4; 
 						DreamGame::instance->level->currentRoom->getComponent<RoomComponent>()->roomObjects.push_back(pBuilder->createSinglePowerupObject(static_cast<PowerupType>(random), self->getPosition()));
 					}
@@ -193,7 +193,7 @@ void Level::loadRoom(int room, DoorPosition enteredAt, bool enterAtCenter) {
 				// Chance to drop powerup
 				enemy->getComponent<CharacterComponent>()->onDeath = [pBuilder](GameObject* self) {
 					int random = rand() % 100;
-					if (random < 10) {
+					if (random < 5) {
 						random = rand() % 4;
 						DreamGame::instance->level->currentRoom->getComponent<RoomComponent>()->roomObjects.push_back(pBuilder->createSinglePowerupObject(static_cast<PowerupType>(random), self->getPosition()));
 					}
@@ -237,7 +237,7 @@ std::shared_ptr<GameObject> Level::createPortal(glm::vec2 position) {
 	go->tag = Tag::Powerup;
 
 	auto spriteComp = go->addComponent<SpriteComponent>();
-	auto sprite = game->spriteAtlas_baseWraith->get("Spells-Effect.png");
+	auto sprite = getPurpleWraithAtlas()->get("Bullet.png");
 
 	sprite.setOrderInBatch(Depth::Object);
 	sprite.setScale({ 6,6 });
