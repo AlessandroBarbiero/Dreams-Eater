@@ -96,12 +96,12 @@ void StartMenuComponent::start() {
 			{ internalStartMenuPosition.x + internalStartMenuSize.x,internalStartMenuPosition.y + internalStartMenuSize.y },
 			IM_COL32(GuiHelper::getInstance()->backgroundColor.x * 255, GuiHelper::getInstance()->backgroundColor.y * 255, GuiHelper::getInstance()->backgroundColor.z * 255, GuiHelper::getInstance()->backgroundColor.w * 255)); 
 
-		ImGui::SetCursorPos({ GuiHelper::getInstance()->centerCursorX(wraithSize.x), 0.0f });
+		ImGui::SetCursorPos({ internalStartMenuSize.x / 2.0f - wraithSize.x / 2.0f, 0.0f });
 		ImGui::Image(wraithTexture->getNativeTexturePtr(), wraithSize, uv0, uv1, GuiHelper::getInstance()->BLACK);
 
 
 		textSize = ImGui::CalcTextSize(loadingMessage);
-		ImGui::SetCursorPos({ GuiHelper::getInstance()->centerCursorX(textSize.x), wraithSize.y});
+		ImGui::SetCursorPos({ internalStartMenuSize.x / 2.0f - textSize.x / 2.0f, wraithSize.y});
 		ImGui::TextColored(GuiHelper::getInstance()->BLACK, loadingMessage);
 		
 
