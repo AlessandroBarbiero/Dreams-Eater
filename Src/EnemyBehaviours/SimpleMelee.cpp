@@ -23,7 +23,7 @@ void SimpleMelee::attack()
         }
     }
 
-    anim->setFacingDirection(vectorToDirection(direction), true);
+    anim->setFacingDirection(vectorToDirection(direction));
 
 }
 
