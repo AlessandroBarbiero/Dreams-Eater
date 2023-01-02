@@ -4,8 +4,6 @@
 #include "Component.hpp"
 #include <vector>
 
-//TODO: not implemented yet
-//
 // Boss enemy, alternates between 3 attacks:
 // - Melee stab
 // - Magic shot

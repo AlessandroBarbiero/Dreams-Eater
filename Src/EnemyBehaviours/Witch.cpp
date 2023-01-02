@@ -36,7 +36,7 @@ void Witch::attack()
         }
     }
 
-    if (Thundercount > 1000) {
+    if (Thundercount > 500) {
         //THUNDER
         anim->displayCompleteAnimation(State::Attack3, [this]() {  thunder(); }, true);
         Thundercount = 0;
