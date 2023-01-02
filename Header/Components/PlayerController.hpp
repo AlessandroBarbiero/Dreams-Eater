@@ -108,4 +108,6 @@ private:
 
 
     friend class CharacterBuilder;
+    friend class Powerup;
+    friend class PowerupBuilder;
 };
