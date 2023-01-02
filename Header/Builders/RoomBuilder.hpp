@@ -32,8 +32,7 @@ enum DoorPosition {
 	LeftBottom,
 	Right,
 	RightTop,
-	RightBottom,
-	Center
+	RightBottom
 };
 
 enum RoomType {

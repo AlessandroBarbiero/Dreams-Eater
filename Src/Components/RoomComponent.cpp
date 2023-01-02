@@ -338,7 +338,6 @@ void RoomComponent::buildWalls() {
 		doorMap[d.position] = spawnedDoor;
 		doorEntrances[d.position] = entryPosition;
 	}
-	doorEntrances[Center] = { 0, 0 };
 
 	//getGameObject()->setPosition(glm::vec2( (roomSize.x-1)* spriteWallHorizontalBottom.getSpriteSize().x / 2, (roomSize.y-1)* spriteWallVerticalLeft.getSpriteSize().y / 2));
 	// Collision

@@ -23,9 +23,16 @@ public:
 	std::shared_ptr<GameObject> player;
 	std::shared_ptr<GameObject> boss;
 
+	/*
+		Loads enemy data, then loads the spawnRoom.
+	*/
 	void loadLevel();
 
-	void loadRoom(int room, DoorPosition enteredAt);
+	/*
+		Saves the objects in the current room, then loads the room and places the player near the specified DoorPosition,
+		or in the center of the room if enterAtCenter is true.
+	*/
+	void loadRoom(int room, DoorPosition enteredAt, bool enterAtCenter = false);
 
 	void unloadLevel();
 
