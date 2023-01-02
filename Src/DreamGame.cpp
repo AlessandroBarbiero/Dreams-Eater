@@ -346,43 +346,22 @@ void DreamGame::onKey(SDL_Event& event) {
     // General Keys
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
-        /*case SDLK_SPACE:
-            if (gameState == GameState::GameOver) {
-                gameState = GameState::Running;
-                init();
-            }
-            break;*/
         case SDLK_r:
             if(gameState==GameState::Running){
                 init();
                 play();
             }
             break;
-        case SDLK_t:
-            for each (std::shared_ptr<GameObject> obj in *(currentScene->getSceneObjects()))
-            {
-                if (obj->name == "testRoom") {
-                    std::cout << "Marking testRoom" << std::endl;
-                    obj->destroy();
-                    camera->setFollowObject(nullptr, glm::vec2(0,0));
-                }
-            }
-            break;
-
         case SDLK_y:
             // press 'y' for physics debug
             doDebugDraw = !doDebugDraw;
-            if (doDebugDraw) {
+            if (doDebugDraw) 
                 world->SetDebugDraw(&debugDraw);
-                
-            }
-            else {
+            else 
                 world->SetDebugDraw(nullptr);
-            }
             break;
 
         case SDLK_p:
-            
             if (gameState == GameState::Running)
                 pause();
             else if(gameState == GameState::Pause)
