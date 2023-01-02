@@ -28,7 +28,11 @@ void Witch::attack()
     if (Thundercount > 100) {
         if (glm::length(towardPlayer) < 600) {
             //STAB
-            anim->displayCompleteAnimation(State::Attack1, 1 / character->getRateOfFire(), [this]() {physics->addImpulse(towardPlayer); });
+            if (!isAttacking) {
+                physics->addForce((towardPlayer));
+                anim->displayCompleteAnimation(State::Attack1, 1 / character->getRateOfFire(), [this]() {isAttacking = false; physics->addForce(-(towardPlayer));});
+                isAttacking = true;
+            }
         }
         else {
             //SHOOT
@@ -47,6 +51,9 @@ void Witch::attack()
 
 void Witch::movement()
 {
+    if (isAttacking) {
+        return;
+    }
     float distance = glm::length(towardPlayer);
 
     glm::vec2 direction = glm::normalize(towardPlayer);

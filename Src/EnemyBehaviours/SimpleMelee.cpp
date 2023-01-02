@@ -16,7 +16,11 @@ void SimpleMelee::attack()
 
     auto anim = gameObject->getComponent<SpriteAnimationComponent>();
     if (glm::length(towardPlayer) < 600) {
-        anim->displayCompleteAnimation(State::Attack, 1.0f, [this]() {physics->addImpulse(towardPlayer); });
+        if (!isAttacking) {
+            physics->addForce((towardPlayer));
+            anim->displayCompleteAnimation(State::Attack, 1.0f, [this]() {isAttacking = false; physics->addForce(-(towardPlayer));});
+            isAttacking = true;
+        }
     }
 
     anim->setFacingDirection(vectorToDirection(direction), true);
@@ -25,6 +29,9 @@ void SimpleMelee::attack()
 
 void SimpleMelee::movement()
 {
+    if (isAttacking) {
+        return;
+    }
     float distance = glm::length(towardPlayer);
 
     glm::vec2 direction = glm::normalize(towardPlayer);
