@@ -26,7 +26,7 @@ void LevelBuilder::generateLayout(std::shared_ptr<Level> level) {
     std::map<std::pair<int, int>, std::shared_ptr<RoomSettings>> roomMap;
 
     roomMap[{ 0, 0 }] = std::make_shared<RoomSettings>();
-    std::shared_ptr<RoomSettings> spawnRoomSettings = generateRoom(level, roomMap, level->rooms, 0, 0, { 0,0 }, true);
+    std::shared_ptr<RoomSettings> spawnRoomSettings = generateRoom(level, roomMap, level->rooms-1, 0, 0, { 0,0 }, true);
     insertRoomInMap(roomMap, spawnRoomSettings);
     level->roomSettings.push_back(spawnRoomSettings);
     level->roomEntered.push_back(false);
