@@ -16,13 +16,20 @@ The game is using Simple Render Engine as game engine.
 
 > See a more detailed report here -> [Report](/Report.pdf)
 
-# Gameplay
-![Alt Text](https://imgur.com/a/V1ikPSn.gif)
+# Game
+
+## Main menu
+<img src="https://user-images.githubusercontent.com/79710064/221548720-d691ee3f-f930-4fc5-830f-b0f4f5fe2067.gif" alt="Dreams Eater Main Menu" width="600" /> 
+
+## Gameplay
+![DreamsEaterGameplay](https://user-images.githubusercontent.com/79710064/221548062-231463eb-bee0-486f-8534-bf40aa0dcb22.gif)
+
 
 # How to build
 - Follow the guide to download Simple Render Engine with all the dependencies at [SimpleRenderEngineProject](https://github.com/mortennobel/SimpleRenderEngineProject)
 - Place this directory as subdirectory of the Simple Render Engine Project directory
 - Append to the file SimpleRenderEngineProject/`CMakeLists.txt` the line 
+
   ```
   add_subdirectory(Dreams-Eater)
   ```
