@@ -105,6 +105,8 @@ private:
 
     void init();
 
+    void setWindowIcon();
+
     void initPhysics();
 
     void update(float time);

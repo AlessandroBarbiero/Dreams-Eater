@@ -27,11 +27,28 @@ DreamGame* DreamGame::instance = nullptr;
 DreamGame::DreamGame()
     :debugDraw(physicsScale),currentScene(&startMenu)
 {
+    // Redirect standard output and error to null
+#ifdef _WIN32
+    std::freopen("nul", "w", stdout);
+    std::freopen("nul", "w", stderr);
+#else
+    std::freopen("/dev/null", "w", stdout);
+    std::freopen("/dev/null", "w", stderr);
+#endif
+
+
+
+
     instance = this;
     r.setWindowSize(windowSize);
+    r.setWindowTitle("Dreams Eater");
+    
+    
     r.init()
         .withSdlInitFlags(SDL_INIT_EVERYTHING)
         .withSdlWindowFlags(SDL_WINDOW_OPENGL);
+
+    setWindowIcon();
 
     spriteAtlas_inside = SpriteAtlas::create("Sprites/Room/Inside_atlas.json", "Sprites/Room/Inside_atlas.png");
 
@@ -72,6 +89,16 @@ DreamGame::DreamGame()
     r.startEventLoop();
 
 
+}
+
+void DreamGame::setWindowIcon() {
+    
+    auto icon = Texture::create()
+        .withFile(GuiHelper::getInstance()->GUI_PATH + "Wraith_icon.png")
+        .withFilterSampling(false)
+        .build();
+
+    r.setWindowIcon(icon);
 }
 
 void DreamGame::buildStartMenu() {
